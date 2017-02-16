@@ -19,5 +19,5 @@ test:
     - babel-tap --coverage-report=html --no-browser && mv coverage/lcov-report  $CIRCLE_TEST_REPORTS/coverage
     - npm run build:docs && mv docs $CIRCLE_ARTIFACTS/
     - if [ $CIRCLE_BRANCH = 'master' ]; then npm run build; fi
-    - # if [ $CIRCLE_BRANCH = 'master' ]; then git tag "build_${CIRCLE_BUILD_NUM}" && git push --tags; fi
-    - # TODO add serverless deploy if master
+    # - if [ $CIRCLE_BRANCH = 'master' ]; then git tag "build_${CIRCLE_BUILD_NUM}" && git push --tags; fi
+    # - TODO add serverless deploy if master
