@@ -26,7 +26,9 @@
   "homepage": "https://github.com/Plnt9/sls-create-newsletter-issue#readme",
   "dependencies": {
     "axios": "^0.15.3",
-    "source-map-support": "0.4.6"
+    "best-scheduled-tweets": "^1.0.1",
+    "source-map-support": "0.4.6",
+    "tech-quote-of-the-week": "^1.0.1"
   },
   "devDependencies": {
     "babel-core": "6.18.0",
