@@ -1,0 +1,10 @@
+{
+    "source": {
+        "exclude": ["node_modules", "test", "build"],
+        "includePattern": ".+\\.js(doc|x)?$",
+        "excludePattern": "(^|\\/|\\\\)_"
+    },
+    "plugins": [
+      "node_modules/jsdoc-strip-async-await"
+    ]
+}
