@@ -1,0 +1,36 @@
+# Welcome to Serverless!
+
+frameworkVersion: ">=1.2.0"
+
+service: fullstackbulletin-newsletter-V${self:custom.version}
+
+provider:
+  name: aws
+  runtime: nodejs4.3
+  stage: ${opt:stage}
+  profile: ${opt:stage}
+  region: eu-west-1
+  memorySize: 512
+  timeout: 120
+  cfLogs: true
+
+custom:
+  version: 1
+
+functions:
+  createIssue:
+    handler: handler.createIssue
+    environment:
+        TWITTER_SCREEN_NAMES: ${env:TWITTER_SCREEN_NAMES}
+        TWITTER_CONSUMER_KEY: ${env:TWITTER_CONSUMER_KEY}
+        TWITTER_CONSUMER_SECRET: ${env:TWITTER_CONSUMER_SECRET}
+        TWITTER_ACCESS_TOKEN_KEY: ${env:TWITTER_ACCESS_TOKEN_KEY}
+        TWITTER_ACCESS_TOKEN_SECRET: ${env:TWITTER_ACCESS_TOKEN_SECRET}
+        FACEBOOK_APP_ID: ${env:FACEBOOK_APP_ID}
+        FACEBOOK_APP_SECRET: ${env:FACEBOOK_APP_SECRET}
+        CLOUDINARY_CLOUD_NAME: ${env:CLOUDINARY_CLOUD_NAME}
+        CLOUDINARY_API_KEY: ${env:CLOUDINARY_API_KEY}
+        CLOUDINARY_API_SECRET: ${env:CLOUDINARY_API_SECRET}
+        MAILCHIMP_API_KEY: ${env:MAILCHIMP_API_KEY}
+    events:
+      - schedule: cron(0 17 ? * FRI *) # Every Friday at 5 pm

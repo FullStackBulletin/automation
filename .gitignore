@@ -1,3 +1,6 @@
+# OS specific files
+.DS_Store
+
 # Logs
 logs
 *.log
@@ -16,15 +19,13 @@ coverage
 
 # nyc test coverage
 .nyc_output
+.test_results.txt
 
 # Grunt intermediate storage (http://gruntjs.com/creating-plugins#storing-task-files)
 .grunt
 
 # node-waf configuration
 .lock-wscript
-
-# Compiled binary addons (http://nodejs.org/api/addons.html)
-build/Release
 
 # Dependency directories
 node_modules
@@ -35,3 +36,12 @@ jspm_packages
 
 # Optional REPL history
 .node_repl_history
+
+# build files
+build/
+
+# serverless deploy folder
+.serverless/
+
+.babel_cache/
+.env

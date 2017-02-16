@@ -1,0 +1,65 @@
+{
+  "name": "createNewsletterIssue",
+  "version": "1.0.0",
+  "description": "Serverless lambda to parse and store system prices",
+  "main": "handler.js",
+  "aws-deployment-type": "lambda",
+  "scripts": {
+    "test:lint": "eslint src/**/*.js test/**/*.test.js",
+    "test:unit": "babel-tap test/**/*.test.js --coverage | tee .test_results.txt | tap-spec",
+    "test": "npm run test:lint && npm run test:unit",
+    "build:docs:jsdoc": "jsdoc -c jsdoc.json --readme README.md --recurse --destination docs .",
+    "build:docs:swagger": "swagger-jsdoc-generator > docs/swagger.json",
+    "build:docs": "rimraf docs && npm run build:docs:jsdoc && npm run build:docs:swagger",
+    "build": "scripts/build.sh"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Plnt9/sls-create-newsletter-issue.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Plnt9/sls-create-newsletter-issue/issues"
+  },
+  "homepage": "https://github.com/Plnt9/sls-create-newsletter-issue#readme",
+  "dependencies": {
+    "js-yaml": "^3.6.1",
+    "object-path": "^0.11.2",
+    "source-map-support": "0.4.6"
+  },
+  "devDependencies": {
+    "babel-core": "6.18.0",
+    "babel-loader": "6.2.7",
+    "babel-plugin-transform-async-to-generator": "6.16.0",
+    "babel-plugin-transform-es2015-destructuring": "6.18.0",
+    "babel-plugin-transform-es2015-function-name": "6.9.0",
+    "babel-plugin-transform-es2015-modules-commonjs": "6.18.0",
+    "babel-plugin-transform-es2015-parameters": "6.18.0",
+    "babel-plugin-transform-es2015-shorthand-properties": "6.18.0",
+    "babel-plugin-transform-es2015-spread": "6.8.0",
+    "babel-plugin-transform-es2015-sticky-regex": "6.8.0",
+    "babel-plugin-transform-es2015-unicode-regex": "6.11.0",
+    "babel-register": "6.18.0",
+    "babel-tap": "5.0.0",
+    "babili-webpack-plugin": "0.0.6",
+    "clean-webpack-plugin": "0.1.13",
+    "eslint": "3.8.1",
+    "eslint-config-airbnb": "12.0.0",
+    "eslint-plugin-import": "1.16.0",
+    "eslint-plugin-jsx-a11y": "2.2.3",
+    "eslint-plugin-react": "6.4.1",
+    "jsdoc": "^3.4.3",
+    "jsdoc-strip-async-await": "^0.1.0",
+    "json-loader": "0.5.4",
+    "mock-require": "1.3.0",
+    "nock": "8.1.0",
+    "rimraf": "^2.5.4",
+    "sinon": "1.17.6",
+    "swagger-jsdoc-generator": "^1.0.3",
+    "tap-spec": "4.1.1",
+    "package-strip-deps": "1.0.0",
+    "tap-xunit": "1.4.0",
+    "webpack": "2.1.0-beta.26"
+  }
+}
