@@ -1,12 +1,22 @@
 machine:
   node:
     version: 4.3.2
+  environment:
+    PATH: "${PATH}:${HOME}/${CIRCLE_PROJECT_REPONAME}/node_modules/.bin"
+
+dependencies:
+  override:
+    - yarn
+  cache_directories:
+    - ~/.cache/yarn
 
 test:
+  override:
+    - yarn test
   post:
     - mkdir -p $CIRCLE_TEST_REPORTS/junit/
-    - node_modules/.bin/tap-xunit < .test_results.txt > $CIRCLE_TEST_REPORTS/junit/test-results.xml
-    - node_modules/.bin/babel-tap --coverage-report=html --no-browser && mv coverage/lcov-report  $CIRCLE_TEST_REPORTS/coverage
+    - tap-xunit < .test_results.txt > $CIRCLE_TEST_REPORTS/junit/test-results.xml
+    - babel-tap --coverage-report=html --no-browser && mv coverage/lcov-report  $CIRCLE_TEST_REPORTS/coverage
     - npm run build:docs && mv docs $CIRCLE_ARTIFACTS/
     - if [ $CIRCLE_BRANCH = 'master' ]; then npm run build; fi
     - # if [ $CIRCLE_BRANCH = 'master' ]; then git tag "build_${CIRCLE_BUILD_NUM}" && git push --tags; fi
