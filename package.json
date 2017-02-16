@@ -25,6 +25,7 @@
   },
   "homepage": "https://github.com/Plnt9/sls-create-newsletter-issue#readme",
   "dependencies": {
+    "axios": "^0.15.3",
     "source-map-support": "0.4.6"
   },
   "devDependencies": {
