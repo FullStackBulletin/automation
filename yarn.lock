@@ -656,9 +656,9 @@ bcrypt-pbkdf@^1.0.0:
   dependencies:
     tweetnacl "^0.14.3"
 
-best-scheduled-tweets@^1.0.1:
-  version "1.0.1"
-  resolved "https://registry.yarnpkg.com/best-scheduled-tweets/-/best-scheduled-tweets-1.0.1.tgz#ad08cead63f57e9a1c6b9c4f3f863e1e12af83ad"
+best-scheduled-tweets@1.0.2:
+  version "1.0.2"
+  resolved "https://registry.yarnpkg.com/best-scheduled-tweets/-/best-scheduled-tweets-1.0.2.tgz#ff3ea6adf83147def5a8230cc5d12c8109dd7bd5"
   dependencies:
     async "^2.1.4"
     fb "^1.1.1"
@@ -3147,7 +3147,7 @@ source-list-map@~0.1.7:
   version "0.1.8"
   resolved "https://registry.yarnpkg.com/source-list-map/-/source-list-map-0.1.8.tgz#c550b2ab5427f6b3f21f5afead88c4f5587b2106"
 
-source-map-support@0.4.6, source-map-support@^0.4.2, source-map-support@^0.4.3:
+source-map-support@^0.4.2, source-map-support@^0.4.3:
   version "0.4.6"
   resolved "https://registry.yarnpkg.com/source-map-support/-/source-map-support-0.4.6.tgz#32552aa64b458392a85eab3b0b5ee61527167aeb"
   dependencies:
@@ -3426,9 +3426,9 @@ tar@~2.2.1:
     fstream "^1.0.2"
     inherits "2"
 
-tech-quote-of-the-week@^1.0.1:
-  version "1.0.1"
-  resolved "https://registry.yarnpkg.com/tech-quote-of-the-week/-/tech-quote-of-the-week-1.0.1.tgz#5bcedb8ec3d782512aa8d9861f94e81d92ee492e"
+tech-quote-of-the-week@2.0.0:
+  version "2.0.0"
+  resolved "https://registry.yarnpkg.com/tech-quote-of-the-week/-/tech-quote-of-the-week-2.0.0.tgz#5f142bb6773a279e191681f258e8749ef3681f13"
   dependencies:
     moment "^2.17.1"
 
