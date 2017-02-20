@@ -1,11 +1,13 @@
-export const createCampaign = (httpClient, apiKey) => {
+export const createCampaignFactory = (httpClient, apiKey) => {
   const [, dc] = apiKey.split('-');
   const apiEndpoint = `https://user:${apiKey}@${dc}.api.mailchimp.com/3.0`;
-  return (links, campaignSettings) => {
+  return (quote, links, campaignSettings) => {
     const createCampaignUrl = `${apiEndpoint}/campaigns`;
     const campaignData = {
       type: 'regular',
-      recipient: campaignSettings.listId,
+      recipients: {
+        list_id: campaignSettings.listId,
+      },
       settings: {
         subject_line: 'Some subject',
         title: 'Some title',
@@ -16,11 +18,22 @@ export const createCampaign = (httpClient, apiKey) => {
 
     return httpClient.post(createCampaignUrl, campaignData)
     .then((response) => {
-      const campaignId = response.body.id;
+      const campaignId = response.data.id;
       const createCampaignContentUrl = `${apiEndpoint}/campaigns/${campaignId}/content`;
       const contentData = {
-        // TODO add content here
+        template: {
+          id: campaignSettings.templateId,
+          sections: {
+            quote: quote.text,
+            title: `Best 7 links of week #${campaignSettings.referenceTime.format('W')}, ${campaignSettings.referenceTime.format('YYYY')}`,
+          },
+        },
       };
+
+      links.forEach((link, i) => {
+        contentData.template.sections[`article_title_${i + 1}`] = link.title;
+        contentData.template.sections[`article_description_${i + 1}`] = link.description;
+      });
 
       return httpClient.put(createCampaignContentUrl, contentData);
     });
@@ -28,5 +41,5 @@ export const createCampaign = (httpClient, apiKey) => {
 };
 
 export default {
-  createCampaign,
+  createCampaignFactory,
 };

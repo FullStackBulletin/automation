@@ -34,5 +34,6 @@ functions:
       CLOUDINARY_API_SECRET: ${env:CLOUDINARY_API_SECRET}
       MAILCHIMP_API_KEY: ${env:MAILCHIMP_API_KEY}
       MAILCHIMP_LIST_ID: ${env:MAILCHIMP_LIST_ID}
+      MAILCHIMP_TEMPLATE_ID: ${env:MAILCHIMP_TEMPLATE_ID}
     events:
       - schedule: cron(0 17 ? * FRI *) # Every Friday at 5 pm
