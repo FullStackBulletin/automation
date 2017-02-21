@@ -24,7 +24,9 @@ export const createCampaignFactory = (httpClient, apiKey) => {
         template: {
           id: campaignSettings.templateId,
           sections: {
-            quote: quote.text,
+            quote_text: quote.text,
+            quote_author: quote.author,
+            quote_author_description: quote.authorDescription,
             title: `Best 7 links of week #${campaignSettings.referenceTime.format('W')}, ${campaignSettings.referenceTime.format('YYYY')}`,
           },
         },

@@ -44,21 +44,21 @@ export const createIssue = async (event, context, callback) => {
     });
 
     const httpClient = axios.create();
-    httpClient.interceptors.request.use((config) => {
-      // console.log('Request', JSON.stringify(config, null, 2));
-      return config;
-    }, (error) => {
-      // console.error('Request Error', error);
-      return Promise.reject(error);
-    });
-    httpClient.interceptors.response.use((response) => {
-      // console.log('Response', response.data.errors);
-      // console.log(response.data.errors);
-      return response;
-    }, (error) => {
-      console.error('Response Error', error.response.data.errors);
-      return Promise.reject(error);
-    });
+    // httpClient.interceptors.request.use((config) => {
+    //   // console.log('Request', JSON.stringify(config, null, 2));
+    //   return config;
+    // }, (error) => {
+    //   // console.error('Request Error', error);
+    //   return Promise.reject(error);
+    // });
+    // httpClient.interceptors.response.use((response) => {
+    //   // console.log('Response', response.data.errors);
+    //   // console.log(response.data.errors);
+    //   return response;
+    // }, (error) => {
+    //   console.error('Response Error', error.response.data.errors);
+    //   return Promise.reject(error);
+    // });
 
     const createCampaign = createCampaignFactory(
       httpClient,
