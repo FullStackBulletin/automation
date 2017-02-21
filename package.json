@@ -29,6 +29,7 @@
     "best-scheduled-tweets": "1.0.2",
     "fb": "^1.1.1",
     "moment": "^2.17.1",
+    "source-map-support": "^0.4.11",
     "tech-quote-of-the-week": "2.0.0",
     "twitter": "^1.7.0"
   },

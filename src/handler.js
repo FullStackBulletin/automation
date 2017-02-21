@@ -1,5 +1,6 @@
 /* eslint "no-console": "off" */
 
+import sourceMapSupport from 'source-map-support';
 import Twitter from 'twitter';
 import { Facebook } from 'fb';
 import moment from 'moment';
@@ -9,6 +10,8 @@ import { autoRetrieveAccessToken } from 'best-scheduled-tweets/src/utils/fb';
 import { techQuoteOfTheWeek } from 'tech-quote-of-the-week';
 import { persistedMemoize } from './persistedMemoize';
 import { createCampaignFactory } from './mailchimpCampaign';
+
+sourceMapSupport.install();
 
 export const createIssue = async (event, context, callback) => {
   try {
@@ -40,20 +43,38 @@ export const createIssue = async (event, context, callback) => {
       blacklistedUrls: [],
     });
 
+    const httpClient = axios.create();
+    httpClient.interceptors.request.use((config) => {
+      // console.log('Request', JSON.stringify(config, null, 2));
+      return config;
+    }, (error) => {
+      // console.error('Request Error', error);
+      return Promise.reject(error);
+    });
+    httpClient.interceptors.response.use((response) => {
+      // console.log('Response', response.data.errors);
+      // console.log(response.data.errors);
+      return response;
+    }, (error) => {
+      console.error('Response Error', error.response.data.errors);
+      return Promise.reject(error);
+    });
+
     const createCampaign = createCampaignFactory(
-      axios,
+      httpClient,
       process.env.MAILCHIMP_API_KEY,
     );
 
     const campaignSettings = {
       listId: process.env.MAILCHIMP_LIST_ID,
-      templateId: process.env.MAILCHIMP_TEMPLATE_ID,
+      templateId: parseInt(process.env.MAILCHIMP_TEMPLATE_ID, 10),
       referenceTime: referenceMoment,
     };
 
     const response = await createCampaign(quote, links, campaignSettings);
+    console.log(response);
 
-    return callback(null, { quote, links, response });
+    return callback(null, { quote, links });
   } catch (err) {
     console.error(err, err.stack);
     return callback(err);
