@@ -5,10 +5,12 @@ import Twitter from 'twitter';
 import { Facebook } from 'fb';
 import moment from 'moment';
 import axios from 'axios';
+import cloudinary from 'cloudinary';
 import { bestScheduledTweets } from 'best-scheduled-tweets';
 import { autoRetrieveAccessToken } from 'best-scheduled-tweets/src/utils/fb';
 import { techQuoteOfTheWeek } from 'tech-quote-of-the-week';
 import { persistedMemoize } from './persistedMemoize';
+import { uploadImagesToCloudinary } from './uploadImagesToCloudinary';
 import { createCampaignFactory } from './mailchimpCampaign';
 
 sourceMapSupport.install();
@@ -28,6 +30,12 @@ export const createIssue = async (event, context, callback) => {
       appSecret: process.env.FACEBOOK_APP_SECRET,
     }));
 
+    cloudinary.config({
+      cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
+      api_key: process.env.CLOUDINARY_API_KEY,
+      api_secret: process.env.CLOUDINARY_API_SECRET,
+    });
+
     const referenceMoment = moment().subtract('1', 'week').startOf('day');
     const screenNames = process.env.TWITTER_SCREEN_NAMES.split(',');
 
@@ -42,6 +50,9 @@ export const createIssue = async (event, context, callback) => {
       numResults: 7,
       blacklistedUrls: [],
     });
+
+    const imageUploader = uploadImagesToCloudinary(cloudinary, process.env.CLOUDINARY_FOLDER);
+    const linksWithImages = await imageUploader(links);
 
     const httpClient = axios.create();
     // httpClient.interceptors.request.use((config) => {
@@ -71,10 +82,9 @@ export const createIssue = async (event, context, callback) => {
       referenceTime: referenceMoment,
     };
 
-    const response = await createCampaign(quote, links, campaignSettings);
-    console.log(response);
+    await createCampaign(quote, linksWithImages, campaignSettings);
 
-    return callback(null, { quote, links });
+    return callback(null, { quote, linksWithImages });
   } catch (err) {
     console.error(err, err.stack);
     return callback(err);

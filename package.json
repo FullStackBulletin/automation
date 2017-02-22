@@ -46,6 +46,7 @@
     "babel-plugin-transform-es2015-spread": "6.8.0",
     "babel-plugin-transform-es2015-sticky-regex": "6.8.0",
     "babel-plugin-transform-es2015-unicode-regex": "6.11.0",
+    "babel-plugin-transform-object-rest-spread": "^6.23.0",
     "babel-register": "6.18.0",
     "babel-tap": "5.0.0",
     "babili-webpack-plugin": "0.0.6",

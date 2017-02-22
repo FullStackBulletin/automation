@@ -1,5 +1,3 @@
-# Welcome to Serverless!
-
 frameworkVersion: ">=1.2.0"
 
 service: fullstackbulletin-newsletter-V${self:custom.version}
@@ -32,6 +30,7 @@ functions:
       CLOUDINARY_CLOUD_NAME: ${env:CLOUDINARY_CLOUD_NAME}
       CLOUDINARY_API_KEY: ${env:CLOUDINARY_API_KEY}
       CLOUDINARY_API_SECRET: ${env:CLOUDINARY_API_SECRET}
+      CLOUDINARY_FOLDER: ${env:CLOUDINARY_FOLDER}
       MAILCHIMP_API_KEY: ${env:MAILCHIMP_API_KEY}
       MAILCHIMP_LIST_ID: ${env:MAILCHIMP_LIST_ID}
       MAILCHIMP_TEMPLATE_ID: ${env:MAILCHIMP_TEMPLATE_ID}
