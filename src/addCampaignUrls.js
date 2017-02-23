@@ -5,12 +5,12 @@ const addCampaignUrl = campaign => (urlInfo, cb) => {
   const source = 'fullstackbulletin.com';
   const medium = 'newsletter';
   const contents = ['title', 'image', 'description'];
-  const campaignUrls = contents.reduce((acc, content) => {
-    acc[content] = utmBuilder(urlInfo.id, source, medium, campaign, content);
-    return acc;
-  }, {});
+  const campaignUrls = contents.reduce((map, content) => {
+    map.set(content, utmBuilder(urlInfo.id, source, medium, campaign, content));
+    return map;
+  }, new Map());
 
-  return { ...urlInfo, campaignUrls };
+  return cb(null, { ...urlInfo, campaignUrls });
 };
 
 export const addCampaignUrls = campaign => urlsInfo =>
