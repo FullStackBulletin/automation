@@ -79,4 +79,4 @@ export const uploadImagesToCloudinary = (client, folder) => urlsInfo =>
   },
 );
 
-export default uploadImagesToCloudinary;
+export default { uploadImagesToCloudinary };
