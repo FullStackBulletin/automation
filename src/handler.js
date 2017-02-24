@@ -11,6 +11,7 @@ import { autoRetrieveAccessToken } from 'best-scheduled-tweets/src/utils/fb';
 import { techQuoteOfTheWeek } from 'tech-quote-of-the-week';
 import { persistedMemoize } from './persistedMemoize';
 import { uploadImagesToCloudinary } from './uploadImagesToCloudinary';
+import { addCampaignUrls } from './addCampaignUrls';
 import { createCampaignFactory } from './mailchimpCampaign';
 
 sourceMapSupport.install();
@@ -53,6 +54,7 @@ export const createIssue = async (event, context, callback) => {
 
     const imageUploader = uploadImagesToCloudinary(cloudinary, process.env.CLOUDINARY_FOLDER);
     const linksWithImages = await imageUploader(links);
+    const linksWithCampaignUrls = addCampaignUrls(linksWithImages);
 
     const httpClient = axios.create();
     // httpClient.interceptors.request.use((config) => {
@@ -82,9 +84,9 @@ export const createIssue = async (event, context, callback) => {
       referenceTime: referenceMoment,
     };
 
-    await createCampaign(quote, linksWithImages, campaignSettings);
+    await createCampaign(quote, linksWithCampaignUrls, campaignSettings);
 
-    return callback(null, { quote, linksWithImages });
+    return callback(null, { quote, linksWithCampaignUrls });
   } catch (err) {
     console.error(err, err.stack);
     return callback(err);
