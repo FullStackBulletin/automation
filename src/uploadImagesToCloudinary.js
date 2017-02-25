@@ -19,10 +19,10 @@ const uploadImageToCloudinary = (client, folder) => (urlInfo, cb) => {
   uploadImage(client, urlInfo.image, publicId)
   .then((info) => {
     const transformations = {
-      crop: 'fill',
+      crop: 'fit',
       width: 500,
       height: 240,
-      gravity: 'face',
+      gravity: 'center',
       quality: 80,
       format: 'jpg',
     };

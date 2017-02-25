@@ -6,8 +6,13 @@ const escapeAttrNodeValue = value =>
   })
 ;
 
-const a = (url, content) =>
-  `<a href="${escapeAttrNodeValue(url)}" target="_blank">${content}</a>`;
+const a = (url, content) => {
+  if (url) {
+    return `<a href="${escapeAttrNodeValue(url)}" target="_blank">${content}</a>`;
+  }
+
+  return content;
+};
 
 const img = (url, title) =>
   `<img alt="${escapeAttrNodeValue(title)}" src="${url}" width="194" style="max-width:500px;" class="mcnImage">`;
@@ -44,7 +49,7 @@ export const createCampaignFactory = (httpClient, apiKey) => {
           sections: {
             content_preview: links[0].title,
             quote_text: quote.text,
-            quote_author: quote.author,
+            quote_author: a(quote.authorUrl, quote.author),
             quote_author_description: quote.authorDescription,
             title: `Best 7 links of week #${campaignSettings.weekNumber}, ${campaignSettings.year}`,
           },

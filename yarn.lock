@@ -667,9 +667,9 @@ bcrypt-pbkdf@^1.0.0:
   dependencies:
     tweetnacl "^0.14.3"
 
-best-scheduled-tweets@1.0.2:
-  version "1.0.2"
-  resolved "https://registry.yarnpkg.com/best-scheduled-tweets/-/best-scheduled-tweets-1.0.2.tgz#ff3ea6adf83147def5a8230cc5d12c8109dd7bd5"
+best-scheduled-tweets@1.0.3:
+  version "1.0.3"
+  resolved "https://registry.yarnpkg.com/best-scheduled-tweets/-/best-scheduled-tweets-1.0.3.tgz#44edcc6875e790723f1ed66aaca2d11302e1e679"
   dependencies:
     async "^2.1.4"
     fb "^1.1.1"
@@ -3448,9 +3448,9 @@ tar@~2.2.1:
     fstream "^1.0.2"
     inherits "2"
 
-tech-quote-of-the-week@2.0.0:
-  version "2.0.0"
-  resolved "https://registry.yarnpkg.com/tech-quote-of-the-week/-/tech-quote-of-the-week-2.0.0.tgz#5f142bb6773a279e191681f258e8749ef3681f13"
+tech-quote-of-the-week@2.1.0:
+  version "2.1.0"
+  resolved "https://registry.yarnpkg.com/tech-quote-of-the-week/-/tech-quote-of-the-week-2.1.0.tgz#f345921a83e228d5c0bd5beba1e5921fffd9641f"
   dependencies:
     moment "^2.17.1"
 
