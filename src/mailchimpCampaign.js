@@ -6,8 +6,14 @@ const escapeAttrNodeValue = value =>
   })
 ;
 
-const createImageHtml = (url, title) =>
+const a = (url, content) =>
+  `<a href="${escapeAttrNodeValue(url)}" target="_blank">${content}</a>`;
+
+const img = (url, title) =>
   `<img alt="${escapeAttrNodeValue(title)}" src="${url}" width="194" style="max-width:500px;" class="mcnImage">`;
+
+const desc = (url, description) =>
+  `${description}<br/>${a(url, 'Read all...')}`;
 
 export const createCampaignFactory = (httpClient, apiKey) => {
   const [, dc] = apiKey.split('-');
@@ -20,10 +26,11 @@ export const createCampaignFactory = (httpClient, apiKey) => {
         list_id: campaignSettings.listId,
       },
       settings: {
-        subject_line: 'Some subject', // TODO
+        subject_line: `🤓 fullstackBulletin issue ${campaignSettings.weekNumber}: ${links[0].title}`,
         title: campaignSettings.campaignName,
-        from_name: 'from_name@fullstackbulletin.com',  // TODO
-        reply_to: 'some_reply_to',  // TODO
+        from: campaignSettings.from,
+        from_name: campaignSettings.fromName,
+        reply_to: campaignSettings.replyTo,
       },
     };
 
@@ -39,15 +46,20 @@ export const createCampaignFactory = (httpClient, apiKey) => {
             quote_text: quote.text,
             quote_author: quote.author,
             quote_author_description: quote.authorDescription,
-            title: `Best 7 links of week #${campaignSettings.referenceTime.format('W')}, ${campaignSettings.referenceTime.format('YYYY')}`,
+            title: `Best 7 links of week #${campaignSettings.weekNumber}, ${campaignSettings.year}`,
           },
         },
       };
 
       links.forEach((link, i) => {
-        contentData.template.sections[`article_title_${i + 1}`] = link.title;
-        contentData.template.sections[`article_description_${i + 1}`] = link.description;
-        contentData.template.sections[`image_${i + 1}`] = createImageHtml(link.image, link.title);
+        contentData.template.sections[`article_title_${i + 1}`] =
+          a(link.campaignUrls.title, link.title);
+
+        contentData.template.sections[`article_description_${i + 1}`] =
+          desc(link.campaignUrls.description, link.description);
+
+        contentData.template.sections[`image_${i + 1}`] =
+          a(link.campaignUrls.image, img(link.image, link.title));
       });
 
       return httpClient.put(createCampaignContentUrl, contentData);

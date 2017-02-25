@@ -40,7 +40,9 @@ export const createIssue = async (event, context, callback) => {
     const now = moment();
     const referenceMoment = moment().subtract('1', 'week').startOf('day');
     const screenNames = process.env.TWITTER_SCREEN_NAMES.split(',');
-    const campaignName = `fullstackBulletin-${now.format('w-YYYY')}`;
+    const weekNumber = now.format('w');
+    const year = now.format('YYYY');
+    const campaignName = `fullstackBulletin-${weekNumber}-${year}`;
 
     const quote = techQuoteOfTheWeek()();
     const getLinks = persistedMemoize(process.env.CACHE_DIR, 'bst_')(bestScheduledTweets);
@@ -69,7 +71,12 @@ export const createIssue = async (event, context, callback) => {
       listId: process.env.MAILCHIMP_LIST_ID,
       templateId: parseInt(process.env.MAILCHIMP_TEMPLATE_ID, 10),
       referenceTime: referenceMoment,
+      from: process.env.MAILCHIMP_FROM_EMAIL,
+      fromName: process.env.MAILCHIMP_FROM_NAME,
+      replyTo: process.env.MAILCHIMP_REPLY_TO_EMAIL,
       campaignName,
+      weekNumber,
+      year,
     };
 
     await createCampaign(quote, linksWithCampaignUrls, campaignSettings);
