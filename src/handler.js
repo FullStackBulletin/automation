@@ -37,8 +37,10 @@ export const createIssue = async (event, context, callback) => {
       api_secret: process.env.CLOUDINARY_API_SECRET,
     });
 
+    const now = moment();
     const referenceMoment = moment().subtract('1', 'week').startOf('day');
     const screenNames = process.env.TWITTER_SCREEN_NAMES.split(',');
+    const campaignName = `fullstackBulletin-${now.format('w-YYYY')}`;
 
     const quote = techQuoteOfTheWeek()();
     const getLinks = persistedMemoize(process.env.CACHE_DIR, 'bst_')(bestScheduledTweets);
@@ -54,24 +56,9 @@ export const createIssue = async (event, context, callback) => {
 
     const imageUploader = uploadImagesToCloudinary(cloudinary, process.env.CLOUDINARY_FOLDER);
     const linksWithImages = await imageUploader(links);
-    const linksWithCampaignUrls = addCampaignUrls(linksWithImages);
+    const linksWithCampaignUrls = addCampaignUrls(campaignName)(linksWithImages);
 
     const httpClient = axios.create();
-    // httpClient.interceptors.request.use((config) => {
-    //   // console.log('Request', JSON.stringify(config, null, 2));
-    //   return config;
-    // }, (error) => {
-    //   // console.error('Request Error', error);
-    //   return Promise.reject(error);
-    // });
-    // httpClient.interceptors.response.use((response) => {
-    //   // console.log('Response', response.data.errors);
-    //   // console.log(response.data.errors);
-    //   return response;
-    // }, (error) => {
-    //   console.error('Response Error', error.response.data.errors);
-    //   return Promise.reject(error);
-    // });
 
     const createCampaign = createCampaignFactory(
       httpClient,
@@ -82,6 +69,7 @@ export const createIssue = async (event, context, callback) => {
       listId: process.env.MAILCHIMP_LIST_ID,
       templateId: parseInt(process.env.MAILCHIMP_TEMPLATE_ID, 10),
       referenceTime: referenceMoment,
+      campaignName,
     };
 
     await createCampaign(quote, linksWithCampaignUrls, campaignSettings);

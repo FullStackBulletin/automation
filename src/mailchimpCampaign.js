@@ -21,7 +21,7 @@ export const createCampaignFactory = (httpClient, apiKey) => {
       },
       settings: {
         subject_line: 'Some subject', // TODO
-        title: 'Some title',  // TODO
+        title: campaignSettings.campaignName,
         from_name: 'from_name@fullstackbulletin.com',  // TODO
         reply_to: 'some_reply_to',  // TODO
       },
@@ -35,7 +35,7 @@ export const createCampaignFactory = (httpClient, apiKey) => {
         template: {
           id: campaignSettings.templateId,
           sections: {
-            content_preview: 'some preview', // TODO
+            content_preview: links[0].title,
             quote_text: quote.text,
             quote_author: quote.author,
             quote_author_description: quote.authorDescription,

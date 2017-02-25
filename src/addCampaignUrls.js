@@ -6,7 +6,7 @@ const addCampaignUrl = campaign => (urlInfo) => {
   const contents = ['title', 'image', 'description'];
   const campaignUrls = contents.reduce((acc, content) => {
     const map = acc;
-    map[content] = utmBuilder(urlInfo.id, source, medium, campaign, content);
+    map[content] = utmBuilder(urlInfo.url, source, medium, campaign, content);
     return map;
   }, {});
 

@@ -1,54 +1,22 @@
 import { mapLimit } from 'async';
 import { createHash } from 'crypto';
 
-const NOTFOUND = {};
-
-const retrieveImage = (client, publicId) =>
+const uploadImage = (client, imageUrl, publicId) =>
   new Promise((resolve, reject) => {
-    client.api.resource(publicId, (result) => {
+    client.uploader.upload(imageUrl, (result) => {
       if (result.error) {
-        if (result.error.http_code === 404) {
-          return resolve(NOTFOUND);
-        }
-
         return reject(result.error);
       }
 
       return resolve(result);
-    });
-  })
-;
-
-const uploadImage = (client, imageUrl, publicId) =>
-  new Promise((resolve, reject) => {
-    client.uploader.upload(imageUrl, (uploadedInfo) => {
-      if (uploadedInfo.error) {
-        return reject(uploadedInfo.error);
-      }
-
-      return resolve(uploadedInfo);
     }, { public_id: publicId });
   })
 ;
 
-const retrieveOrUploadImage = (client, imageUrl, publicId) =>
-  new Promise((resolve, reject) => {
-    retrieveImage(client, publicId)
-    .then((image) => {
-      if (image === NOTFOUND) {
-        return resolve(uploadImage(client, imageUrl, publicId));
-      }
-
-      return resolve(image);
-    })
-    .catch(err => reject(err));
-  })
-;
-
 const uploadImageToCloudinary = (client, folder) => (urlInfo, cb) => {
-  const publicId = `${folder}/${createHash('md5').update(urlInfo.image).digest('hex')}.jpg`;
+  const publicId = `${folder}/${createHash('md5').update(urlInfo.image).digest('hex')}`;
 
-  retrieveOrUploadImage(client, urlInfo.image, publicId)
+  uploadImage(client, urlInfo.image, publicId)
   .then((info) => {
     const transformations = {
       crop: 'fill',
@@ -67,7 +35,7 @@ const uploadImageToCloudinary = (client, folder) => (urlInfo, cb) => {
 
 export const uploadImagesToCloudinary = (client, folder) => urlsInfo =>
   new Promise((resolve, reject) => {
-    const limit = 1;
+    const limit = 7;
     const upload = uploadImageToCloudinary(client, folder);
     mapLimit(urlsInfo, limit, upload, (err, urlsInfoWithUploadLinks) => {
       if (err) {
