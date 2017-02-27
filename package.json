@@ -25,6 +25,7 @@
   },
   "homepage": "https://github.com/Plnt9/sls-create-newsletter-issue#readme",
   "dependencies": {
+    "aws-sdk": "^2.20.0",
     "axios": "^0.15.3",
     "best-scheduled-tweets": "1.0.3",
     "cloudinary": "^1.7.0",

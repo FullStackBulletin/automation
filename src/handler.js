@@ -1,6 +1,7 @@
 /* eslint "no-console": "off" */
 
 import sourceMapSupport from 'source-map-support';
+import { S3 } from 'aws-sdk';
 import Twitter from 'twitter';
 import { Facebook } from 'fb';
 import moment from 'moment';
@@ -13,11 +14,16 @@ import { persistedMemoize } from './persistedMemoize';
 import { uploadImagesToCloudinary } from './uploadImagesToCloudinary';
 import { addCampaignUrls } from './addCampaignUrls';
 import { createCampaignFactory } from './mailchimpCampaign';
+import { createBlacklistManager, addLinksToBlacklist } from './blacklistManager';
 
 sourceMapSupport.install();
 
 export const createIssue = async (event, context, callback) => {
   try {
+    const s3 = new S3();
+    const dataBucket = process.env.S3_DATA_BUCKET_NAME;
+    const blacklistManager = createBlacklistManager(s3, dataBucket);
+
     const twitterClient = new Twitter({
       consumer_key: process.env.TWITTER_CONSUMER_KEY,
       consumer_secret: process.env.TWITTER_CONSUMER_SECRET,
@@ -44,6 +50,9 @@ export const createIssue = async (event, context, callback) => {
     const year = now.format('YYYY');
     const campaignName = `fullstackBulletin-${weekNumber}-${year}`;
 
+    const blacklist = await blacklistManager.get(campaignName);
+    const blacklistedUrls = blacklist.map(link => link.url);
+
     const quote = techQuoteOfTheWeek()();
     const getLinks = persistedMemoize(process.env.CACHE_DIR, 'bst_')(bestScheduledTweets);
     const links = await getLinks({
@@ -53,7 +62,7 @@ export const createIssue = async (event, context, callback) => {
       screenNames,
       maxTweetsPerUser: 200,
       numResults: 7,
-      blacklistedUrls: [],
+      blacklistedUrls,
     });
 
     const imageUploader = uploadImagesToCloudinary(cloudinary, process.env.CLOUDINARY_FOLDER);
@@ -81,7 +90,11 @@ export const createIssue = async (event, context, callback) => {
 
     await createCampaign(quote, linksWithCampaignUrls, campaignSettings);
 
-    return callback(null, { quote, linksWithCampaignUrls });
+    // updates blacklist
+    const newBlacklist = addLinksToBlacklist(blacklist, links, campaignName);
+    await blacklistManager.save(newBlacklist);
+
+    return callback(null, { quote, linksWithCampaignUrls, newBlacklist });
   } catch (err) {
     console.error(err, err.stack);
     return callback(err);
