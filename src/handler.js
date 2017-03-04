@@ -4,7 +4,7 @@ import sourceMapSupport from 'source-map-support';
 import { S3 } from 'aws-sdk';
 import Twitter from 'twitter';
 import { Facebook } from 'fb';
-import moment from 'moment';
+import moment from 'moment-timezone';
 import axios from 'axios';
 import cloudinary from 'cloudinary';
 import { bestScheduledTweets } from 'best-scheduled-tweets';
@@ -43,8 +43,15 @@ export const createIssue = async (event, context, callback) => {
       api_secret: process.env.CLOUDINARY_API_SECRET,
     });
 
-    const now = moment();
-    const referenceMoment = moment().subtract('1', 'week').startOf('day');
+    const now = moment.tz('Etc/UTC');
+    const scheduleFor = now.clone()
+      .add(1, 'week')
+      .day(1) // be sure to set it to next monday
+      .hours(18)
+      .minutes(0)
+      .seconds(0)
+      .milliseconds(0);
+    const referenceMoment = now.clone().subtract('1', 'week').startOf('day');
     const screenNames = process.env.TWITTER_SCREEN_NAMES.split(',');
     const weekNumber = now.format('w');
     const year = now.format('YYYY');
@@ -86,6 +93,8 @@ export const createIssue = async (event, context, callback) => {
       campaignName,
       weekNumber,
       year,
+      scheduleTime: scheduleFor.format(),
+      testEmails: process.env.MAILCHIMP_TEST_EMAILS.split(','),
     };
 
     await createCampaign(quote, linksWithCampaignUrls, campaignSettings);
