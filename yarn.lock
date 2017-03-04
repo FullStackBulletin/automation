@@ -3594,6 +3594,10 @@ trivial-deferred@^1.0.1:
   version "1.0.1"
   resolved "https://registry.yarnpkg.com/trivial-deferred/-/trivial-deferred-1.0.1.tgz#376d4d29d951d6368a6f7a0ae85c2f4d5e0658f3"
 
+truncate@^2.0.0:
+  version "2.0.0"
+  resolved "https://registry.yarnpkg.com/truncate/-/truncate-2.0.0.tgz#09d5bc4163f3e257cd687351241071c24f14112f"
+
 tryit@^1.0.1:
   version "1.0.3"
   resolved "https://registry.yarnpkg.com/tryit/-/tryit-1.0.3.tgz#393be730a9446fd1ead6da59a014308f36c289cb"

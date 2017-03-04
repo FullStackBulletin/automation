@@ -1,3 +1,5 @@
+import truncate from 'truncate';
+
 const escapeAttrNodeValue = value =>
   value.replace(/(&)|(")|(\u00A0)/g, (match, amp, quote) => {
     if (amp) return '&amp;';
@@ -18,7 +20,7 @@ const img = (url, title) =>
   `<img alt="${escapeAttrNodeValue(title)}" src="${url}" width="194" style="max-width:500px;" class="mcnImage">`;
 
 const desc = (url, description) =>
-  `${description}<br/>${a(url, 'Read all...')}`;
+  `${truncate(description, 300)}<br/>${a(url, 'Read all...')}`;
 
 export const createCampaignFactory = (httpClient, apiKey) => {
   const [, dc] = apiKey.split('-');
