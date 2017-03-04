@@ -62,7 +62,7 @@ export const createIssue = async (event, context, callback) => {
       screenNames,
       maxTweetsPerUser: 200,
       numResults: 7,
-      blacklistedUrls,
+      blacklist: blacklistedUrls,
     });
 
     const imageUploader = uploadImagesToCloudinary(cloudinary, process.env.CLOUDINARY_FOLDER);
