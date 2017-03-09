@@ -10,6 +10,7 @@ import cloudinary from 'cloudinary';
 import { bestScheduledTweets } from 'best-scheduled-tweets';
 import { autoRetrieveAccessToken } from 'best-scheduled-tweets/src/utils/fb';
 import { techQuoteOfTheWeek } from 'tech-quote-of-the-week';
+import { bookOfTheWeek } from 'fullstack-book-of-the-week';
 import { persistedMemoize } from './persistedMemoize';
 import { uploadImagesToCloudinary } from './uploadImagesToCloudinary';
 import { addCampaignUrls } from './addCampaignUrls';
@@ -61,6 +62,7 @@ export const createIssue = async (event, context, callback) => {
     const blacklistedUrls = blacklist.map(link => link.url);
 
     const quote = techQuoteOfTheWeek()();
+    const book = bookOfTheWeek()();
     const getLinks = persistedMemoize(process.env.CACHE_DIR, 'bst_')(bestScheduledTweets);
     const links = await getLinks({
       twitterClient,
@@ -97,13 +99,13 @@ export const createIssue = async (event, context, callback) => {
       testEmails: process.env.MAILCHIMP_TEST_EMAILS.split(','),
     };
 
-    await createCampaign(quote, linksWithCampaignUrls, campaignSettings);
+    await createCampaign(quote, book, linksWithCampaignUrls, campaignSettings);
 
     // updates blacklist
     const newBlacklist = addLinksToBlacklist(blacklist, links, campaignName);
     await blacklistManager.save(newBlacklist);
 
-    return callback(null, { quote, linksWithCampaignUrls, newBlacklist });
+    return callback(null, { quote, book, linksWithCampaignUrls, newBlacklist });
   } catch (err) {
     console.error(err, err.stack);
     return callback(err);

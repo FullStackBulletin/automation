@@ -1696,6 +1696,12 @@ fstream@^1.0.0, fstream@^1.0.2, fstream@~1.0.10:
     mkdirp ">=0.5 0"
     rimraf "2"
 
+fullstack-book-of-the-week@^1.0.2:
+  version "1.0.2"
+  resolved "https://registry.yarnpkg.com/fullstack-book-of-the-week/-/fullstack-book-of-the-week-1.0.2.tgz#5714329b7627c0f8becd9bd0aa864d148d8bbc15"
+  dependencies:
+    moment "^2.17.1"
+
 function-bind@^1.0.2:
   version "1.1.0"
   resolved "https://registry.yarnpkg.com/function-bind/-/function-bind-1.1.0.tgz#16176714c801798e4e8f2cf7f7529467bb4a5771"

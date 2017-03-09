@@ -16,8 +16,8 @@ const a = (url, content) => {
   return content;
 };
 
-const img = (url, title) =>
-  `<img alt="${escapeAttrNodeValue(title)}" src="${url}" width="194" style="max-width:500px;" class="mcnImage">`;
+const img = (url, title, width = 194, maxWidth = 500) =>
+  `<img alt="${escapeAttrNodeValue(title)}" src="${url}" width="${width}" style="max-width:${maxWidth}px;" class="mcnImage">`;
 
 const desc = (url, description) =>
   `${truncate(description, 300)}<br/>${a(url, 'Read article')}`;
@@ -26,7 +26,7 @@ export const createCampaignFactory = (httpClient, apiKey) => {
   const [, dc] = apiKey.split('-');
   const apiEndpoint = `https://user:${apiKey}@${dc}.api.mailchimp.com/3.0`;
 
-  return (quote, links, campaignSettings) => {
+  return (quote, book, links, campaignSettings) => {
     // 1. create campaign
     const createCampaignUrl = `${apiEndpoint}/campaigns`;
     const campaignData = {
@@ -59,6 +59,13 @@ export const createCampaignFactory = (httpClient, apiKey) => {
             quote_author: a(quote.authorUrl, quote.author),
             quote_author_description: quote.authorDescription,
             title: `Best 7 links of week #${campaignSettings.weekNumber}, ${campaignSettings.year}`,
+            book_block_title: book.title,
+            book_cover: a(book.links.usa, img(book.coverPicture, 'book cover', 176, 406)),
+            book_title: book.title,
+            book_author: book.author,
+            book_description: book.description,
+            book_buy_amazon_com: a(book.links.usa, 'Buy on Amazon.com'),
+            book_buy_amazon_uk: a(book.links.uk, 'Buy on Amazon.co.uk'),
           },
         },
       };

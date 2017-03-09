@@ -169,6 +169,41 @@
         .mcnDividerBlock {
             table-layout: fixed !important;
         }
+
+        #templateBody #book-of-the-week {
+          background: #fee775;
+          min-width: 100% !important;
+          margin: 2em 0 0 0;
+        }
+
+        #templateBody #book-of-the-week h2 {
+          text-align: center;
+          padding: 0 0 1em;
+        }
+
+        #templateBody #book-of-the-week .buy-buttons {
+          margin: 1em 0 0 0;
+        }
+
+        #templateBody #book-of-the-week .book-description {
+          padding: 0 1em 0 0;
+          text-align: justify;
+        }
+
+        #templateBody #book-of-the-week .buy-buttons a {
+          display: inline-block;
+          padding: .5em;
+          margin: 0 0 1em 0;
+          background: #ffa500;
+          border-radius: 6px;
+          color: #000;
+          text-decoration: none;
+        }
+
+        #templateBody #book-of-the-week .buy-buttons a:hover {
+          background: #f88700;
+        }
+
         /*
 	@tab Page
 	@section Background Style
@@ -1855,11 +1890,52 @@
 
                                                             <td style="padding-top:9px; padding-left:18px; padding-bottom:9px; padding-right:18px;">
 
-                                                                <table border="0" cellpadding="18" cellspacing="0" class="mcnTextContentContainer" width="100%" style="min-width: 100% !important;background-color: #404040;">
+                                                                <table id="book-of-the-week" border="0" cellpadding="18" cellspacing="0" class="mcnTextContentContainer" width="100%" style="min-width: 100% !important;">
                                                                     <tbody>
                                                                         <tr>
                                                                             <td valign="top" class="mcnTextContent" style="color: #F2F2F2;font-family: Helvetica;font-size: 14px;font-weight: normal;text-align: center;">
-                                                                                Sponsor or book of the week
+                                                                                <div>
+                                                                                  <h2 mc:edit="book_block_title">Book of the week</h2>
+                                                                                  <table border="0" cellpadding="0" cellspacing="0" class="mcnCaptionLeftContentOuter" width="100%">
+                                                                                    <tbody>
+                                                                                      <tr>
+                                                                                        <td valign="top" class="mcnCaptionLeftContentInner">
+                                                                                          <table align="right" border="0" cellpadding="0" cellspacing="0" class="mcnCaptionLeftImageContentContainer">
+                                                                                            <tbody>
+                                                                                              <tr>
+                                                                                                <td class="mcnCaptionLeftImageContent" valign="top">
+                                                                                                  <span mc:edit="book_cover">
+                                                                                                    <a title="Buy Now" href="http://" target="_blank">
+                                                                                                      <img alt="Book of the week cover" src="https://gallery.mailchimp.com/b015626aa6028495fe77c75ea/images/54f80b34-7276-4285-9b8a-86af37a28185.jpg" width="176" style="max-width:406px;" class="mcnImage">
+                                                                                                    </a>
+                                                                                                  </span>
+                                                                                                </td>
+                                                                                              </tr>
+                                                                                            </tbody>
+                                                                                          </table>
+                                                                                          <table class="mcnCaptionLeftTextContentContainer" align="left" border="0" cellpadding="0" cellspacing="0" width="352">
+                                                                                            <tbody>
+                                                                                              <tr>
+                                                                                                <td valign="top" class="mcnTextContent">
+                                                                                                  <strong mc:edit="book_title">Book Title</strong><br>
+                                                                                                    by <em mc:edit="book_author">Book authors</em><br>
+                                                                                                  <br>
+                                                                                                  <div class="book-description" mc:edit="book_description">
+                                                                                                    Book description description description description description description description description
+                                                                                                  </div>
+                                                                                                  <div class="buy-buttons">
+                                                                                                    <span mc:edit="book_buy_amazon_com"><a title="Buy Now" href="http://" target="_blank">Buy on Amazon.com</a></span>
+                                                                                                    <span mc:edit="book_buy_amazon_uk"><a title="Buy Now" href="http://" target="_blank">Buy on Amazon.co.uk</a></span>
+                                                                                                   </div>
+                                                                                                </td>
+                                                                                              </tr>
+                                                                                            </tbody>
+                                                                                          </table>
+                                                                                        </td>
+                                                                                      </tr>
+                                                                                    </tbody>
+                                                                                  </table>
+                                                                                </div>
                                                                             </td>
                                                                         </tr>
                                                                     </tbody>

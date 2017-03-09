@@ -30,6 +30,7 @@
     "best-scheduled-tweets": "1.2.0",
     "cloudinary": "^1.7.0",
     "fb": "^1.1.1",
+    "fullstack-book-of-the-week": "^1.0.2",
     "moment": "^2.17.1",
     "moment-timezone": "^0.5.11",
     "source-map-support": "^0.4.11",
