@@ -6,7 +6,6 @@ provider:
   name: aws
   runtime: nodejs4.3
   stage: ${opt:stage}
-  profile: ${opt:stage}
   region: eu-west-1
   memorySize: 512
   timeout: 120
@@ -45,6 +44,7 @@ functions:
       MAILCHIMP_FROM_EMAIL: ${env:MAILCHIMP_FROM_EMAIL}
       MAILCHIMP_FROM_NAME: ${env:MAILCHIMP_FROM_NAME}
       MAILCHIMP_REPLY_TO_EMAIL: ${env:MAILCHIMP_REPLY_TO_EMAIL}
+      MAILCHIMP_TEST_EMAILS: ${env:MAILCHIMP_TEST_EMAILS}
       S3_DATA_BUCKET_NAME: ${env:S3_DATA_BUCKET_NAME}
     events:
       - schedule: cron(0 17 ? * FRI *) # Every Friday at 5 pm
