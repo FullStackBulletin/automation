@@ -112,4 +112,4 @@ export const createIssue = async (event, context, callback) => {
   }
 };
 
-export default createIssue;
+export default { createIssue };
