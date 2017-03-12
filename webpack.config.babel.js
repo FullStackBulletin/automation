@@ -1,8 +1,5 @@
-
-
 import fs from 'fs';
 import path from 'path';
-import BabiliPlugin from 'babili-webpack-plugin';
 import webpack from 'webpack';
 import CleanWebpackPlugin from 'clean-webpack-plugin';
 
@@ -27,17 +24,9 @@ const plugins = [
   }),
 ];
 
-// if prod compress
-// if (isProd) {
-//   plugins.push(new BabiliPlugin({
-//     sourceMap: isProd,
-//     comments: !isProd,
-//   }));
-// }
-
 module.exports = {
   target: 'node',
-  devtool: isProd ? 'cheap-module-source-map' : 'cheap-module-eval-source-map',
+  devtool: 'cheap-module-source-map',
   context: path.join(__dirname, '.'),
   entry: {
     js: './src/handler.js',
