@@ -1,29 +1,42 @@
 import { mapLimit } from 'async';
+import { createHash } from 'crypto';
 
-const uploadImageToCloudinary = cloudinaryClient => (urlInfo, cb) => {
-  cloudinaryClient.uploader.upload(urlInfo.image, (uploadedInfo) => {
-    if (uploadedInfo.error) {
-      return cb(uploadedInfo.error);
-    }
+const uploadImage = (client, imageUrl, publicId) =>
+  new Promise((resolve, reject) => {
+    client.uploader.upload(imageUrl, (result) => {
+      if (result.error) {
+        return reject(result.error);
+      }
 
+      return resolve(result);
+    }, { public_id: publicId });
+  })
+;
+
+const uploadImageToCloudinary = (client, folder) => (urlInfo, cb) => {
+  const publicId = `${folder}/${createHash('md5').update(urlInfo.image).digest('hex')}`;
+
+  uploadImage(client, urlInfo.image, publicId)
+  .then((info) => {
     const transformations = {
-      crop: 'fill',
+      crop: 'fit',
       width: 500,
       height: 240,
-      gravity: 'face',
+      gravity: 'center',
       quality: 80,
       format: 'jpg',
     };
-    const image = cloudinaryClient.url(uploadedInfo.public_id, transformations);
+    const image = client.url(info.public_id, transformations);
 
     return cb(null, { ...urlInfo, image, originalImage: urlInfo.image });
-  });
+  })
+  .catch(err => cb(err));
 };
 
-export const uploadImagesToCloudinary = cloudinaryClient => urlsInfo =>
+export const uploadImagesToCloudinary = (client, folder) => urlsInfo =>
   new Promise((resolve, reject) => {
-    const limit = 10;
-    const upload = uploadImageToCloudinary(cloudinaryClient);
+    const limit = 7;
+    const upload = uploadImageToCloudinary(client, folder);
     mapLimit(urlsInfo, limit, upload, (err, urlsInfoWithUploadLinks) => {
       if (err) {
         return reject(err);
@@ -34,4 +47,4 @@ export const uploadImagesToCloudinary = cloudinaryClient => urlsInfo =>
   },
 );
 
-export default uploadImagesToCloudinary;
+export default { uploadImagesToCloudinary };

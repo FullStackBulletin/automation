@@ -6,6 +6,7 @@ export const persistedMemoize = (cacheDir, scope) =>
   originalFn =>
     (...args) => new Promise((resolve) => {
       const hash = createHash('md5').update(JSON.stringify(args)).digest('hex');
+
       const cachedFile = join(cacheDir, `${scope}_${hash}`);
 
       if (existsSync(cachedFile)) {

@@ -1,4 +1,4 @@
-'use strict';
+
 
 import fs from 'fs';
 import path from 'path';
@@ -28,12 +28,12 @@ const plugins = [
 ];
 
 // if prod compress
-if (isProd) {
-  plugins.push(new BabiliPlugin({
-    sourceMap: isProd,
-    comments: !isProd,
-  }));
-}
+// if (isProd) {
+//   plugins.push(new BabiliPlugin({
+//     sourceMap: isProd,
+//     comments: !isProd,
+//   }));
+// }
 
 module.exports = {
   target: 'node',

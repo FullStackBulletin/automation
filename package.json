@@ -12,7 +12,9 @@
     "build:webpack": "NODE_ENV=production webpack",
     "build:copy-resources": "cp serverless.yml build",
     "build:strip-deps": "package-strip-deps < package.json > build/package.json",
-    "build": "npm run build:cleanup && npm run build:webpack && npm run build:copy-resources && npm run build:strip-deps"
+    "build": "npm run build:cleanup && npm run build:webpack && npm run build:copy-resources && npm run build:strip-deps",
+    "release:tag": "git tag $npm_package_version && git push --tags",
+    "release:deploy": "sls deploy --stage prod"
   },
   "repository": {
     "type": "git",
@@ -25,10 +27,19 @@
   },
   "homepage": "https://github.com/Plnt9/sls-create-newsletter-issue#readme",
   "dependencies": {
+    "aws-sdk": "^2.20.0",
     "axios": "^0.15.3",
-    "best-scheduled-tweets": "^1.0.1",
-    "source-map-support": "0.4.6",
-    "tech-quote-of-the-week": "^1.0.1"
+    "best-scheduled-tweets": "1.2.0",
+    "cloudinary": "^1.7.0",
+    "fb": "^1.1.1",
+    "fullstack-book-of-the-week": "^1.0.2",
+    "moment": "^2.17.1",
+    "moment-timezone": "^0.5.11",
+    "source-map-support": "^0.4.11",
+    "tech-quote-of-the-week": "2.1.0",
+    "truncate": "^2.0.0",
+    "twitter": "^1.7.0",
+    "utm-builder": "^0.0.1"
   },
   "devDependencies": {
     "babel-core": "6.18.0",
@@ -42,6 +53,7 @@
     "babel-plugin-transform-es2015-spread": "6.8.0",
     "babel-plugin-transform-es2015-sticky-regex": "6.8.0",
     "babel-plugin-transform-es2015-unicode-regex": "6.11.0",
+    "babel-plugin-transform-object-rest-spread": "^6.23.0",
     "babel-register": "6.18.0",
     "babel-tap": "5.0.0",
     "babili-webpack-plugin": "0.0.6",
