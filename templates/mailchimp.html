@@ -15,7 +15,7 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>*|MC:SUBJECT|*</title>
+    <title>Fullstack bulletin: *|MC:SUBJECT|*</title>
 
     <style type="text/css">
         p {
@@ -202,6 +202,13 @@
 
         #templateBody #book-of-the-week .buy-buttons a:hover {
           background: #f88700;
+        }
+
+        .mcnSeeYouBlockInner a {
+        	display: inline-block;
+        	font-style: italic;
+        	color: #000;
+        	text-decoration: none;
         }
 
         /*
@@ -474,8 +481,6 @@
             background-size: cover;
             /*@editable*/
             border-top: 0;
-            /*@editable*/
-            border-bottom: 2px solid #EAEAEA;
             /*@editable*/
             padding-top: 0;
             /*@editable*/
@@ -973,7 +978,7 @@
 
                                                             <td style="padding-top:9px; padding-left:18px; padding-bottom:9px; padding-right:18px;">
 
-                                                                <table border="0" cellpadding="18" cellspacing="0" class="mcnTextContentContainer" width="100%" style="min-width: 100% !important;background-color: #FFD300;">
+                                                                <table border="0" cellpadding="18" cellspacing="0" class="mcnTextContentContainer" width="100%" style="min-width: 100% !important;background-color: #fee775;">
                                                                     <tbody>
                                                                         <tr>
                                                                             <td valign="top" class="mcnTextContent" style="color: #313030;font-family: Helvetica;font-size: 14px;font-weight: normal;text-align: center;">
@@ -1895,7 +1900,7 @@
                                                                         <tr>
                                                                             <td valign="top" class="mcnTextContent" style="color: #F2F2F2;font-family: Helvetica;font-size: 14px;font-weight: normal;text-align: center;">
                                                                                 <div>
-                                                                                  <h2 mc:edit="book_block_title">Book of the week</h2>
+                                                                                  <h2 mc:edit="book_block_section_title">Book of the week</h2>
                                                                                   <table border="0" cellpadding="0" cellspacing="0" class="mcnCaptionLeftContentOuter" width="100%">
                                                                                     <tbody>
                                                                                       <tr>
@@ -2136,6 +2141,35 @@
 
                             </td>
                         </tr>
+
+						<tr>
+							<td valign="top" id="seeYouNextWeek">
+								<table border="0" cellpadding="0" cellspacing="0" width="100%" class="mcnSeeYouBlock" style="min-width:100%;">
+									<tbody class="mcnFollowBlockOuter" style="color: #313030; font-family: Helvetica; font-size: 14px; font-weight: normal;">
+										<tr>
+                                            <td align="center" valign="top" style="padding:9px" class="mcnFollowBlockInner">
+												<p><strong>Remember to share if you enjoyed this issue!</strong></p>
+												<p>See you next week 😜</p>
+											</td>
+										</tr>
+										<tr>
+                                            <td align="center" valign="middle" style="padding:9px" class="mcnSeeYouBlockInner">
+												<div style="padding: 0 0 3em 0">
+													<a href="https://twitter.com/andreaman87" style="padding-right: 1em">
+														<img src="https://secure.gravatar.com/avatar/56a252501ea7d706ef189cbf6451d23a?s=100" style="width:50px; vertical-align:middle; border-radius: 50%" /> — Andrea
+													</a>
+													<a href="https://twitter.com/loige" style="padding-right: 1em">
+														<img src="https://secure.gravatar.com/avatar/e18d2c2510d828bc95bde6817e6e9ce2?s=100" style="width:50px; vertical-align:middle; border-radius: 50%" /> — Luciano
+													</a>
+												</div>
+											</td>
+										</tr>
+									</tbody>
+								</table>
+							</td>
+						</tr>
+
+
                         <tr>
                             <td valign="top" id="templateFooter">
                                 <table border="0" cellpadding="0" cellspacing="0" width="100%" class="mcnFollowBlock" style="min-width:100%;">
