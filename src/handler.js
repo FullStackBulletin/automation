@@ -8,7 +8,7 @@ import moment from 'moment-timezone';
 import axios from 'axios';
 import cloudinary from 'cloudinary';
 import { bestScheduledTweets } from 'best-scheduled-tweets';
-import { autoRetrieveAccessToken } from 'best-scheduled-tweets/src/utils/fb';
+import { autoRetrieveAccessToken } from 'best-scheduled-tweets/lib/utils/fb';
 import { techQuoteOfTheWeek } from 'tech-quote-of-the-week';
 import { bookOfTheWeek } from 'fullstack-book-of-the-week';
 import { persistedMemoize } from './persistedMemoize';
