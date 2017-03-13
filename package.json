@@ -1,6 +1,6 @@
 {
   "name": "createNewsletterIssue",
-  "version": "1.0.7",
+  "version": "1.0.8",
   "description": "Serverless lambda to parse and store system prices",
   "main": "handler.js",
   "aws-deployment-type": "lambda",
@@ -27,9 +27,9 @@
   },
   "homepage": "https://github.com/Plnt9/sls-create-newsletter-issue#readme",
   "dependencies": {
-    "aws-sdk": "^2.20.0",
+    "aws-sdk": "^2.27.0",
     "axios": "^0.15.3",
-    "best-scheduled-tweets": "1.3.0",
+    "best-scheduled-tweets": "^1.3.1",
     "cloudinary": "^1.8.0",
     "fb": "^1.1.1",
     "fullstack-book-of-the-week": "^1.0.2",
