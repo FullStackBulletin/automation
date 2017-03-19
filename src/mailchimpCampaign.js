@@ -78,7 +78,7 @@ export const createCampaignFactory = (httpClient, apiKey) => {
           desc(link.campaignUrls.description, link.description);
 
         contentData.template.sections[`image_${i + 1}`] =
-          a(link.campaignUrls.image, img(link.image, link.title));
+          a(link.campaignUrls.image, img(link.image, link.title, 170));
       });
 
       return httpClient.put(createCampaignContentUrl, contentData);

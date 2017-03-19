@@ -1,6 +1,6 @@
 {
   "name": "createNewsletterIssue",
-  "version": "1.0.10",
+  "version": "1.0.11",
   "description": "Serverless lambda to parse and store system prices",
   "main": "handler.js",
   "aws-deployment-type": "lambda",

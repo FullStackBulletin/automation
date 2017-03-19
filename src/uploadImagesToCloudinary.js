@@ -1,22 +1,29 @@
 import { mapLimit } from 'async';
 import { createHash } from 'crypto';
+import { parse } from 'url';
 
-const uploadImage = (client, imageUrl, publicId) =>
+const uploadImage = (client, imageUrl, publicId, hostname, stopRetry) =>
   new Promise((resolve, reject) => {
-    client.uploader.upload(imageUrl, (result) => {
+    const upload = client.uploader.upload(imageUrl, (result) => {
       if (result.error) {
-        return reject(result.error);
-      }
+        if (stopRetry || result.error.http_code !== 404) {
+          return reject(result.error);
+        }
 
+        const fallbackImageUrl = `https://placeholdit.imgix.net/~text?txtsize=60&bg=ffd300&txtclr=0000000%26text%3Dblog&txt=${encodeURIComponent(hostname)}&w=500&h=240`;
+        return resolve(uploadImage(client, fallbackImageUrl, publicId, hostname, true));
+      }
       return resolve(result);
-    }, { public_id: publicId });
+    }, { public_id: publicId, overwrite: false });
+    // ignore errors (managed internally)
+    upload.catch(() => {});
   })
 ;
 
 const uploadImageToCloudinary = (client, folder) => (urlInfo, cb) => {
   const publicId = `${folder}/${createHash('md5').update(urlInfo.image).digest('hex')}`;
-
-  uploadImage(client, urlInfo.image, publicId)
+  const { hostname } = parse(urlInfo.url);
+  uploadImage(client, urlInfo.image, publicId, hostname)
   .then((info) => {
     const transformations = {
       crop: 'fit',

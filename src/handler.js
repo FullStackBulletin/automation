@@ -54,7 +54,7 @@ export const createIssue = async (event, context, callback) => {
       .milliseconds(0);
     const referenceMoment = now.clone().subtract('1', 'week').startOf('day');
     const screenNames = process.env.TWITTER_SCREEN_NAMES.split(',');
-    const weekNumber = now.format('w');
+    const weekNumber = now.format('W');
     const year = now.format('YYYY');
     const campaignName = `fullstackBulletin-${weekNumber}-${year}`;
 
