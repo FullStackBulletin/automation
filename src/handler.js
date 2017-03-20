@@ -61,8 +61,8 @@ export const createIssue = async (event, context, callback) => {
     const blacklist = await blacklistManager.get(campaignName);
     const blacklistedUrls = blacklist.map(link => link.url);
 
-    const quote = techQuoteOfTheWeek()();
-    const book = bookOfTheWeek()();
+    const quote = techQuoteOfTheWeek()(weekNumber);
+    const book = bookOfTheWeek()(weekNumber);
     const getLinks = persistedMemoize(process.env.CACHE_DIR, 'bst_')(bestScheduledTweets);
     const links = await getLinks({
       twitterClient,

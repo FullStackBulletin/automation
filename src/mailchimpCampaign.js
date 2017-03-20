@@ -9,6 +9,12 @@ const escapeAttrNodeValue = value =>
   })
 ;
 
+const createReadArticleButton = url => `
+<a href="${escapeAttrNodeValue(url)}" style="background: #222222; border: 15px solid #222222; font-family: sans-serif; font-size: 13px; line-height: 1.1; text-align: center; text-decoration: none; display: block; border-radius: 3px; font-weight: bold;" class="button-a">
+    <span style="color:#ffffff;" class="button-link">&nbsp;&nbsp;&nbsp;&nbsp;${getLinkLabelBasedOnUrl(url)}&nbsp;&nbsp;&nbsp;&nbsp;</span>
+</a>
+`;
+
 const a = (url, content) => {
   if (url) {
     return `<a href="${escapeAttrNodeValue(url)}" target="_blank">${content}</a>`;
@@ -20,8 +26,7 @@ const a = (url, content) => {
 const img = (url, title, width = 194, maxWidth = 500) =>
   `<img alt="${escapeAttrNodeValue(title)}" src="${url}" width="${width}" style="max-width:${maxWidth}px;" class="mcnImage">`;
 
-const desc = (url, description) =>
-  `${truncate(description, 300)}<br/>${a(url, getLinkLabelBasedOnUrl(url))}`;
+const desc = description => truncate(description, 300);
 
 export const createCampaignFactory = (httpClient, apiKey) => {
   const [, dc] = apiKey.split('-');
@@ -75,10 +80,12 @@ export const createCampaignFactory = (httpClient, apiKey) => {
           a(link.campaignUrls.title, link.title);
 
         contentData.template.sections[`article_description_${i + 1}`] =
-          desc(link.campaignUrls.description, link.description);
+          desc(link.description);
 
         contentData.template.sections[`image_${i + 1}`] =
           a(link.campaignUrls.image, img(link.image, link.title, 170));
+
+        contentData.template.sections[`article_read_button_${i + 1}`] = createReadArticleButton(link.campaignUrls.description);
       });
 
       return httpClient.put(createCampaignContentUrl, contentData);
