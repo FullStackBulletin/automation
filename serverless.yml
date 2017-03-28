@@ -4,7 +4,7 @@ service: fullstackbulletin-newsletter-V${self:custom.version}
 
 provider:
   name: aws
-  runtime: nodejs4.3
+  runtime: nodejs6.10
   stage: ${opt:stage}
   region: eu-west-1
   memorySize: 512
