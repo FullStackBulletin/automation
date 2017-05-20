@@ -41,7 +41,7 @@ export const createCampaignFactory = (httpClient, apiKey) => {
         list_id: campaignSettings.listId,
       },
       settings: {
-        subject_line: `🤓 fullstackBulletin issue ${campaignSettings.weekNumber}: ${links[0].title}`,
+        subject_line: `🤓 FullstackBulletin issue ${campaignSettings.weekNumber}: ${links[0].title}`,
         title: campaignSettings.campaignName,
         from: campaignSettings.from,
         from_name: campaignSettings.fromName,

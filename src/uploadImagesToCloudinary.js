@@ -6,7 +6,7 @@ const uploadImage = (client, imageUrl, publicId, hostname, stopRetry) =>
   new Promise((resolve, reject) => {
     const upload = client.uploader.upload(imageUrl, (result) => {
       if (result.error) {
-        if (stopRetry || result.error.http_code !== 404) {
+        if (stopRetry || (result.error.code !== 'ENOENT' && result.error.http_code !== 404)) {
           return reject(result.error);
         }
 

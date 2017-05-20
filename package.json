@@ -1,6 +1,6 @@
 {
   "name": "createNewsletterIssue",
-  "version": "1.0.16",
+  "version": "1.0.17",
   "description": "Serverless lambda to parse and store system prices",
   "main": "handler.js",
   "aws-deployment-type": "lambda",
@@ -21,7 +21,7 @@
     "type": "git",
     "url": "git+https://github.com/Plnt9/sls-create-newsletter-issue.git"
   },
-  "author": "",
+  "author": "Luciano Mammino & Andrea Mangano",
   "license": "ISC",
   "bugs": {
     "url": "https://github.com/Plnt9/sls-create-newsletter-issue/issues"
