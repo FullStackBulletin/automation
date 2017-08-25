@@ -48,7 +48,7 @@ export const createIssue = async (event, context, callback) => {
     const scheduleFor = now.clone()
       .add(1, 'week')
       .day(1) // be sure to set it to next monday
-      .hours(18)
+      .hours(17)
       .minutes(0)
       .seconds(0)
       .milliseconds(0);
@@ -58,11 +58,20 @@ export const createIssue = async (event, context, callback) => {
     const year = now.format('YYYY');
     const campaignName = `fullstackBulletin-${weekNumber}-${year}`;
 
+    console.log('Creating campaign', campaignName);
+
     const blacklist = await blacklistManager.get(campaignName);
+    console.log('Loaded blacklist', blacklist);
+
     const blacklistedUrls = blacklist.map(link => link.url);
+    console.log('Generated blacklisted urls', blacklistedUrls);
 
     const quote = techQuoteOfTheWeek()(weekNumber);
+    console.log('Loaded quote of the week', quote);
+
     const book = bookOfTheWeek()(weekNumber);
+    console.log('Loaded book of the week', book);
+
     const getLinks = persistedMemoize(process.env.CACHE_DIR, 'bst_')(bestScheduledTweets);
     const links = await getLinks({
       twitterClient,
@@ -73,9 +82,12 @@ export const createIssue = async (event, context, callback) => {
       numResults: 7,
       blacklistedUrls,
     });
+    console.log('Retrieved issue links', links);
 
     const imageUploader = uploadImagesToCloudinary(cloudinary, process.env.CLOUDINARY_FOLDER);
     const linksWithImages = await imageUploader(links);
+    console.log('Uploaded images', linksWithImages);
+
     const linksWithCampaignUrls = addCampaignUrls(campaignName)(linksWithImages);
 
     const httpClient = axios.create();
@@ -98,12 +110,15 @@ export const createIssue = async (event, context, callback) => {
       scheduleTime: scheduleFor.format(),
       testEmails: process.env.MAILCHIMP_TEST_EMAILS.split(','),
     };
+    console.log('Creating mailchimp campaing', campaignSettings);
 
     await createCampaign(quote, book, linksWithCampaignUrls, campaignSettings);
+    console.log('Mailchimp campaign created');
 
     // updates blacklist
     const newBlacklist = addLinksToBlacklist(blacklist, links, campaignName);
     await blacklistManager.save(newBlacklist);
+    console.log('Saved new blacklist', newBlacklist);
 
     return callback(null, { quote, book, linksWithCampaignUrls, newBlacklist });
   } catch (err) {
