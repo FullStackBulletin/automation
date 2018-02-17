@@ -5,8 +5,6 @@ machine:
     PATH: "${PATH}:${HOME}/${CIRCLE_PROJECT_REPONAME}/node_modules/.bin"
 
 test:
-  override:
-    - yarn test
   post:
     - mkdir -p $CIRCLE_TEST_REPORTS/junit/
     - tap-xunit < .test_results.txt > $CIRCLE_TEST_REPORTS/junit/test-results.xml
