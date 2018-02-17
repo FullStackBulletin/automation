@@ -1,7 +1,7 @@
-import fs from 'fs';
-import path from 'path';
-import webpack from 'webpack';
-import CleanWebpackPlugin from 'clean-webpack-plugin';
+const fs = require('fs');
+const path = require('path');
+const webpack = require('webpack');
+const CleanWebpackPlugin = require('clean-webpack-plugin');
 
 const babelPlugins = JSON.parse(fs.readFileSync(path.join(__dirname, '.babelrc'), 'utf8')).plugins;
 // removes "transform-es2015-modules-commonjs" plugin (modules are managed by webpack)

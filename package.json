@@ -1,7 +1,7 @@
 {
   "name": "createNewsletterIssue",
-  "version": "1.0.19",
-  "description": "Serverless lambda to parse and store system prices",
+  "version": "1.0.20",
+  "description": "Serverless lambda create fullstack bulletin newsletter issue",
   "main": "handler.js",
   "aws-deployment-type": "lambda",
   "scripts": {
@@ -22,7 +22,7 @@
     "url": "git+https://github.com/Plnt9/sls-create-newsletter-issue.git"
   },
   "author": "Luciano Mammino & Andrea Mangano",
-  "license": "ISC",
+  "license": "MIT",
   "bugs": {
     "url": "https://github.com/Plnt9/sls-create-newsletter-issue/issues"
   },
@@ -30,7 +30,7 @@
   "dependencies": {
     "aws-sdk": "^2.28.0",
     "axios": "^0.15.3",
-    "best-scheduled-tweets": "^1.4.2",
+    "best-scheduled-tweets": "^1.4.3",
     "cloudinary": "^1.8.0",
     "fb": "^1.1.1",
     "fullstack-book-of-the-week": "^1.0.2",
