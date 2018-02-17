@@ -1,7 +1,6 @@
-import { test } from 'babel-tap';
-import { addCampaignUrls } from '../src/addCampaignUrls';
+import { addCampaignUrls } from '../addCampaignUrls';
 
-test('It should add campaign urls to an array of urls', (t) => {
+test('It should add campaign urls to an array of urls', (endTest) => {
   const urls = [
     { url: 'http://campus.codeschool.com/courses/try-elixir/level/2/section/1/the-pipe-operator?id=222&cid=abc' },
     { url: 'http://example.com' },
@@ -28,6 +27,6 @@ test('It should add campaign urls to an array of urls', (t) => {
 
   const ulsWithCampaignUrls = addCampaignUrls('some_campaign')(urls);
 
-  t.deepEquals(ulsWithCampaignUrls, expectedUrls);
-  t.end();
+  expect(ulsWithCampaignUrls).toEqual(expectedUrls);
+  endTest();
 });

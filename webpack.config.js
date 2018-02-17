@@ -1,11 +1,7 @@
-const fs = require('fs');
 const path = require('path');
 const webpack = require('webpack');
 const CleanWebpackPlugin = require('clean-webpack-plugin');
-
-const babelPlugins = JSON.parse(fs.readFileSync(path.join(__dirname, '.babelrc'), 'utf8')).plugins;
-// removes "transform-es2015-modules-commonjs" plugin (modules are managed by webpack)
-babelPlugins.splice(babelPlugins.indexOf('transform-es2015-modules-commonjs'), 1);
+const babelPluginObjectSpread = require('@babel/plugin-proposal-object-rest-spread');
 
 const buildPath = path.join(__dirname, 'build');
 const nodeEnv = process.env.NODE_ENV || 'development';
@@ -38,18 +34,26 @@ module.exports = {
     libraryTarget: 'commonjs2',
   },
   module: {
-    loaders: [
+    rules: [
       {
         test: /\.json$/,
         loaders: [{ loader: 'json-loader', options: { loaderType: 'preLoader' } }],
       },
       {
         test: /\.js$/,
-        exclude: /node_modules/,
-        loaders: [{
+        exclude: /(node_modules|bower_components)/,
+        use: {
           loader: 'babel-loader',
-          query: { plugins: babelPlugins, cacheDirectory: '.babel_cache' },
-        }],
+          options: {
+            plugins: [babelPluginObjectSpread],
+            presets: [['@babel/preset-env', {
+              targets: {
+                node: '6.10',
+                esmodules: true,
+              },
+            }]],
+          },
+        },
       },
     ],
   },

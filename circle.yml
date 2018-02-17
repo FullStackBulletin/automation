@@ -1,13 +1,8 @@
 machine:
   node:
-    version: 4.3.2
-  environment:
-    PATH: "${PATH}:${HOME}/${CIRCLE_PROJECT_REPONAME}/node_modules/.bin"
+    version: 6.10
 
 test:
   post:
-    - mkdir -p $CIRCLE_TEST_REPORTS/junit/
-    - tap-xunit < .test_results.txt > $CIRCLE_TEST_REPORTS/junit/test-results.xml
-    - babel-tap --coverage-report=html --no-browser && mv coverage/lcov-report  $CIRCLE_TEST_REPORTS/coverage
     - if [ $CIRCLE_BRANCH = 'master' ]; then npm run build; fi
     - if [ $CIRCLE_BRANCH = 'master' ]; then npm run release:tag && cd build && npm run release:deploy; fi

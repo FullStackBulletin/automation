@@ -3,5 +3,8 @@ module.exports = {
     "rules": {
       "no-template-curly-in-string": "off",
       "import/no-extraneous-dependencies": ["off", {"devDependencies": ["**/*.test.js"]}]
+    },
+    "env": {
+      "jest": true
     }
 };

@@ -1,5 +1,4 @@
-
-/* eslint new-cap: "off"*/
+/* eslint new-cap: "off" */
 const DEFAULT_KEY = 'blacklist.json';
 
 export const get = (s3, bucket, key = DEFAULT_KEY) => currentCampaignName =>
