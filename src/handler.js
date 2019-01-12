@@ -32,11 +32,13 @@ export const createIssue = async (event, context, callback) => {
       access_token_secret: process.env.TWITTER_ACCESS_TOKEN_SECRET,
     });
 
-    const fbApp = autoRetrieveAccessToken(new Facebook({
-      version: 'v2.7',
-      appId: process.env.FACEBOOK_APP_ID,
-      appSecret: process.env.FACEBOOK_APP_SECRET,
-    }));
+    const fbApp = autoRetrieveAccessToken(
+      new Facebook({
+        version: 'v3.2',
+        appId: process.env.FACEBOOK_APP_ID,
+        appSecret: process.env.FACEBOOK_APP_SECRET,
+      }),
+    );
 
     cloudinary.config({
       cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
@@ -45,14 +47,18 @@ export const createIssue = async (event, context, callback) => {
     });
 
     const now = moment.tz('Etc/UTC');
-    const scheduleFor = now.clone()
+    const scheduleFor = now
+      .clone()
       .add(1, 'week')
       .day(1) // be sure to set it to next monday
       .hours(17)
       .minutes(0)
       .seconds(0)
       .milliseconds(0);
-    const referenceMoment = now.clone().subtract('1', 'week').startOf('day');
+    const referenceMoment = now
+      .clone()
+      .subtract('1', 'week')
+      .startOf('day');
     const screenNames = process.env.TWITTER_SCREEN_NAMES.split(',');
     const weekNumber = now.format('W');
     const year = now.format('YYYY');
@@ -92,10 +98,7 @@ export const createIssue = async (event, context, callback) => {
 
     const httpClient = axios.create();
 
-    const createCampaign = createCampaignFactory(
-      httpClient,
-      process.env.MAILCHIMP_API_KEY,
-    );
+    const createCampaign = createCampaignFactory(httpClient, process.env.MAILCHIMP_API_KEY);
 
     const campaignSettings = {
       listId: process.env.MAILCHIMP_LIST_ID,
