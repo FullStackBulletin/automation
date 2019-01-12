@@ -1,8 +1,0 @@
-machine:
-  node:
-    version: 6.10
-
-test:
-  post:
-    - if [ $CIRCLE_BRANCH = 'master' ]; then npm run build; fi
-    - if [ $CIRCLE_BRANCH = 'master' ]; then npm run release:tag && cd build && npm run release:deploy; fi

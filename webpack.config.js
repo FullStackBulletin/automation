@@ -8,6 +8,7 @@ const nodeEnv = process.env.NODE_ENV || 'development';
 const isProd = nodeEnv === 'production';
 
 const plugins = [
+  new webpack.IgnorePlugin(/^electron$/),
   new CleanWebpackPlugin([buildPath], {
     root: process.cwd(),
   }),
@@ -46,12 +47,17 @@ module.exports = {
           loader: 'babel-loader',
           options: {
             plugins: [babelPluginObjectSpread],
-            presets: [['@babel/preset-env', {
-              targets: {
-                node: '6.10',
-                esmodules: true,
-              },
-            }]],
+            presets: [
+              [
+                '@babel/preset-env',
+                {
+                  targets: {
+                    node: '6.10',
+                    esmodules: true,
+                  },
+                },
+              ],
+            ],
           },
         },
       },
@@ -59,10 +65,7 @@ module.exports = {
   },
   resolve: {
     extensions: ['.js'],
-    modules: [
-      path.resolve('.'),
-      'node_modules',
-    ],
+    modules: [path.resolve('.'), 'node_modules'],
   },
   plugins,
 };
