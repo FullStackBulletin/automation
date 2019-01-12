@@ -1,6 +1,6 @@
 {
   "name": "createNewsletterIssue",
-  "version": "1.0.26",
+  "version": "1.0.27",
   "description": "Serverless lambda create fullstack bulletin newsletter issue",
   "main": "handler.js",
   "aws-deployment-type": "lambda",
@@ -15,7 +15,7 @@
     "build:strip-deps": "package-strip-deps < package.json > build/package.json",
     "build": "npm run build:cleanup && npm run build:webpack && npm run build:create-cache && npm run build:copy-resources && npm run build:strip-deps",
     "release:tag": "git tag $npm_package_version && git push --tags",
-    "release:deploy": "node_modules/.bin/serverless deploy --stage prod"
+    "release:deploy": "serverless deploy --stage prod"
   },
   "repository": {
     "type": "git",
