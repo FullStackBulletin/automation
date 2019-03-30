@@ -1,6 +1,6 @@
 {
   "name": "createNewsletterIssue",
-  "version": "1.0.30",
+  "version": "1.1.0",
   "description": "Serverless lambda create fullstack bulletin newsletter issue",
   "main": "handler.js",
   "aws-deployment-type": "lambda",
@@ -19,18 +19,18 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/Plnt9/sls-create-newsletter-issue.git"
+    "url": "git+https://github.com/FullStackBulletin/sls-create-newsletter-issue.git"
   },
   "author": "Luciano Mammino & Andrea Mangano",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/Plnt9/sls-create-newsletter-issue/issues"
+    "url": "https://github.com/FullStackBulletin/sls-create-newsletter-issue/issues"
   },
-  "homepage": "https://github.com/Plnt9/sls-create-newsletter-issue#readme",
+  "homepage": "https://github.com/FullStackBulletin/sls-create-newsletter-issue#readme",
   "dependencies": {
     "aws-sdk": "^2.28.0",
     "axios": "^0.15.3",
-    "best-scheduled-tweets": "^1.4.11",
+    "best-scheduled-tweets": "^1.6.0",
     "cloudinary": "^1.8.0",
     "fb": "^1.1.1",
     "fullstack-book-of-the-week": "^1.0.2",
