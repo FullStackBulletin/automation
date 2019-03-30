@@ -10,7 +10,7 @@ const uploadImage = (client, imageUrl, publicId, hostname, stopRetry) =>
           return reject(result.error);
         }
 
-        const fallbackImageUrl = `https://placeholdit.imgix.net/~text?txtsize=60&bg=ffd300&txtclr=0000000%26text%3Dblog&txt=${encodeURIComponent(hostname)}&w=500&h=240`;
+        const fallbackImageUrl = 'https://placeimg.com/500/240/tech';
         return resolve(uploadImage(client, fallbackImageUrl, publicId, hostname, true));
       }
       return resolve(result);
