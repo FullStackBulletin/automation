@@ -15,7 +15,9 @@
     "build:strip-deps": "package-strip-deps < package.json > build/package.json",
     "build": "npm run build:cleanup && npm run build:webpack && npm run build:create-cache && npm run build:copy-resources && npm run build:strip-deps",
     "release:tag": "git tag $npm_package_version && git push --tags",
-    "release:deploy": "serverless deploy --stage prod"
+    "release:deploy": "serverless deploy --stage prod",
+    "snyk-protect": "snyk protect",
+    "prepare": "npm run snyk-protect"
   },
   "repository": {
     "type": "git",
@@ -40,7 +42,8 @@
     "tech-quote-of-the-week": "^2.1.1",
     "truncate": "^2.0.0",
     "twitter": "^1.7.0",
-    "utm-builder": "^0.0.1"
+    "utm-builder": "^0.0.1",
+    "snyk": "^1.189.0"
   },
   "devDependencies": {
     "@babel/cli": "^7.0.0-beta.40",
@@ -66,5 +69,6 @@
     "sinon": "^1.17.7",
     "tap-spec": "4.1.1",
     "webpack": "^2.7.0"
-  }
+  },
+  "snyk": true
 }
