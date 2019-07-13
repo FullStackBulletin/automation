@@ -37,10 +37,6 @@ module.exports = {
   module: {
     rules: [
       {
-        test: /\.json$/,
-        loaders: [{ loader: 'json-loader', options: { loaderType: 'preLoader' } }],
-      },
-      {
         test: /\.js$/,
         exclude: /(node_modules|bower_components)/,
         use: {
@@ -52,7 +48,7 @@ module.exports = {
                 '@babel/preset-env',
                 {
                   targets: {
-                    node: '6.10',
+                    node: '8.10',
                     esmodules: true,
                   },
                 },
