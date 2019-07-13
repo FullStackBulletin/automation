@@ -1,6 +1,6 @@
 const path = require('path');
 const webpack = require('webpack');
-const CleanWebpackPlugin = require('clean-webpack-plugin');
+const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 const babelPluginObjectSpread = require('@babel/plugin-proposal-object-rest-spread');
 
 const buildPath = path.join(__dirname, 'build');
@@ -9,9 +9,7 @@ const isProd = nodeEnv === 'production';
 
 const plugins = [
   new webpack.IgnorePlugin(/^electron$/),
-  new CleanWebpackPlugin([buildPath], {
-    root: process.cwd(),
-  }),
+  new CleanWebpackPlugin(),
   new webpack.LoaderOptionsPlugin({
     minimize: isProd,
     debug: !isProd,
