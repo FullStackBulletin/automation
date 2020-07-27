@@ -1,6 +1,6 @@
 {
   "name": "createNewsletterIssue",
-  "version": "1.2.2,
+  "version": "1.2.2",
   "description": "Serverless lambda create fullstack bulletin newsletter issue",
   "main": "handler.js",
   "aws-deployment-type": "lambda",
