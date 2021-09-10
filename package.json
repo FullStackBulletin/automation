@@ -29,7 +29,7 @@
   "homepage": "https://github.com/FullStackBulletin/sls-create-newsletter-issue#readme",
   "dependencies": {
     "aws-sdk": "^2.493.0",
-    "axios": "^0.19.0",
+    "axios": "^0.21.3",
     "best-scheduled-tweets": "^2.0.0",
     "cloudinary": "^1.14.0",
     "fb": "^1.1.1",
