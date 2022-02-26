@@ -6,7 +6,8 @@ const uploadImage = (client, imageUrl, publicId, hostname, stopRetry) =>
   new Promise((resolve, reject) => {
     const upload = client.uploader.upload(imageUrl, (result) => {
       if (result.error) {
-        if (stopRetry || (result.error.code !== 'ENOENT' && result.error.http_code !== 404)) {
+        if (stopRetry) {
+          console.error(`Failed to upload image "${imageUrl}" to cloudinary`, result);
           return reject(result.error);
         }
 

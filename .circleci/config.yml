@@ -25,7 +25,7 @@ jobs:
           name: Deploy to GitHub and NPM
           command: |
             if [ "${CIRCLE_BRANCH}" == "master" ]; then
-              sudo npm install -g serverless@^1.36.0;
+              sudo npm install -g serverless@^3.4.0;
               npm run build;
               npm run release:tag && cd build && npm run release:deploy;
             fi

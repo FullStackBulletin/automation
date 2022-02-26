@@ -4,19 +4,20 @@ service: fullstackbulletin-newsletter-V${self:custom.version}
 
 provider:
   name: aws
-  runtime: nodejs12.x
+  runtime: nodejs14.x
   stage: ${opt:stage}
   region: eu-west-1
   memorySize: 1536
   timeout: 300
-  cfLogs: true
-  iamRoleStatements:
-    - Effect: Allow
-      Action:
-        - s3:DeleteObject
-        - s3:GetObject
-        - s3:PutObject
-      Resource: arn:aws:s3:::${env:S3_DATA_BUCKET_NAME}/*
+  iam:
+    role:
+      statements:
+        - Effect: Allow
+          Action:
+            - s3:DeleteObject
+            - s3:GetObject
+            - s3:PutObject
+          Resource: arn:aws:s3:::${env:S3_DATA_BUCKET_NAME}/*
 
 custom:
   version: 1
