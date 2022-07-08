@@ -34,7 +34,7 @@
     "cloudinary": "^1.28.1",
     "fb": "^1.1.1",
     "fullstack-book-of-the-week": "^1.0.2",
-    "moment": "^2.29.1",
+    "moment": "^2.29.4",
     "moment-timezone": "^0.5.34",
     "source-map-support": "^0.5.21",
     "tech-quote-of-the-week": "^2.1.1",
