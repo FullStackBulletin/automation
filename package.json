@@ -35,7 +35,7 @@
     "fb": "^1.1.1",
     "fullstack-book-of-the-week": "^1.0.2",
     "moment": "^2.29.1",
-    "moment-timezone": "^0.5.34",
+    "moment-timezone": "^0.5.35",
     "source-map-support": "^0.5.21",
     "tech-quote-of-the-week": "^2.1.1",
     "truncate": "^2.1.0",
