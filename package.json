@@ -28,7 +28,7 @@
   },
   "homepage": "https://github.com/FullStackBulletin/sls-create-newsletter-issue#readme",
   "dependencies": {
-    "aws-sdk": "^2.1082.0",
+    "aws-sdk": "^2.1354.0",
     "axios": "^0.26.0",
     "best-scheduled-tweets": "^2.0.0",
     "cloudinary": "^1.28.1",
