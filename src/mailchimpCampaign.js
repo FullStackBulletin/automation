@@ -33,6 +33,8 @@ export const createCampaignFactory = (httpClient, apiKey) => {
   const apiEndpoint = `https://user:${apiKey}@${dc}.api.mailchimp.com/3.0`;
 
   return (quote, book, links, campaignSettings) => {
+    console.log('Creating campaign', campaignSettings.campaignName, { links });
+
     // 1. create campaign
     const createCampaignUrl = `${apiEndpoint}/campaigns`;
     const campaignData = {
@@ -41,7 +43,7 @@ export const createCampaignFactory = (httpClient, apiKey) => {
         list_id: campaignSettings.listId,
       },
       settings: {
-        subject_line: `🤓 FullstackBulletin issue ${campaignSettings.weekNumber}: ${links[0].title}`,
+        subject_line: `🤓 FullstackBulletin issue ${campaignSettings.weekNumber}: ${links.length ? links[0].title : ''}`,
         title: campaignSettings.campaignName,
         from: campaignSettings.from,
         from_name: campaignSettings.fromName,
@@ -60,7 +62,7 @@ export const createCampaignFactory = (httpClient, apiKey) => {
         template: {
           id: campaignSettings.templateId,
           sections: {
-            content_preview: links[0].title,
+            content_preview: links.length ? links[0].title : '',
             quote_text: quote.text,
             quote_author: a(quote.authorUrl, quote.author),
             quote_author_description: quote.authorDescription,
