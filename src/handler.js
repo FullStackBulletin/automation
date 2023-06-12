@@ -131,11 +131,3 @@ export const createIssue = async (event, context, callback) => {
 };
 
 export default { createIssue };
-
-createIssue({}, {}, (err, result) => {
-  if (err) {
-    console.error(err, err.stack);
-  } else {
-    console.log(result);
-  }
-});
