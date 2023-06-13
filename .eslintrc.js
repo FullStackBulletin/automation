@@ -1,11 +1,16 @@
 module.exports = {
-  "extends": "airbnb",
-  "rules": {
-    "no-template-curly-in-string": "off",
-    "no-console": "off",
-    "import/no-extraneous-dependencies": ["off", { "devDependencies": ["**/*.test.js"] }]
+  env: {
+    es2021: true,
+    node: true,
+    jest: true
   },
-  "env": {
-    "jest": true
+  extends: 'standard',
+  overrides: [
+  ],
+  parserOptions: {
+    ecmaVersion: 'latest',
+    sourceType: 'module'
+  },
+  rules: {
   }
-};
+}
