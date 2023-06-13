@@ -1,5 +1,5 @@
 import truncate from 'truncate'
-import { getLinkLabelBasedOnUrl } from './getLinkLabelBasedOnUrl'
+import { getLinkLabelBasedOnUrl } from './getLinkLabelBasedOnUrl.js'
 
 const escapeAttrNodeValue = value =>
   value.replace(/(&)|(")|(\u00A0)/g, (match, amp, quote) => {

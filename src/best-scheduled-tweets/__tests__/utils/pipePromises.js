@@ -1,6 +1,7 @@
-import { pipePromises } from '../../utils/pipePromises'
+import { test, expect } from 'vitest'
+import { pipePromises } from '../../utils/pipePromises.js'
 
-test('It should pipe promises', async (endTest) => {
+test('It should pipe promises', async () => {
   const add = n => value => new Promise((resolve) => {
     setTimeout(resolve(value + n), 1)
   })
@@ -12,15 +13,11 @@ test('It should pipe promises', async (endTest) => {
     add(3),
     add(4)
   )).resolves.toEqual(11)
-
-  endTest()
 })
 
-test('It should reject if one promise rejects', async (endTest) => {
+test('It should reject if one promise rejects', async () => {
   await expect(pipePromises(
     1,
     () => Promise.reject(new Error('some error'))
   )).rejects.toThrow('some error')
-
-  endTest()
 })

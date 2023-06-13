@@ -1,12 +1,12 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
 exports[`it should handle multiple failures 1`] = `
-Array [
-  Object {
+[
+  {
     "description": undefined,
     "id": "someUri1",
     "image": null,
-    "metadata": Object {
+    "metadata": {
       "timeout": 10000,
       "uri": "someUri1",
     },
@@ -18,26 +18,26 @@ Array [
 `;
 
 exports[`it should retrieve metadata for a set of given links 1`] = `
-Array [
-  Object {
+[
+  {
     "description": "description1",
     "id": "uri1",
     "image": "image1",
-    "metadata": Object {
+    "metadata": {
       "id": undefined,
       "ogImage": "image1",
     },
-    "og_object": Object {
+    "og_object": {
       "description": "description1",
       "title": "title1",
     },
     "title": "title1",
   },
-  Object {
+  {
     "description": "description2",
     "id": "uri2",
     "image": "image2",
-    "metadata": Object {
+    "metadata": {
       "id": undefined,
       "ogDescription": "description2",
       "ogTitle": "title2",
@@ -45,11 +45,11 @@ Array [
     },
     "title": "title2",
   },
-  Object {
+  {
     "description": "description3",
     "id": "uri3",
     "image": "image3",
-    "metadata": Object {
+    "metadata": {
       "id": undefined,
       "ogImage": "image3",
       "title": "title3",
@@ -57,11 +57,11 @@ Array [
     },
     "title": "title3",
   },
-  Object {
+  {
     "description": "description4",
     "id": "uri4",
     "image": "image4",
-    "metadata": Object {
+    "metadata": {
       "description": "description4",
       "id": undefined,
       "ogImage": "image4",
@@ -73,23 +73,23 @@ Array [
 `;
 
 exports[`it should return undefined if one link fails 1`] = `
-Array [
-  Object {
+[
+  {
     "description": undefined,
     "id": "someUri1",
     "image": null,
-    "metadata": Object {
+    "metadata": {
       "timeout": 10000,
       "uri": "someUri1",
     },
     "title": undefined,
   },
   undefined,
-  Object {
+  {
     "description": undefined,
     "id": "someUri3",
     "image": null,
-    "metadata": Object {
+    "metadata": {
       "timeout": 10000,
       "uri": "someUri3",
     },

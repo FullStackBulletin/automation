@@ -1,6 +1,7 @@
-import { addCampaignUrls } from '../addCampaignUrls'
+import { test, expect } from 'vitest'
+import { addCampaignUrls } from '../addCampaignUrls.js'
 
-test('It should add campaign urls to an array of urls', (endTest) => {
+test('It should add campaign urls to an array of urls', async () => {
   const urls = [
     { url: 'http://campus.codeschool.com/courses/try-elixir/level/2/section/1/the-pipe-operator?id=222&cid=abc' },
     { url: 'http://example.com' }
@@ -28,5 +29,4 @@ test('It should add campaign urls to an array of urls', (endTest) => {
   const ulsWithCampaignUrls = addCampaignUrls('some_campaign')(urls)
 
   expect(ulsWithCampaignUrls).toEqual(expectedUrls)
-  endTest()
 })

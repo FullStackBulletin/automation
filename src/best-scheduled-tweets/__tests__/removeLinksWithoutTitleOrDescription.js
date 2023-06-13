@@ -1,6 +1,7 @@
-import { removeLinksWithoutTitleOrDescription } from '../removeLinksWithoutTitleOrDescription'
+import { test, expect } from 'vitest'
+import { removeLinksWithoutTitleOrDescription } from '../removeLinksWithoutTitleOrDescription.js'
 
-test('it should remove links without title or description', (endTest) => {
+test('it should remove links without title or description', async () => {
   const links = [
     { id: 'id1', title: 'title1', description: 'description1' },
     { id: 'id2', description: 'description2' },
@@ -14,6 +15,4 @@ test('it should remove links without title or description', (endTest) => {
   ]
 
   expect(removeLinksWithoutTitleOrDescription(links)).toStrictEqual(expectedLinks)
-
-  endTest()
 })

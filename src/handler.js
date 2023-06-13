@@ -1,27 +1,24 @@
 /* eslint "no-console": "off" */
 
-import sourceMapSupport from 'source-map-support'
-import { S3 } from 'aws-sdk'
+import aws from 'aws-sdk'
 import Twitter from 'twitter'
-import { Facebook } from 'fb'
+import fb from 'fb'
 import moment from 'moment-timezone'
 import axios from 'axios'
 import cloudinary from 'cloudinary'
-import { bestScheduledTweets } from './src/best-scheduled-tweets'
-import { autoRetrieveAccessToken } from './src/best-scheduled-tweets/utils/fb'
 import { techQuoteOfTheWeek } from 'tech-quote-of-the-week'
 import { bookOfTheWeek } from 'fullstack-book-of-the-week'
-import { persistedMemoize } from './persistedMemoize'
-import { uploadImagesToCloudinary } from './uploadImagesToCloudinary'
-import { addCampaignUrls } from './addCampaignUrls'
-import { createCampaignFactory } from './mailchimpCampaign'
-import { createBlacklistManager, addLinksToBlacklist } from './blacklistManager'
-
-sourceMapSupport.install()
+import { bestScheduledTweets } from './best-scheduled-tweets/index.js'
+import { autoRetrieveAccessToken } from './best-scheduled-tweets/utils/fb.js'
+import { persistedMemoize } from './persistedMemoize.js'
+import { uploadImagesToCloudinary } from './uploadImagesToCloudinary.js'
+import { addCampaignUrls } from './addCampaignUrls.js'
+import { createCampaignFactory } from './mailchimpCampaign.js'
+import { createBlacklistManager, addLinksToBlacklist } from './blacklistManager.js'
 
 export const createIssue = async (event, context, callback) => {
   try {
-    const s3 = new S3()
+    const s3 = new aws.S3()
     const dataBucket = process.env.S3_DATA_BUCKET_NAME
     const blacklistManager = createBlacklistManager(s3, dataBucket)
 
@@ -33,7 +30,7 @@ export const createIssue = async (event, context, callback) => {
     })
 
     const fbApp = autoRetrieveAccessToken(
-      new Facebook({
+      new fb.Facebook({
         version: 'v3.2',
         appId: process.env.FACEBOOK_APP_ID,
         appSecret: process.env.FACEBOOK_APP_SECRET

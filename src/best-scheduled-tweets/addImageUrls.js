@@ -1,4 +1,4 @@
-import { coalesce } from 'object-path'
+import op from 'object-path'
 import { URL } from 'url'
 import debug from 'debug'
 
@@ -9,7 +9,7 @@ export const addImageUrls = (links) => {
 
   const result = links.map((link) => {
     const defaultImage = `https://placeimg.com/500/240/tech?rnd=${Math.round(Math.random() * 999999)}`
-    let image = coalesce(link.metadata, ['ogImage', 'twitterImageSrc'], defaultImage)
+    let image = op.coalesce(link.metadata, ['ogImage', 'twitterImageSrc'], defaultImage)
     if (image && image !== defaultImage) {
       // validates the url
       let error = null

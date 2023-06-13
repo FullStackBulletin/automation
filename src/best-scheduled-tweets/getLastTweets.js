@@ -1,6 +1,6 @@
 import { mapLimit } from 'async'
 import debug from 'debug'
-import { flatten } from './utils/flatten'
+import { flatten } from './utils/flatten.js'
 
 const d = debug('getLastTweets')
 

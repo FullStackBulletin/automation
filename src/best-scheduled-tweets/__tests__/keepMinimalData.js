@@ -1,6 +1,7 @@
-import { keepMinimalData } from '../keepMinimalData'
+import { test, expect } from 'vitest'
+import { keepMinimalData } from '../keepMinimalData.js'
 
-test('it should keep minimal data from an array of objects with many properties', (endTest) => {
+test('it should keep minimal data from an array of objects with many properties', async () => {
   const data = [{
     a: 'a',
     b: 'b',
@@ -22,6 +23,4 @@ test('it should keep minimal data from an array of objects with many properties'
   }]
 
   expect(keepMinimalData(data)).toStrictEqual(expectedResult)
-
-  endTest()
 })

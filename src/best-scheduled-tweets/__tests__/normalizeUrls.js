@@ -1,6 +1,7 @@
-import { normalizeUrls } from '../normalizeUrls'
+import { test, expect } from 'vitest'
+import { normalizeUrls } from '../normalizeUrls.js'
 
-test('it should normalize a given array of urls', (endTest) => {
+test('it should normalize a given array of urls', async () => {
   const urls = [
     'sindresorhus.com',
     'HTTP://xn--xample-hva.com:80/?b=bar&a=foo',
@@ -22,6 +23,4 @@ test('it should normalize a given array of urls', (endTest) => {
   ]
 
   expect(normalizeUrls(urls)).toStrictEqual(expectedResult)
-
-  endTest()
 })

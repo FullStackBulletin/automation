@@ -1,4 +1,4 @@
-import mapLimit from 'async/mapLimit'
+import mapLimit from 'async/mapLimit.js'
 import debug from 'debug'
 
 const d = debug('getUrlsInfo')

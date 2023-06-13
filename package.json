@@ -3,17 +3,12 @@
   "version": "1.2.7",
   "description": "Serverless lambda create fullstack bulletin newsletter issue",
   "main": "handler.js",
+  "type": "module",
   "aws-deployment-type": "lambda",
   "scripts": {
     "test:lint": "eslint src/**/*.js",
-    "test:unit": "jest --verbose --coverage src",
+    "test:unit": "vitest run --coverage",
     "test": "npm run test:lint && npm run test:unit",
-    "build:cleanup": "rm -rf build/",
-    "build:webpack": "NODE_ENV=production webpack",
-    "build:create-cache": "mkdir build/.cache",
-    "build:copy-resources": "cp serverless.yml build",
-    "build:strip-deps": "package-strip-deps < package.json > build/package.json",
-    "build": "npm run build:cleanup && npm run build:webpack && npm run build:create-cache && npm run build:copy-resources && npm run build:strip-deps",
     "release:tag": "git tag $npm_package_version && git push --tags",
     "release:deploy": "serverless deploy --stage prod"
   },
@@ -29,7 +24,7 @@
   "homepage": "https://github.com/FullStackBulletin/sls-create-newsletter-issue#readme",
   "dependencies": {
     "async": "^3.2.4",
-    "aws-sdk": "^2.1396.0",
+    "aws-sdk": "^2.1082.0",
     "axios": "^0.26.0",
     "cloudinary": "^1.37.1",
     "debug": "^4.1.1",
@@ -37,9 +32,9 @@
     "fullstack-book-of-the-week": "^1.0.2",
     "meta-extractor": "^1.5.1",
     "moment": "^2.29.4",
-    "moment-timezone": "^0.5.34",
+    "moment-timezone": "^0.5.43",
     "normalize-url": "^4.3.0",
-    "object-path": "^0.11.3",
+    "object-path": "^0.11.8",
     "object-values": "^2.0.0",
     "request": "^2.88.2",
     "source-map-support": "^0.5.21",
@@ -49,14 +44,7 @@
     "utm-builder": "^0.0.1"
   },
   "devDependencies": {
-    "@babel/cli": "^7.17.6",
-    "@babel/core": "^7.17.5",
-    "@babel/plugin-proposal-object-rest-spread": "^7.17.3",
-    "@babel/preset-env": "^7.16.11",
-    "babel-core": "^7.0.0-bridge.0",
-    "babel-jest": "^24.8.0",
-    "babel-loader": "^8.2.3",
-    "clean-webpack-plugin": "^3.0.0",
+    "@vitest/coverage-v8": "^0.32.0",
     "eslint": "^8.42.0",
     "eslint-config-airbnb": "^19.0.4",
     "eslint-config-standard": "^17.1.0",
@@ -65,15 +53,11 @@
     "eslint-plugin-n": "^16.0.0",
     "eslint-plugin-promise": "^6.1.1",
     "eslint-plugin-react": "^7.32.2",
-    "jest": "^24.8.0",
     "mock-require": "^2.0.1",
     "nock": "^9.0.9",
-    "package-strip-deps": "^1.1.0",
-    "rimraf": "^2.6.3",
     "serverless": "^3.4.0",
     "sinon": "^7.3.2",
     "tap-spec": "4.1.1",
-    "webpack": "^4.35.3",
-    "webpack-cli": "^3.3.5"
+    "vitest": "^0.32.0"
   }
 }

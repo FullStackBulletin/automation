@@ -1,6 +1,7 @@
-import { removeInvalid } from '../removeInvalid'
+import { test, expect } from 'vitest'
+import { removeInvalid } from '../removeInvalid.js'
 
-test('it should remove invalid values from an array', (endTest) => {
+test('it should remove invalid values from an array', async () => {
   const data = [
     'https://1',
     'http://2',
@@ -14,6 +15,4 @@ test('it should remove invalid values from an array', (endTest) => {
   ]
   const expectedResult = ['https://1', 'http://2', { id: 'http://6' }]
   expect(removeInvalid(data)).toStrictEqual(expectedResult)
-
-  endTest()
 })

@@ -1,6 +1,7 @@
-import { addImageUrls } from '../addImageUrls'
+import { test, expect } from 'vitest'
+import { addImageUrls } from '../addImageUrls.js'
 
-test('It should get an image from the metadata if present or a default image if not', (endTest) => {
+test('It should get an image from the metadata if present or a default image if not', async () => {
   const testLinks = [
     { metadata: { ogImage: 'http://ogImage.com/a.png' } },
     { metadata: { twitterImageSrc: 'https://twitterImageSrc.net/b.jpg' } },
@@ -14,6 +15,4 @@ test('It should get an image from the metadata if present or a default image if 
   expect(linksWithImages[1].image).toEqual('https://twitterImageSrc.net/b.jpg')
   expect(linksWithImages[2].image).toMatch(/placeimg\.com/)
   expect(linksWithImages[3].image).toMatch(/placeimg\.com/)
-
-  endTest()
 })
