@@ -1,6 +1,7 @@
-import { addCanonicalUrls } from '../addCanonicalUrls'
+import { test, expect } from 'vitest'
+import { addCanonicalUrls } from '../addCanonicalUrls.js'
 
-test('It should select the first found value among metadata.ogUrl, id or undefined and normalize relative urls', (endTest) => {
+test('It should select the first found value among metadata.ogUrl, id or undefined and normalize relative urls', async () => {
   const linksData = [
     { metadata: { ogUrl: 'http://foo.bar/1' } },
     { id: 'http://foo.bar/2' },
@@ -13,6 +14,4 @@ test('It should select the first found value among metadata.ogUrl, id or undefin
   expect(linksDataWithCanonicalUrl[1].url).toEqual('http://foo.bar/2')
   expect(linksDataWithCanonicalUrl[2].url).toEqual(undefined)
   expect(linksDataWithCanonicalUrl[3].url).toEqual('http://foo.bar/relative')
-
-  endTest()
 })

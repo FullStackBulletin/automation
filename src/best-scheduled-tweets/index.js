@@ -1,24 +1,24 @@
 import request from 'request'
 import metaExtractor from 'meta-extractor'
-import { pipePromises } from './utils/pipePromises'
-import { getLastTweets } from './getLastTweets'
-import { takeOnesAfterReferenceMoment } from './takeOnesAfterReferenceMoment'
-import { extractLinks } from './extractLinks'
-import { unique } from './unique'
-import { removeBlacklistedUrls } from './removeBlacklistedUrls'
-import { removeInvalid } from './removeInvalid'
-import { normalizeUrls } from './normalizeUrls'
-import { unshortenLinks } from './unshortenLinks'
-import { getUrlsInfo } from './getUrlsInfo'
-import { retrieveMetadata } from './retrieveMetadata'
-import { removeLinksWithoutTitleOrDescription } from './removeLinksWithoutTitleOrDescription'
-import { addCanonicalUrls } from './addCanonicalUrls'
-import { uniqueBy } from './uniqueBy'
-import { calculateUrlsScore } from './calculateUrlsScore'
-import { sortByScore } from './sortByScore'
-import { takeN } from './takeN'
-import { addImageUrls } from './addImageUrls'
-import { keepMinimalData } from './keepMinimalData'
+import { pipePromises } from './utils/pipePromises.js'
+import { getLastTweets } from './getLastTweets.js'
+import { takeOnesAfterReferenceMoment } from './takeOnesAfterReferenceMoment.js'
+import { extractLinks } from './extractLinks.js'
+import { unique } from './unique.js'
+import { removeBlacklistedUrls } from './removeBlacklistedUrls.js'
+import { removeInvalid } from './removeInvalid.js'
+import { normalizeUrls } from './normalizeUrls.js'
+import { unshortenLinks } from './unshortenLinks.js'
+import { getUrlsInfo } from './getUrlsInfo.js'
+import { retrieveMetadata } from './retrieveMetadata.js'
+import { removeLinksWithoutTitleOrDescription } from './removeLinksWithoutTitleOrDescription.js'
+import { addCanonicalUrls } from './addCanonicalUrls.js'
+import { uniqueBy } from './uniqueBy.js'
+import { calculateUrlsScore } from './calculateUrlsScore.js'
+import { sortByScore } from './sortByScore.js'
+import { takeN } from './takeN.js'
+import { addImageUrls } from './addImageUrls.js'
+import { keepMinimalData } from './keepMinimalData.js'
 
 export const defaultOptions = {
   twitterClient: undefined,
@@ -33,7 +33,7 @@ export const defaultOptions = {
 export const bestScheduledTweets = (options) => {
   const opt = { ...defaultOptions, ...options }
   return pipePromises(
-    () => getLastTweets(opt.twitterClient, opt.screenNames, opt.maxTweetsPerUser),
+    getLastTweets(opt.twitterClient, opt.screenNames, opt.maxTweetsPerUser),
     takeOnesAfterReferenceMoment(opt.referenceMoment),
     extractLinks,
     unique,

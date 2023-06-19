@@ -1,6 +1,6 @@
 import { URL } from 'url'
 import normalize from 'normalize-url'
-import { coalesce } from 'object-path'
+import op from 'object-path'
 import debug from 'debug'
 
 const d = debug('addCanonicalUrls')
@@ -9,7 +9,7 @@ export const addCanonicalUrls = (linksData) => {
   d('Input', linksData)
 
   const result = linksData.map((linkData) => {
-    let url = coalesce(linkData, ['metadata.ogUrl', 'id'])
+    let url = op.coalesce(linkData, ['metadata.ogUrl', 'id'])
     if (url) {
       try {
         const parts = new URL(url)

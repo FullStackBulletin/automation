@@ -1,7 +1,8 @@
+import { test, expect } from 'vitest'
 import moment from 'moment'
-import { takeOnesAfterReferenceMoment } from '../takeOnesAfterReferenceMoment'
+import { takeOnesAfterReferenceMoment } from '../takeOnesAfterReferenceMoment.js'
 
-test('it should take only the tweets after a given reference moment', (endTest) => {
+test('it should take only the tweets after a given reference moment', async () => {
   const referenceMoment = moment('1987-05-17')
   const createFakeTweet = date => ({
     created_at: moment(date).format()
@@ -26,6 +27,4 @@ test('it should take only the tweets after a given reference moment', (endTest) 
   ).toStrictEqual(
     expectedResult
   )
-
-  endTest()
 })

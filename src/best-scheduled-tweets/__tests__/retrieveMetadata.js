@@ -1,7 +1,8 @@
+import { test, expect } from 'vitest'
 import { spy } from 'sinon'
-import { retrieveMetadata } from '../retrieveMetadata'
+import { retrieveMetadata } from '../retrieveMetadata.js'
 
-test('it should retrieve metadata for a set of given links', async (endTest) => {
+test('it should retrieve metadata for a set of given links', async () => {
   const metadataMap = {
     uri1: {
       ogImage: 'image1'
@@ -52,11 +53,9 @@ test('it should retrieve metadata for a set of given links', async (endTest) => 
 
   expect(metaExtractor.callCount).toBe(links.length)
   expect(data).toMatchSnapshot()
-
-  endTest()
 })
 
-test('it should return undefined if one link fails', async (endTest) => {
+test('it should return undefined if one link fails', async () => {
   // on someUri2 it will fail
   const metaExtractor = (obj, cb) => setImmediate(
     () => {
@@ -72,11 +71,9 @@ test('it should return undefined if one link fails', async (endTest) => {
   const result = await (retrieveMetadata(metaExtractor)(links))
   expect(result[1]).toBe(undefined)
   expect(result).toMatchSnapshot()
-
-  endTest()
 })
 
-test('it should handle multiple failures', async (endTest) => {
+test('it should handle multiple failures', async () => {
   // on someUri2 it will fail
   const metaExtractor = (obj, cb) => setImmediate(
     () => {
@@ -93,6 +90,4 @@ test('it should handle multiple failures', async (endTest) => {
   expect(result[1]).toBe(undefined)
   expect(result[2]).toBe(undefined)
   expect(result).toMatchSnapshot()
-
-  endTest()
 })

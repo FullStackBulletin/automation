@@ -1,7 +1,8 @@
+import { test, expect } from 'vitest'
 import { spy } from 'sinon'
-import { unshortenLinks } from '../unshortenLinks'
+import { unshortenLinks } from '../unshortenLinks.js'
 
-test('it should unshorten a set of given links', async (endTest) => {
+test('it should unshorten a set of given links', async () => {
   const requestMock = {
     get: spy((config, cb) => setImmediate(
       () => cb(null, {
@@ -17,11 +18,9 @@ test('it should unshorten a set of given links', async (endTest) => {
 
   const unshortenedLinks = await (unshortenLinks(requestMock)(links))
   expect(unshortenedLinks).toStrictEqual(expectedResult)
-
-  endTest()
 })
 
-test('It should return the same link if there is no location header in the response', async (endTest) => {
+test('It should return the same link if there is no location header in the response', async () => {
   const requestMock = {
     get: spy((config, cb) => setImmediate(
       () => cb(null, {
@@ -34,11 +33,9 @@ test('It should return the same link if there is no location header in the respo
 
   const unshortenedLinks = await (unshortenLinks(requestMock)(links))
   expect(unshortenedLinks).toStrictEqual(links)
-
-  endTest()
 })
 
-test('It should return undefined if one of the links fails to be unshortened', async (endTest) => {
+test('It should return undefined if one of the links fails to be unshortened', async () => {
   const requestMock = {
     get: spy((config, cb) => setImmediate(
       () => cb(new Error('some error'))
@@ -50,6 +47,4 @@ test('It should return undefined if one of the links fails to be unshortened', a
 
   const unshortenedLinks = await (unshortenLinks(requestMock)(links))
   expect(unshortenedLinks).toStrictEqual(expectedResult)
-
-  endTest()
 })

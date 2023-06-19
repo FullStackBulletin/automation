@@ -1,3 +1,4 @@
 {
-  "jest.jestCommandLine": "node_modules/.bin/jest"
+  "jest.jestCommandLine": "node_modules/.bin/jest",
+  "testing.automaticallyOpenPeekView": "never"
 }

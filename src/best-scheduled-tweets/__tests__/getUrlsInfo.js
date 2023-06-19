@@ -1,7 +1,8 @@
+import { test, expect } from 'vitest'
 import { spy } from 'sinon'
-import { getUrlsInfo } from '../getUrlsInfo'
+import { getUrlsInfo } from '../getUrlsInfo.js'
 
-test('It should get urls info from Facebook', async (endTest) => {
+test('It should get urls info from Facebook', async () => {
   const fbApp = {
     api: spy((_, query, cb) => {
       // eslint-disable-next-line n/no-callback-literal
@@ -19,11 +20,9 @@ test('It should get urls info from Facebook', async (endTest) => {
   })
 
   expect(urlsInfo).toStrictEqual(urls.map(url => ({ id: url, info: 'some info' })))
-
-  endTest()
 })
 
-test('It should reject if one of the api calls to Facebook fails', async (endTest) => {
+test('It should reject if one of the api calls to Facebook fails', async () => {
   const fbApp = {
     // eslint-disable-next-line n/no-callback-literal
     api: spy((_, url, cb) => setImmediate(() => cb({ error: 'some error' })))
@@ -32,11 +31,9 @@ test('It should reject if one of the api calls to Facebook fails', async (endTes
   const urls = ['url1', 'url2', 'url3']
 
   await expect(getUrlsInfo(fbApp)(urls)).rejects.toThrow('some error')
-
-  endTest()
 })
 
-test('It should reject if one of the api calls to Facebook fails without a message', async (endTest) => {
+test('It should reject if one of the api calls to Facebook fails without a message', async () => {
   const fbApp = {
     api: spy((_, url, cb) => setImmediate(() => cb(null)))
   }
@@ -44,6 +41,4 @@ test('It should reject if one of the api calls to Facebook fails without a messa
   const urls = ['url1', 'url2', 'url3']
 
   await expect(getUrlsInfo(fbApp)(urls)).rejects.toThrow('Unexpected error')
-
-  endTest()
 })

@@ -1,6 +1,7 @@
-import { calculateUrlsScore } from '../calculateUrlsScore'
+import { test, expect } from 'vitest'
+import { calculateUrlsScore } from '../calculateUrlsScore.js'
 
-test('It should calculate and add the score to a set of links', (endTest) => {
+test('It should calculate and add the score to a set of links', async () => {
   const urls = [
     { engagement: { comment_count: 10, share_count: 17 } },
     { engagement: { comment_count: 10, comment_plugin_count: 1 } },
@@ -13,6 +14,4 @@ test('It should calculate and add the score to a set of links', (endTest) => {
   expect(urlsWithScore[1].score).toEqual(11)
   expect(urlsWithScore[2].score).toEqual(19)
   expect(urlsWithScore[3].score).toEqual(0)
-
-  endTest()
 })
