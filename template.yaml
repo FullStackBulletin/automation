@@ -1,0 +1,106 @@
+AWSTemplateFormatVersion: "2010-09-09"
+Transform: AWS::Serverless-2016-10-31
+Description: >
+  fstackbulletin - Generates a draft newsletter for the next week
+
+Parameters:
+  CacheDir:
+    Type: String
+    Description: "Path to the cache directory"
+    Default: ".cache"
+  TwitterScreenNames:
+    Type: String
+    Description: "Comma separated list of Twitter screen names to fetch tweets from"
+    Default: "fstackbulletin"
+  CloudinaryCloudName:
+    Type: String
+    Description: "Cloudinary cloud name"
+    Default: "loige"
+  CloudinaryFolder:
+    Type: String
+    Description: "Cloudinary folder"
+    Default: "fsb"
+  S3DataBucketName:
+    Type: String
+    Description: "S3 bucket name where to store data"
+    Default: "fullstackbulletin-data"
+  MailchimpListId:
+    Type: String
+    Description: "Mailchimp list id"
+    Default: "55ace33899"
+  MailchimpTemplateId:
+    Type: String
+    Description: "Mailchimp list id"
+    Default: "33867"
+  MailchimpFromEmail:
+    Type: String
+    Description: "Mailchimp from email"
+    Default: "newsletter@fullstackbulletin.com"
+  MailchimpFromName:
+    Type: String
+    Description: "Mailchimp from name"
+    Default: "Fullstack Bulletin"
+  MailchimpReplyToEmail:
+    Type: String
+    Description: "Mailchimp reply to email"
+    Default: "admin@fullstackbulletin.com"
+
+Resources:
+  CreateIssueStateMachine:
+    Type: AWS::Serverless::StateMachine
+    Properties:
+      DefinitionUri: statemachine/create_issue.asl.yaml
+      DefinitionSubstitutions:
+        CreateIssueFunctionArn: !GetAtt CreateIssueFunction.Arn
+      Events:
+        HourlyTradingSchedule:
+          Type: Schedule
+          Properties:
+            Description: Runs every Friday at 5PM UTC
+            Enabled: True
+            Schedule: "cron(0 17 ? * FRI *)"
+      Policies:
+        - LambdaInvokePolicy:
+            FunctionName: !Ref CreateIssueFunction
+
+  CreateIssueFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: functions/create-issue/
+      Handler: handler.createIssue
+      Runtime: nodejs18.x
+      Timeout: 300
+      Architectures:
+        - x86_64
+      Policies:
+        - S3CrudPolicy:
+            BucketName: !Ref S3DataBucketName
+        - SSMParameterWithSlashPrefixReadPolicy:
+            ParameterName: /FullstackBulletin/prod/*
+      Environment:
+        Variables:
+          CACHE_DIR: !Ref CacheDir
+          TWITTER_SCREEN_NAMES: !Ref TwitterScreenNames
+          TWITTER_CONSUMER_KEY: "{{resolve:ssm:/FullstackBulletin/prod/TwitterConsumerKey}}"
+          TWITTER_CONSUMER_SECRET: "{{resolve:ssm:/FullstackBulletin/prod/TwitterConsumerSecret}}"
+          TWITTER_ACCESS_TOKEN_KEY: "{{resolve:ssm:/FullstackBulletin/prod/TwitterAccessTokenKey}}"
+          TWITTER_ACCESS_TOKEN_SECRET: "{{resolve:ssm:/FullstackBulletin/prod/TwitterAccessTokenSecret}}"
+          FACEBOOK_APP_ID: "{{resolve:ssm:/FullstackBulletin/prod/FacebookAppId}}"
+          FACEBOOK_APP_SECRET: "{{resolve:ssm:/FullstackBulletin/prod/FacebookAppSecret}}"
+          CLOUDINARY_CLOUD_NAME: !Ref CloudinaryCloudName
+          CLOUDINARY_API_KEY: "{{resolve:ssm:/FullstackBulletin/prod/CloudinaryApiKey}}"
+          CLOUDINARY_API_SECRET: "{{resolve:ssm:/FullstackBulletin/prod/CloudinaryApiSecret}}"
+          CLOUDINARY_FOLDER: !Ref CloudinaryFolder
+          MAILCHIMP_API_KEY: "{{resolve:ssm:/FullstackBulletin/prod/MailchimpApiKey}}"
+          MAILCHIMP_LIST_ID: !Ref MailchimpListId
+          MAILCHIMP_TEMPLATE_ID: !Ref MailchimpTemplateId
+          MAILCHIMP_FROM_EMAIL: !Ref MailchimpFromEmail
+          MAILCHIMP_FROM_NAME: !Ref MailchimpFromName
+          MAILCHIMP_REPLY_TO_EMAIL: !Ref MailchimpReplyToEmail
+          MAILCHIMP_TEST_EMAILS: "{{resolve:ssm:/FullstackBulletin/prod/MailchimpTestEmails}}"
+          S3_DATA_BUCKET_NAME: !Ref S3DataBucketName
+
+Outputs:
+  CreateIssueFunctionArn:
+    Description: "Create Issue Function ARN"
+    Value: !Ref CreateIssueFunction

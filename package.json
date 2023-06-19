@@ -6,11 +6,11 @@
   "type": "module",
   "aws-deployment-type": "lambda",
   "scripts": {
-    "test:lint": "eslint src/**/*.js",
+    "test:lint": "eslint ./**/*.js",
     "test:unit": "vitest run --coverage",
     "test": "npm run test:lint && npm run test:unit",
     "release:tag": "git tag $npm_package_version && git push --tags",
-    "release:deploy": "serverless deploy --stage prod"
+    "release:deploy": "sam deploy"
   },
   "repository": {
     "type": "git",
