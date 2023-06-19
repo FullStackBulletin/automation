@@ -25,6 +25,6 @@ jobs:
           name: Deploy to GitHub and NPM
           command: |
             if [ "${CIRCLE_BRANCH}" == "master" ]; then
-              npm run build;
-              npm run release:tag && cd build && npm run release:deploy;
+              npm run release:tag
+              # npm run release:deploy; # commented out for now as this is disabled (no permission to deploy to AWS in CircleCI)
             fi

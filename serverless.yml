@@ -25,7 +25,7 @@ custom:
 functions:
   createIssue:
     name: ${self:service}-createIssue
-    handler: handler.createIssue
+    handler: src/handler.createIssue
     environment:
       CACHE_DIR: ${env:CACHE_DIR}
       TWITTER_SCREEN_NAMES: ${env:TWITTER_SCREEN_NAMES}
