@@ -30,7 +30,7 @@
     "debug": "^4.1.1",
     "fb": "^1.1.1",
     "fullstack-book-of-the-week": "^1.0.2",
-    "meta-extractor": "^1.5.1",
+    "meta-extractor": "^2.1.0",
     "moment": "^2.29.4",
     "moment-timezone": "^0.5.43",
     "normalize-url": "^4.3.0",
