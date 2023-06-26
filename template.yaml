@@ -52,6 +52,7 @@ Resources:
       DefinitionUri: statemachine/create_issue.asl.yaml
       DefinitionSubstitutions:
         CreateIssueFunctionArn: !GetAtt CreateIssueFunction.Arn
+        FetchQuoteFunctionArn: !GetAtt FetchQuoteFunction.Arn
       Events:
         HourlyTradingSchedule:
           Type: Schedule
@@ -62,6 +63,18 @@ Resources:
       Policies:
         - LambdaInvokePolicy:
             FunctionName: !Ref CreateIssueFunction
+        - LambdaInvokePolicy:
+            FunctionName: !Ref FetchQuoteFunction
+
+  FetchQuoteFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: functions/fetch-quote/
+      Handler: handler.fetchQuote
+      Runtime: nodejs18.x
+      Timeout: 15
+      Architectures:
+        - x86_64
 
   CreateIssueFunction:
     Type: AWS::Serverless::Function

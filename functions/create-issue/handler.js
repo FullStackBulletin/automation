@@ -6,7 +6,6 @@ import fb from 'fb'
 import moment from 'moment-timezone'
 import axios from 'axios'
 import cloudinary from 'cloudinary'
-import { techQuoteOfTheWeek } from 'tech-quote-of-the-week'
 import { bookOfTheWeek } from 'fullstack-book-of-the-week'
 import { bestScheduledTweets } from './best-scheduled-tweets/index.js'
 import { autoRetrieveAccessToken } from './best-scheduled-tweets/utils/fb.js'
@@ -16,7 +15,7 @@ import { addCampaignUrls } from './addCampaignUrls.js'
 import { createCampaignFactory } from './mailchimpCampaign.js'
 import { createBlacklistManager, addLinksToBlacklist } from './blacklistManager.js'
 
-export const createIssue = async (event, context, callback) => {
+export const createIssue = async (event, context) => {
   try {
     const s3 = new aws.S3()
     const dataBucket = process.env.S3_DATA_BUCKET_NAME
@@ -69,7 +68,7 @@ export const createIssue = async (event, context, callback) => {
     const blacklistedUrls = blacklist.map(link => link.url)
     console.log('Generated blacklisted urls', blacklistedUrls)
 
-    const quote = techQuoteOfTheWeek()(weekNumber)
+    const quote = event.Quote
     console.log('Loaded quote of the week', quote)
 
     const book = bookOfTheWeek()(weekNumber)
@@ -120,10 +119,10 @@ export const createIssue = async (event, context, callback) => {
     await blacklistManager.save(newBlacklist)
     console.log('Saved new blacklist', newBlacklist)
 
-    return callback(null, { quote, book, linksWithCampaignUrls, newBlacklist })
+    return { quote, book, linksWithCampaignUrls, newBlacklist }
   } catch (err) {
     console.error(err, err.stack)
-    return callback(err)
+    return err
   }
 }
 
