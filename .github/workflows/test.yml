@@ -15,7 +15,6 @@ jobs:
         uses: actions/setup-node@v3
         with:
           node-version: 18.x
-      - run: |
-          find ./functions -type d -exec sh -c "npm ci"
+      - run: npm ci
       - run: npm run build --if-present
       - run: npm test
