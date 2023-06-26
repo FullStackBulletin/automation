@@ -5,7 +5,7 @@
   "main": "index.js",
   "type": "module",
   "scripts": {
-    "postinstall": "find ./functions -type d -maxdepth 1 -mindepth 1 -exec sh -c 'npm install --ignore-scripts' \\;",
+    "postinstall": "find ./functions -type d -maxdepth 1 -mindepth 1 -execdir sh -c 'cd {} && npm install --ignore-scripts' \\;",
     "test:lint": "eslint ./**/*.js",
     "test:unit": "vitest run --coverage",
     "test": "npm run test:lint && npm run test:unit",
