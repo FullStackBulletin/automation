@@ -1,0 +1,19 @@
+Comment: Create a new issue of FullStack bulletin
+StartAt: Create Issue
+States:
+    Create Issue:
+        Type: Task
+        Resource: "${CreateIssueFunctionArn}"
+        OutputPath: $
+        Parameters:
+            Payload.$: $
+        Retry:
+            - ErrorEquals:
+                  - Lambda.ServiceException
+                  - Lambda.AWSLambdaException
+                  - Lambda.SdkClientException
+                  - Lambda.TooManyRequestsException
+              IntervalSeconds: 2
+              MaxAttempts: 6
+              BackoffRate: 2
+        End: true
