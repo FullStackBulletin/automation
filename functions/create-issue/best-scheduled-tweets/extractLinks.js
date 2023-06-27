@@ -3,15 +3,12 @@ import debug from 'debug'
 
 const d = debug('extractLinks')
 
-export const extractLinks = (tweets) => {
-  d('Input', tweets)
+export const extractLinks = (mastodonStatuses) => {
+  d('Input', mastodonStatuses)
 
-  const result = tweets.reduce(
-    (links, tweet) => tweet.entities.urls
-      ? links.concat(tweet.entities.urls.map(link => link.expanded_url))
-      : links,
-    []
-  )
+  const result = mastodonStatuses
+    .filter(post => post.card)
+    .map(post => post.card.url)
 
   d('Output', result)
 

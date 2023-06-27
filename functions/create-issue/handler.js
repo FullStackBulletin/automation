@@ -1,7 +1,7 @@
 /* eslint "no-console": "off" */
 
 import aws from 'aws-sdk'
-import Twitter from 'twitter'
+import { Mastodon } from 'megalodon'
 import fb from 'fb'
 import moment from 'moment-timezone'
 import axios from 'axios'
@@ -21,12 +21,10 @@ export const createIssue = async (event, context) => {
     const dataBucket = process.env.S3_DATA_BUCKET_NAME
     const blacklistManager = createBlacklistManager(s3, dataBucket)
 
-    const twitterClient = new Twitter({
-      consumer_key: process.env.TWITTER_CONSUMER_KEY,
-      consumer_secret: process.env.TWITTER_CONSUMER_SECRET,
-      access_token_key: process.env.TWITTER_ACCESS_TOKEN_KEY,
-      access_token_secret: process.env.TWITTER_ACCESS_TOKEN_SECRET
-    })
+    const mastodonClient = new Mastodon(
+      process.env.MASTODON_BASE_URL,
+      process.env.MASTODON_ACCESS_TOKEN
+    )
 
     const fbApp = autoRetrieveAccessToken(
       new fb.Facebook({
@@ -55,7 +53,7 @@ export const createIssue = async (event, context) => {
       .clone()
       .subtract('1', 'week')
       .startOf('day')
-    const screenNames = process.env.TWITTER_SCREEN_NAMES.split(',')
+
     const weekNumber = now.format('W')
     const year = now.format('YYYY')
     const campaignName = `fullstackBulletin-${weekNumber}-${year}`
@@ -76,10 +74,9 @@ export const createIssue = async (event, context) => {
 
     const getLinks = persistedMemoize(process.env.CACHE_DIR, 'bst_')(bestScheduledTweets)
     const links = await getLinks({
-      twitterClient,
+      mastodonClient,
       fbApp,
       referenceMoment,
-      screenNames,
       maxTweetsPerUser: 200,
       numResults: 7,
       blacklistedUrls
