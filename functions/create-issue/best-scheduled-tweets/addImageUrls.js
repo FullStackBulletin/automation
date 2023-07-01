@@ -1,34 +1,30 @@
-import op from 'object-path'
 import { URL } from 'url'
+import map from 'async/map.js'
+import op from 'object-path'
 import debug from 'debug'
 
 const d = debug('addImageUrls')
 
-export const addImageUrls = (links) => {
+function isImageUrlValid (imageUrl) {
+  try {
+    const { host, pathname, protocol } = new URL(imageUrl)
+    return host && pathname && protocol
+  } catch (e) {
+    return false
+  }
+}
+
+export const addImageUrls = (fallbackImageClient) => async (links) => {
   d('Input', links)
 
-  const result = links.map((link) => {
-    const defaultImage = `https://placeimg.com/500/240/tech?rnd=${Math.round(Math.random() * 999999)}`
-    let image = op.coalesce(link.metadata, ['ogImage', 'twitterImageSrc'], defaultImage)
-    if (image && image !== defaultImage) {
-      // validates the url
-      let error = null
-      let host, pathname, protocol
-      try {
-        const u = new URL(image)
-        host = u.host
-        pathname = u.pathname
-        protocol = u.protocol
-      } catch (e) {
-        error = e
-      }
-      if (!host || !pathname || error) {
-        image = defaultImage
-        d(`Found invalid image (${image}), replaced with default one (${defaultImage})`, { host, pathname, protocol })
-      }
+  const result = map(links, async (link) => {
+    let imageUrl = op.coalesce(link.metadata, ['ogImage', 'twitterImageSrc'])
+    if (!imageUrl || !isImageUrlValid(imageUrl)) {
+      const fallbackImage = await fallbackImageClient.getImageUrl(link.url)
+      d(`Found invalid image URL (${imageUrl}), replaced with default one (${fallbackImage})`)
+      imageUrl = fallbackImage
     }
-
-    return { ...link, image }
+    return { ...link, image: imageUrl }
   })
 
   d('Output', result)

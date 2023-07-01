@@ -33,6 +33,7 @@
     "eslint-plugin-promise": "^6.1.1",
     "eslint-plugin-react": "^7.32.2",
     "mock-require": "^2.0.1",
+    "msw": "^1.2.2",
     "nock": "^9.0.9",
     "serverless": "^3.4.0",
     "sinon": "^7.3.2",
