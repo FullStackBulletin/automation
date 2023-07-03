@@ -17,6 +17,11 @@ import { createBlacklistManager, addLinksToBlacklist } from './blacklistManager.
 import { createFallbackImageClient } from './best-scheduled-tweets/fallbackImage.js'
 
 export const createIssue = async (event, context) => {
+  if (event.dryRun) {
+    console.log('Dry run, exiting now')
+    return event
+  }
+
   try {
     const s3 = new aws.S3()
     const dataBucket = process.env.S3_DATA_BUCKET_NAME

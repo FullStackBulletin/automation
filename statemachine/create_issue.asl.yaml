@@ -1,21 +1,48 @@
 Comment: Create a new issue of FullStack bulletin
-StartAt: Fetch Quote
+StartAt: Fetch Data
 States:
-    Fetch Quote:
-        Type: Task
-        Resource: "${FetchQuoteFunctionArn}"
-        OutputPath: "$"
-        ResultPath: "$.Quote"
+    Fetch Data:
+        Type: Parallel
         Next: Create Issue
-        Retry:
-            - ErrorEquals:
-                  - Lambda.ServiceException
-                  - Lambda.AWSLambdaException
-                  - Lambda.SdkClientException
-                  - Lambda.TooManyRequestsException
-              IntervalSeconds: 2
-              MaxAttempts: 6
-              BackoffRate: 2
+        ResultSelector:
+            "Quote.$": "$[0].Quote"
+            "Book.$": "$[1].Book"
+            "dryRun.$": "$[0].dryRun"
+        Branches:
+            - StartAt: Fetch Quote
+              States:
+                  Fetch Quote:
+                      Type: Task
+                      Resource: "${FetchQuoteFunctionArn}"
+                      OutputPath: "$"
+                      ResultPath: "$.Quote"
+                      Retry:
+                          - ErrorEquals:
+                                - Lambda.ServiceException
+                                - Lambda.AWSLambdaException
+                                - Lambda.SdkClientException
+                                - Lambda.TooManyRequestsException
+                            IntervalSeconds: 2
+                            MaxAttempts: 6
+                            BackoffRate: 2
+                      End: true
+            - StartAt: Fetch Book
+              States:
+                  Fetch Book:
+                      Type: Task
+                      Resource: "${FetchBookFunctionArn}"
+                      OutputPath: "$"
+                      ResultPath: "$.Book"
+                      Retry:
+                          - ErrorEquals:
+                                - Lambda.ServiceException
+                                - Lambda.AWSLambdaException
+                                - Lambda.SdkClientException
+                                - Lambda.TooManyRequestsException
+                            IntervalSeconds: 2
+                            MaxAttempts: 6
+                            BackoffRate: 2
+                      End: true
 
     Create Issue:
         Type: Task
