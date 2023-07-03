@@ -3,7 +3,7 @@ import axios from 'axios'
 export function createFallbackImageClient (unsplashAccessKey) {
   return {
     async getImageUrl () {
-      const response = await axios.get('https://api.unsplash.com/photos/random?query=tech', {
+      const response = await axios.get('https://api.unsplash.com/photos/random', {
         params: {
           query: 'tech'
         },
