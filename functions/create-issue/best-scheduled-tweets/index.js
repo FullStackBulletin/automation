@@ -1,7 +1,7 @@
 import request from 'request'
 import metaExtractor from 'meta-extractor'
 import { pipePromises } from './utils/pipePromises.js'
-import { getLastTweets } from './getLastTweets.js'
+import { getLastMastodonStatuses } from './getLastMastodonStatuses.js'
 import { takeOnesAfterReferenceMoment } from './takeOnesAfterReferenceMoment.js'
 import { extractLinks } from './extractLinks.js'
 import { unique } from './unique.js'
@@ -21,11 +21,10 @@ import { addImageUrls } from './addImageUrls.js'
 import { keepMinimalData } from './keepMinimalData.js'
 
 export const defaultOptions = {
-  twitterClient: undefined,
+  mastodonClient: undefined,
   fbApp: undefined,
+  fallbackImageClient: undefined,
   referenceMoment: undefined,
-  screenNames: [],
-  maxTweetsPerUser: 200,
   numResults: 7,
   blacklistedUrls: []
 }
@@ -33,7 +32,7 @@ export const defaultOptions = {
 export const bestScheduledTweets = (options) => {
   const opt = { ...defaultOptions, ...options }
   return pipePromises(
-    getLastTweets(opt.twitterClient, opt.screenNames, opt.maxTweetsPerUser),
+    getLastMastodonStatuses(opt.mastodonClient),
     takeOnesAfterReferenceMoment(opt.referenceMoment),
     extractLinks,
     unique,
@@ -51,7 +50,7 @@ export const bestScheduledTweets = (options) => {
     calculateUrlsScore,
     sortByScore,
     takeN(opt.numResults),
-    addImageUrls,
+    addImageUrls(opt.fallbackImageClient),
     keepMinimalData
   )
 }

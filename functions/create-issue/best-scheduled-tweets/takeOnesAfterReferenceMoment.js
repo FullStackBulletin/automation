@@ -3,11 +3,11 @@ import debug from 'debug'
 
 const d = debug('takeOnesAfterReferenceMoment')
 
-export const takeOnesAfterReferenceMoment = referenceMoment => (tweets) => {
-  d('Input', tweets)
+export const takeOnesAfterReferenceMoment = referenceMoment => (mastodonStatuses) => {
+  d('Input', mastodonStatuses)
 
-  const result = tweets.filter((tweet) => {
-    const tweetTime = moment(new Date(tweet.created_at))
+  const result = mastodonStatuses.filter((status) => {
+    const tweetTime = moment(new Date(status.created_at))
     return tweetTime.isAfter(referenceMoment)
   })
 
