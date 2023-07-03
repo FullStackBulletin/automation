@@ -1,12 +1,26 @@
 Comment: Create a new issue of FullStack bulletin
-StartAt: Create Issue
+StartAt: Fetch Quote
 States:
+    Fetch Quote:
+        Type: Task
+        Resource: "${FetchQuoteFunctionArn}"
+        OutputPath: "$"
+        ResultPath: "$.Quote"
+        Next: Create Issue
+        Retry:
+            - ErrorEquals:
+                  - Lambda.ServiceException
+                  - Lambda.AWSLambdaException
+                  - Lambda.SdkClientException
+                  - Lambda.TooManyRequestsException
+              IntervalSeconds: 2
+              MaxAttempts: 6
+              BackoffRate: 2
+
     Create Issue:
         Type: Task
         Resource: "${CreateIssueFunctionArn}"
         OutputPath: $
-        Parameters:
-            Payload.$: $
         Retry:
             - ErrorEquals:
                   - Lambda.ServiceException

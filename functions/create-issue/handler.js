@@ -1,12 +1,11 @@
 /* eslint "no-console": "off" */
 
 import aws from 'aws-sdk'
-import Twitter from 'twitter'
+import { Mastodon } from 'megalodon'
 import fb from 'fb'
 import moment from 'moment-timezone'
 import axios from 'axios'
 import cloudinary from 'cloudinary'
-import { techQuoteOfTheWeek } from 'tech-quote-of-the-week'
 import { bookOfTheWeek } from 'fullstack-book-of-the-week'
 import { bestScheduledTweets } from './best-scheduled-tweets/index.js'
 import { autoRetrieveAccessToken } from './best-scheduled-tweets/utils/fb.js'
@@ -15,19 +14,18 @@ import { uploadImagesToCloudinary } from './uploadImagesToCloudinary.js'
 import { addCampaignUrls } from './addCampaignUrls.js'
 import { createCampaignFactory } from './mailchimpCampaign.js'
 import { createBlacklistManager, addLinksToBlacklist } from './blacklistManager.js'
+import { createFallbackImageClient } from './best-scheduled-tweets/fallbackImage.js'
 
-export const createIssue = async (event, context, callback) => {
+export const createIssue = async (event, context) => {
   try {
     const s3 = new aws.S3()
     const dataBucket = process.env.S3_DATA_BUCKET_NAME
     const blacklistManager = createBlacklistManager(s3, dataBucket)
 
-    const twitterClient = new Twitter({
-      consumer_key: process.env.TWITTER_CONSUMER_KEY,
-      consumer_secret: process.env.TWITTER_CONSUMER_SECRET,
-      access_token_key: process.env.TWITTER_ACCESS_TOKEN_KEY,
-      access_token_secret: process.env.TWITTER_ACCESS_TOKEN_SECRET
-    })
+    const mastodonClient = new Mastodon(
+      process.env.MASTODON_BASE_URL,
+      process.env.MASTODON_ACCESS_TOKEN
+    )
 
     const fbApp = autoRetrieveAccessToken(
       new fb.Facebook({
@@ -43,6 +41,8 @@ export const createIssue = async (event, context, callback) => {
       api_secret: process.env.CLOUDINARY_API_SECRET
     })
 
+    const fallbackImageClient = createFallbackImageClient(process.env.UNSPLASH_ACCESS_KEY)
+
     const now = moment.tz('Etc/UTC')
     const scheduleFor = now
       .clone()
@@ -56,7 +56,7 @@ export const createIssue = async (event, context, callback) => {
       .clone()
       .subtract('1', 'week')
       .startOf('day')
-    const screenNames = process.env.TWITTER_SCREEN_NAMES.split(',')
+
     const weekNumber = now.format('W')
     const year = now.format('YYYY')
     const campaignName = `fullstackBulletin-${weekNumber}-${year}`
@@ -69,7 +69,7 @@ export const createIssue = async (event, context, callback) => {
     const blacklistedUrls = blacklist.map(link => link.url)
     console.log('Generated blacklisted urls', blacklistedUrls)
 
-    const quote = techQuoteOfTheWeek()(weekNumber)
+    const quote = event.Quote
     console.log('Loaded quote of the week', quote)
 
     const book = bookOfTheWeek()(weekNumber)
@@ -77,10 +77,10 @@ export const createIssue = async (event, context, callback) => {
 
     const getLinks = persistedMemoize(process.env.CACHE_DIR, 'bst_')(bestScheduledTweets)
     const links = await getLinks({
-      twitterClient,
+      mastodonClient,
       fbApp,
+      fallbackImageClient,
       referenceMoment,
-      screenNames,
       maxTweetsPerUser: 200,
       numResults: 7,
       blacklistedUrls
@@ -120,10 +120,10 @@ export const createIssue = async (event, context, callback) => {
     await blacklistManager.save(newBlacklist)
     console.log('Saved new blacklist', newBlacklist)
 
-    return callback(null, { quote, book, linksWithCampaignUrls, newBlacklist })
+    return { quote, book, linksWithCampaignUrls, newBlacklist }
   } catch (err) {
     console.error(err, err.stack)
-    return callback(err)
+    throw err
   }
 }
 

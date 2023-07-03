@@ -3,11 +3,9 @@
   "version": "1.2.7",
   "description": "Serverless step function to create fullstack bulletin newsletter issue",
   "main": "index.js",
-  "workspaces": [
-    "functions/*"
-  ],
   "type": "module",
   "scripts": {
+    "postinstall": "find ./functions -type d -maxdepth 1 -mindepth 1 -execdir sh -c 'cd {} && npm install --ignore-scripts' \\;",
     "test:lint": "eslint ./**/*.js",
     "test:unit": "vitest run --coverage",
     "test": "npm run test:lint && npm run test:unit",
@@ -35,6 +33,7 @@
     "eslint-plugin-promise": "^6.1.1",
     "eslint-plugin-react": "^7.32.2",
     "mock-require": "^2.0.1",
+    "msw": "^1.2.2",
     "nock": "^9.0.9",
     "serverless": "^3.4.0",
     "sinon": "^7.3.2",
