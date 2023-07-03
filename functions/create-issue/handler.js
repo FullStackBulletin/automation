@@ -14,6 +14,7 @@ import { uploadImagesToCloudinary } from './uploadImagesToCloudinary.js'
 import { addCampaignUrls } from './addCampaignUrls.js'
 import { createCampaignFactory } from './mailchimpCampaign.js'
 import { createBlacklistManager, addLinksToBlacklist } from './blacklistManager.js'
+import { createFallbackImageClient } from './best-scheduled-tweets/fallbackImage.js'
 
 export const createIssue = async (event, context) => {
   try {
@@ -39,6 +40,8 @@ export const createIssue = async (event, context) => {
       api_key: process.env.CLOUDINARY_API_KEY,
       api_secret: process.env.CLOUDINARY_API_SECRET
     })
+
+    const fallbackImageClient = createFallbackImageClient(process.env.UNSPLASH_ACCESS_KEY)
 
     const now = moment.tz('Etc/UTC')
     const scheduleFor = now
@@ -76,6 +79,7 @@ export const createIssue = async (event, context) => {
     const links = await getLinks({
       mastodonClient,
       fbApp,
+      fallbackImageClient,
       referenceMoment,
       maxTweetsPerUser: 200,
       numResults: 7,
@@ -119,7 +123,7 @@ export const createIssue = async (event, context) => {
     return { quote, book, linksWithCampaignUrls, newBlacklist }
   } catch (err) {
     console.error(err, err.stack)
-    return err
+    throw err
   }
 }
 

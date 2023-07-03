@@ -23,6 +23,7 @@ import { keepMinimalData } from './keepMinimalData.js'
 export const defaultOptions = {
   mastodonClient: undefined,
   fbApp: undefined,
+  fallbackImageClient: undefined,
   referenceMoment: undefined,
   numResults: 7,
   blacklistedUrls: []
@@ -49,7 +50,7 @@ export const bestScheduledTweets = (options) => {
     calculateUrlsScore,
     sortByScore,
     takeN(opt.numResults),
-    addImageUrls,
+    addImageUrls(opt.fallbackImageClient),
     keepMinimalData
   )
 }

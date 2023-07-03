@@ -97,6 +97,7 @@ Resources:
           MASTODON_ACCESS_TOKEN: "{{resolve:ssm:/FullstackBulletin/prod/MastodonAccessToken}}"
           FACEBOOK_APP_ID: "{{resolve:ssm:/FullstackBulletin/prod/FacebookAppId}}"
           FACEBOOK_APP_SECRET: "{{resolve:ssm:/FullstackBulletin/prod/FacebookAppSecret}}"
+          UNSPLASH_ACCESS_KEY: "{{resolve:ssm:/FullstackBulletin/prod/UnsplashAccessKey}}"
           CLOUDINARY_CLOUD_NAME: !Ref CloudinaryCloudName
           CLOUDINARY_API_KEY: "{{resolve:ssm:/FullstackBulletin/prod/CloudinaryApiKey}}"
           CLOUDINARY_API_SECRET: "{{resolve:ssm:/FullstackBulletin/prod/CloudinaryApiSecret}}"
