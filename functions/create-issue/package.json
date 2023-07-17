@@ -5,22 +5,9 @@
   "main": "handler.js",
   "type": "module",
   "dependencies": {
-    "async": "^3.2.4",
-    "aws-sdk": "^2.1396.0",
     "axios": "^0.26.0",
-    "cloudinary": "^1.37.1",
-    "debug": "^4.1.1",
-    "fb": "^1.1.1",
-    "megalodon": "^6.1.0",
-    "meta-extractor": "^1.5.1",
     "moment": "^2.29.4",
     "moment-timezone": "^0.5.43",
-    "normalize-url": "^4.3.0",
-    "object-path": "^0.11.8",
-    "object-values": "^2.0.0",
-    "request": "^2.88.2",
-    "source-map-support": "^0.5.21",
-    "truncate": "^2.1.0",
-    "utm-builder": "^0.0.1"
+    "truncate": "^2.1.0"
   }
 }
