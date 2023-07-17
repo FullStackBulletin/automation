@@ -53,6 +53,7 @@ Resources:
       DefinitionSubstitutions:
         CreateIssueFunctionArn: !GetAtt CreateIssueFunction.Arn
         FetchQuoteFunctionArn: !GetAtt FetchQuoteFunction.Arn
+        FetchBookFunctionArn: !GetAtt FetchBookFunction.Arn
       Events:
         HourlyTradingSchedule:
           Type: Schedule
@@ -65,12 +66,24 @@ Resources:
             FunctionName: !Ref CreateIssueFunction
         - LambdaInvokePolicy:
             FunctionName: !Ref FetchQuoteFunction
+        - LambdaInvokePolicy:
+            FunctionName: !Ref FetchBookFunction
 
   FetchQuoteFunction:
     Type: AWS::Serverless::Function
     Properties:
       CodeUri: functions/fetch-quote/
       Handler: handler.fetchQuote
+      Runtime: nodejs18.x
+      Timeout: 15
+      Architectures:
+        - x86_64
+
+  FetchBookFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: functions/fetch-book/
+      Handler: handler.fetchBook
       Runtime: nodejs18.x
       Timeout: 15
       Architectures:
