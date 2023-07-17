@@ -75,6 +75,7 @@ export const createIssue = async (event, context) => {
     console.log('Loaded book of the week', book)
 
     const getLinks = persistedMemoize(process.env.CACHE_DIR, 'bst_')(bestScheduledTweets)
+    // TODO: const links = event.Links
     const links = await getLinks({
       mastodonClient,
       fbApp,

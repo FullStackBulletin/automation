@@ -54,6 +54,7 @@ Resources:
         CreateIssueFunctionArn: !GetAtt CreateIssueFunction.Arn
         FetchQuoteFunctionArn: !GetAtt FetchQuoteFunction.Arn
         FetchBookFunctionArn: !GetAtt FetchBookFunction.Arn
+        FetchLinksFunctionArn: !GetAtt FetchLinksFunction.Arn
       Events:
         HourlyTradingSchedule:
           Type: Schedule
@@ -68,6 +69,8 @@ Resources:
             FunctionName: !Ref FetchQuoteFunction
         - LambdaInvokePolicy:
             FunctionName: !Ref FetchBookFunction
+        - LambdaInvokePolicy:
+            FunctionName: !Ref FetchLinksFunction
 
   FetchQuoteFunction:
     Type: AWS::Serverless::Function
@@ -88,6 +91,34 @@ Resources:
       Timeout: 15
       Architectures:
         - x86_64
+
+  FetchLinksFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: functions/fetch-links/
+      Handler: handler.fetchLinks
+      Runtime: nodejs18.x
+      Timeout: 300
+      Architectures:
+        - x86_64
+      Policies:
+        - S3CrudPolicy:
+            BucketName: !Ref S3DataBucketName
+        - SSMParameterWithSlashPrefixReadPolicy:
+            ParameterName: /FullstackBulletin/prod/*
+      Environment:
+        Variables:
+          CACHE_DIR: !Ref CacheDir
+          MASTODON_BASE_URL: !Ref MastodonBaseUrl
+          MASTODON_ACCESS_TOKEN: "{{resolve:ssm:/FullstackBulletin/prod/MastodonAccessToken}}"
+          FACEBOOK_APP_ID: "{{resolve:ssm:/FullstackBulletin/prod/FacebookAppId}}"
+          FACEBOOK_APP_SECRET: "{{resolve:ssm:/FullstackBulletin/prod/FacebookAppSecret}}"
+          UNSPLASH_ACCESS_KEY: "{{resolve:ssm:/FullstackBulletin/prod/UnsplashAccessKey}}"
+          CLOUDINARY_CLOUD_NAME: !Ref CloudinaryCloudName
+          CLOUDINARY_API_KEY: "{{resolve:ssm:/FullstackBulletin/prod/CloudinaryApiKey}}"
+          CLOUDINARY_API_SECRET: "{{resolve:ssm:/FullstackBulletin/prod/CloudinaryApiSecret}}"
+          CLOUDINARY_FOLDER: !Ref CloudinaryFolder
+          S3_DATA_BUCKET_NAME: !Ref S3DataBucketName
 
   CreateIssueFunction:
     Type: AWS::Serverless::Function
