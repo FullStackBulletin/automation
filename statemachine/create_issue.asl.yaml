@@ -5,17 +5,17 @@ States:
         Type: Parallel
         Next: Create Issue
         ResultSelector:
-            "Quote.$": "$[0].Quote"
-            "Book.$": "$[1].Book"
-            "dryRun.$": "$[0].dryRun"
+            Quote.$: "$[0].Quote"
+            Book.$: "$[1].Book"
+            dryRun.$: "$[0].dryRun"
         Branches:
             - StartAt: Fetch Quote
               States:
                   Fetch Quote:
                       Type: Task
                       Resource: "${FetchQuoteFunctionArn}"
-                      OutputPath: "$"
-                      ResultPath: "$.Quote"
+                      OutputPath: $
+                      ResultPath: $.Quote
                       Retry:
                           - ErrorEquals:
                                 - Lambda.ServiceException
@@ -31,8 +31,8 @@ States:
                   Fetch Book:
                       Type: Task
                       Resource: "${FetchBookFunctionArn}"
-                      OutputPath: "$"
-                      ResultPath: "$.Book"
+                      OutputPath: $
+                      ResultPath: $.Book
                       Retry:
                           - ErrorEquals:
                                 - Lambda.ServiceException
@@ -43,7 +43,6 @@ States:
                             MaxAttempts: 6
                             BackoffRate: 2
                       End: true
-
     Create Issue:
         Type: Task
         Resource: "${CreateIssueFunctionArn}"

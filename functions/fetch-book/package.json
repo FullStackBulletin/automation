@@ -9,5 +9,10 @@
   "keywords": [],
   "author": "",
   "license": "ISC",
-  "type": "module"
+  "type": "module",
+  "dependencies": {
+    "fullstack-book-of-the-week": "^1.0.2",
+    "moment": "^2.29.4",
+    "moment-timezone": "^0.5.43"
+  }
 }

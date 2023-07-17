@@ -6,7 +6,6 @@ import fb from 'fb'
 import moment from 'moment-timezone'
 import axios from 'axios'
 import cloudinary from 'cloudinary'
-import { bookOfTheWeek } from 'fullstack-book-of-the-week'
 import { bestScheduledTweets } from './best-scheduled-tweets/index.js'
 import { autoRetrieveAccessToken } from './best-scheduled-tweets/utils/fb.js'
 import { persistedMemoize } from './persistedMemoize.js'
@@ -17,11 +16,6 @@ import { createBlacklistManager, addLinksToBlacklist } from './blacklistManager.
 import { createFallbackImageClient } from './best-scheduled-tweets/fallbackImage.js'
 
 export const createIssue = async (event, context) => {
-  if (event.dryRun) {
-    console.log('Dry run, exiting now')
-    return event
-  }
-
   try {
     const s3 = new aws.S3()
     const dataBucket = process.env.S3_DATA_BUCKET_NAME
@@ -77,7 +71,7 @@ export const createIssue = async (event, context) => {
     const quote = event.Quote
     console.log('Loaded quote of the week', quote)
 
-    const book = bookOfTheWeek()(weekNumber)
+    const book = event.Book
     console.log('Loaded book of the week', book)
 
     const getLinks = persistedMemoize(process.env.CACHE_DIR, 'bst_')(bestScheduledTweets)
@@ -116,6 +110,11 @@ export const createIssue = async (event, context) => {
       testEmails: process.env.MAILCHIMP_TEST_EMAILS.split(',')
     }
     console.log('Creating mailchimp campaing', campaignSettings)
+
+    if (event.dryRun) {
+      console.log('Dry run, exiting now. No campaign created.')
+      return event
+    }
 
     await createCampaign(quote, book, linksWithCampaignUrls, campaignSettings)
     console.log('Mailchimp campaign created')
