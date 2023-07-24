@@ -1,6 +1,17 @@
 Comment: Create a new issue of FullStack bulletin
-StartAt: Fetch Data
+StartAt: Define Defaults
 States:
+    Define Defaults:
+        Type: Pass
+        Next: Apply Defaults
+        ResultPath: "$.defaults"
+        Parameters:
+            dryRun: false
+    Apply Defaults:
+        Type: Pass
+        Next: Fetch Data
+        Parameters:
+            config.$: "States.JsonMerge($.defaults, $$.Execution.Input, false)"
     Fetch Data:
         Type: Parallel
         Next: Create Issue
@@ -8,7 +19,7 @@ States:
             Quote.$: "$[0].Quote"
             Book.$: "$[1].Book"
             Links.$: "$[2].Links"
-            dryRun.$: "$[0].dryRun"
+            dryRun.$: "$[0].config.dryRun"
         Branches:
             - StartAt: Fetch Quote
               States:
