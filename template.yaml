@@ -54,6 +54,7 @@ Resources:
         CreateIssueFunctionArn: !GetAtt CreateIssueFunction.Arn
         FetchQuoteFunctionArn: !GetAtt FetchQuoteFunction.Arn
         FetchBookFunctionArn: !GetAtt FetchBookFunction.Arn
+        FetchLinksFunctionArn: !GetAtt FetchLinksFunction.Arn
       Events:
         HourlyTradingSchedule:
           Type: Schedule
@@ -68,6 +69,8 @@ Resources:
             FunctionName: !Ref FetchQuoteFunction
         - LambdaInvokePolicy:
             FunctionName: !Ref FetchBookFunction
+        - LambdaInvokePolicy:
+            FunctionName: !Ref FetchLinksFunction
 
   FetchQuoteFunction:
     Type: AWS::Serverless::Function
@@ -89,13 +92,13 @@ Resources:
       Architectures:
         - x86_64
 
-  CreateIssueFunction:
+  FetchLinksFunction:
     Type: AWS::Serverless::Function
     Properties:
-      CodeUri: functions/create-issue/
-      Handler: handler.createIssue
+      CodeUri: functions/fetch-links/
+      Handler: handler.fetchLinks
       Runtime: nodejs18.x
-      Timeout: 300
+      Timeout: 60
       Architectures:
         - x86_64
       Policies:
@@ -115,6 +118,22 @@ Resources:
           CLOUDINARY_API_KEY: "{{resolve:ssm:/FullstackBulletin/prod/CloudinaryApiKey}}"
           CLOUDINARY_API_SECRET: "{{resolve:ssm:/FullstackBulletin/prod/CloudinaryApiSecret}}"
           CLOUDINARY_FOLDER: !Ref CloudinaryFolder
+          S3_DATA_BUCKET_NAME: !Ref S3DataBucketName
+
+  CreateIssueFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: functions/create-issue/
+      Handler: handler.createIssue
+      Runtime: nodejs18.x
+      Timeout: 60
+      Architectures:
+        - x86_64
+      Policies:
+        - SSMParameterWithSlashPrefixReadPolicy:
+            ParameterName: /FullstackBulletin/prod/*
+      Environment:
+        Variables:
           MAILCHIMP_API_KEY: "{{resolve:ssm:/FullstackBulletin/prod/MailchimpApiKey}}"
           MAILCHIMP_LIST_ID: !Ref MailchimpListId
           MAILCHIMP_TEMPLATE_ID: !Ref MailchimpTemplateId
@@ -122,7 +141,6 @@ Resources:
           MAILCHIMP_FROM_NAME: !Ref MailchimpFromName
           MAILCHIMP_REPLY_TO_EMAIL: !Ref MailchimpReplyToEmail
           MAILCHIMP_TEST_EMAILS: "{{resolve:ssm:/FullstackBulletin/prod/MailchimpTestEmails}}"
-          S3_DATA_BUCKET_NAME: !Ref S3DataBucketName
 
 Outputs:
   CreateIssueFunctionArn:
