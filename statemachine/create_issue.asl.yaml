@@ -16,10 +16,7 @@ States:
         Type: Task
         Resource: "${FetchIssueNumberFunctionArn}"
         Next: Fetch Data
-        OutputPath: $
-        ResultSelector:
-            config.$: "$.config"
-            NextIssueNumber.$: "$.issue_number" # TODO: this doesn't work, we need to map using the input for this step as parameter
+        ResultPath: $.next_issue_number"
         Retry:
             - ErrorEquals:
                   - Lambda.ServiceException

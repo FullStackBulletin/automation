@@ -1,11 +1,11 @@
 use lambda_runtime::{run, service_fn, Error, LambdaEvent};
+mod fetcher;
 
 async fn function_handler(
-    event: LambdaEvent<serde_json::Value>,
+    _event: LambdaEvent<serde_json::Value>,
 ) -> Result<serde_json::Value, Error> {
     Ok(serde_json::json!({
-        "issue_number": 22,
-        "event": event.payload,
+        "next_issue_number": fetcher::fetch_last_issue_number().await.unwrap() + 1
     }))
 }
 
