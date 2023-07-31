@@ -16,7 +16,7 @@ States:
         Type: Task
         Resource: "${FetchIssueNumberFunctionArn}"
         Next: Fetch Data
-        ResultPath: $.next_issue_number"
+        ResultPath: $.NextIssue"
         Retry:
             - ErrorEquals:
                   - Lambda.ServiceException
