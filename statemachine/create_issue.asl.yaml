@@ -9,9 +9,23 @@ States:
             dryRun: false
     Apply Defaults:
         Type: Pass
-        Next: Fetch Data
+        Next: Fetch Issue Number
         Parameters:
             config.$: "States.JsonMerge($.defaults, $$.Execution.Input, false)"
+    Fetch Issue Number:
+        Type: Task
+        Resource: "${FetchIssueNumberFunctionArn}"
+        Next: Fetch Data
+        ResultPath: "$.NextIssue"
+        Retry:
+            - ErrorEquals:
+                  - Lambda.ServiceException
+                  - Lambda.AWSLambdaException
+                  - Lambda.SdkClientException
+                  - Lambda.TooManyRequestsException
+              IntervalSeconds: 2
+              MaxAttempts: 6
+              BackoffRate: 2
     Fetch Data:
         Type: Parallel
         Next: Create Issue

@@ -51,6 +51,7 @@ Resources:
     Properties:
       DefinitionUri: statemachine/create_issue.asl.yaml
       DefinitionSubstitutions:
+        FetchIssueNumberFunctionArn: !GetAtt FetchIssueNumberFunction.Arn
         CreateIssueFunctionArn: !GetAtt CreateIssueFunction.Arn
         FetchQuoteFunctionArn: !GetAtt FetchQuoteFunction.Arn
         FetchBookFunctionArn: !GetAtt FetchBookFunction.Arn
@@ -64,6 +65,8 @@ Resources:
             Schedule: "cron(0 17 ? * FRI *)"
       Policies:
         - LambdaInvokePolicy:
+            FunctionName: !Ref FetchIssueNumberFunction
+        - LambdaInvokePolicy:
             FunctionName: !Ref CreateIssueFunction
         - LambdaInvokePolicy:
             FunctionName: !Ref FetchQuoteFunction
@@ -71,6 +74,21 @@ Resources:
             FunctionName: !Ref FetchBookFunction
         - LambdaInvokePolicy:
             FunctionName: !Ref FetchLinksFunction
+
+  FetchIssueNumberFunction:
+    Type: AWS::Serverless::Function
+    Metadata:
+      BuildMethod: rust-cargolambda
+    Properties:
+      CodeUri: functions/fetch-issue-number/
+      Handler: bootstrap
+      Runtime: provided.al2
+      Timeout: 15
+      Architectures:
+        - x86_64
+      Environment:
+        Variables:
+          URL: "https://us15.campaign-archive.com/home/?u=b015626aa6028495fe77c75ea&id=55ace33899"
 
   FetchQuoteFunction:
     Type: AWS::Serverless::Function
