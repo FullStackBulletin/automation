@@ -1,11 +1,14 @@
 use lambda_runtime::{run, service_fn, Error, LambdaEvent};
+use std::env;
 mod fetcher;
 
 async fn function_handler(
     _event: LambdaEvent<serde_json::Value>,
 ) -> Result<serde_json::Value, Error> {
+    let url = env::var("URL")?;
+    let last_number = fetcher::fetch_last_issue_number(&url).await?;
     Ok(serde_json::json!({
-        "number": fetcher::fetch_last_issue_number().await.unwrap() + 1
+        "number": last_number + 1
     }))
 }
 

@@ -86,6 +86,9 @@ Resources:
       Timeout: 15
       Architectures:
         - x86_64
+      Environment:
+        Variables:
+          URL: "https://us15.campaign-archive.com/home/?u=b015626aa6028495fe77c75ea&id=55ace33899"
 
   FetchQuoteFunction:
     Type: AWS::Serverless::Function
