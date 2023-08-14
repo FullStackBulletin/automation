@@ -12,7 +12,7 @@ fn parse_number_from_title(title: &str) -> IResult<&str, u32> {
     Ok((input, number.parse().unwrap()))
 }
 
-pub async fn fetch_next_issue_number() -> Result<u32, ()> {
+pub async fn fetch_last_issue_number() -> Result<u32, ()> {
     let url = "https://us15.campaign-archive.com/home/?u=b015626aa6028495fe77c75ea&id=55ace33899";
     let resp = reqwest::get(url).await.unwrap();
     let body = resp.text().await.unwrap();

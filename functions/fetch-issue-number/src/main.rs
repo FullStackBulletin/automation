@@ -5,7 +5,7 @@ async fn function_handler(
     _event: LambdaEvent<serde_json::Value>,
 ) -> Result<serde_json::Value, Error> {
     Ok(serde_json::json!({
-        "number": fetcher::fetch_next_issue_number().await.unwrap() + 1
+        "number": fetcher::fetch_last_issue_number().await.unwrap() + 1
     }))
 }
 
