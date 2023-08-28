@@ -33,7 +33,7 @@ States:
             Quote.$: "$[0].Quote"
             Book.$: "$[1].Book"
             Links.$: "$[2].Links"
-            dryRun.$: "$[0].config.dryRun"
+        ResultPath: "$.data"
         Branches:
             - StartAt: Fetch Quote
               States:
