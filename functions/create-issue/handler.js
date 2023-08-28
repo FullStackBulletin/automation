@@ -19,17 +19,18 @@ export const createIssue = async (event, context) => {
 
   const weekNumber = now.format('W')
   const year = now.format('YYYY')
-  const campaignName = `fullstackBulletin-${weekNumber}-${year}`
+  const issueNumber = event.NextIssue.number
+  const campaignName = `fullstackBulletin-${issueNumber}`
 
   console.log('Creating campaign', campaignName)
 
-  const quote = event.Quote
+  const quote = event.data.Quote
   console.log('Loaded quote of the week', quote)
 
-  const book = event.Book
+  const book = event.data.Book
   console.log('Loaded book of the week', book)
 
-  const links = event.Links
+  const links = event.data.Links
   console.log('Retrieved issue links', links)
 
   const httpClient = axios.create()
@@ -44,20 +45,21 @@ export const createIssue = async (event, context) => {
     fromName: process.env.MAILCHIMP_FROM_NAME,
     replyTo: process.env.MAILCHIMP_REPLY_TO_EMAIL,
     campaignName,
-    weekNumber,
+    weekNumber, // TODO: update the template in mailchimp
     year,
+    issueNumber,
     scheduleTime: scheduleFor.format(),
     testEmails: process.env.MAILCHIMP_TEST_EMAILS.split(',')
   }
   console.log('Creating mailchimp campaing', campaignSettings)
 
-  if (event.dryRun) {
+  if (event.config.dryRun) {
     console.log('Dry run, exiting now. No campaign created.')
-    return { quote, book, links, dryRun: true }
+    return { quote, book, links, campaignSettings, dryRun: true }
   }
 
   await createCampaign(quote, book, links, campaignSettings)
   console.log('Mailchimp campaign created')
 
-  return { quote, book, links }
+  return { quote, book, links, campaignSettings }
 }
