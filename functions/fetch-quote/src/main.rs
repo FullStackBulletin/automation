@@ -1,22 +1,16 @@
 use lambda_runtime::{run, service_fn, Error, LambdaEvent};
+use std::env;
 
+mod fetcher;
 mod models;
-use models::{InputQuote, Quote, Request, Stats};
+use fetcher::fetch_quote;
+use models::{Quote, Request};
 
 async fn function_handler(event: LambdaEvent<Request>) -> Result<Quote, Error> {
-    // Extract some useful information from the request
-    let stats: Stats =
-        reqwest::get("https://fullStackbulletin.github.io/tech-quotes/quotes/stats.json")
-            .await?
-            .json()
-            .await?;
-
-    let current_index = event.payload.next_issue.number % stats.total;
-    let quote_url = format!("{}/{}.json", stats.url_prefix, current_index);
-    let input_quote: InputQuote = reqwest::get(&quote_url).await?.json().await?;
-    let output_quote: Quote = input_quote.into();
-
-    Ok(output_quote)
+    let base_url = env::var("BASE_URL")
+        .unwrap_or("https://fullstackbulletin.github.io/tech-quotes".to_string());
+    let quote = fetch_quote(&base_url, event.payload.next_issue.number).await?;
+    Ok(quote)
 }
 
 #[tokio::main]
