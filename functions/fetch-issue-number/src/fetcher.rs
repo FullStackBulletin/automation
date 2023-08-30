@@ -69,7 +69,7 @@ mod tests {
     fn test_parse_number_from_title_without_number() {
         let title = "🤓 #: Putting the \"You\" in CPU";
         let result = parse_number_from_title(title);
-        assert!(matches!(result, Err(_)));
+        assert!(result.is_err());
     }
 
     #[tokio::test]
