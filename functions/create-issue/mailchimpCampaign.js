@@ -36,17 +36,24 @@ export const createCampaignFactory = (httpClient, apiKey) => {
 
     // 1. create campaign
     const createCampaignUrl = `${apiEndpoint}/campaigns`
+    const previewText = links.slice(1).map(link => link.title).join(', ')
     const campaignData = {
       type: 'regular',
       recipients: {
         list_id: campaignSettings.listId
       },
       settings: {
-        subject_line: `🤓 FullstackBulletin issue ${campaignSettings.weekNumber}: ${links.length ? links[0].title : ''}`,
+        subject_line: `🤓 #${campaignSettings.issueNumber}: ${links.length ? links[0].title : ''}`,
+        preview_text: previewText,
         title: campaignSettings.campaignName,
         from: campaignSettings.from,
         from_name: campaignSettings.fromName,
         reply_to: campaignSettings.replyTo
+      },
+      social_card: {
+        image_url: 'https://mcusercontent.com/b015626aa6028495fe77c75ea/images/15c0d740-d78f-1ee1-f6c5-ce45d62e4188.png',
+        title: `Fullstack Bulletin #${campaignSettings.issueNumber}: The best full stack content of the week!`,
+        description: previewText
       }
     }
 
@@ -54,7 +61,7 @@ export const createCampaignFactory = (httpClient, apiKey) => {
 
     return httpClient.post(createCampaignUrl, campaignData)
       .then((response) => {
-      // 2. create content
+        // 2. create content
         campaignId = response.data.id
         const createCampaignContentUrl = `${apiEndpoint}/campaigns/${campaignId}/content`
         const contentData = {
@@ -65,7 +72,7 @@ export const createCampaignFactory = (httpClient, apiKey) => {
               quote_text: quote.text,
               quote_author: a(quote.authorUrl, quote.author),
               quote_author_description: quote.authorDescription,
-              title: `Best 7 links of week #${campaignSettings.weekNumber}, ${campaignSettings.year}`,
+              title: '',
               book_cover: a(book.links.usa, img(book.coverPicture, 'book cover', 176, 406)),
               book_title: book.title,
               book_author: book.author,
@@ -78,13 +85,13 @@ export const createCampaignFactory = (httpClient, apiKey) => {
 
         links.forEach((link, i) => {
           contentData.template.sections[`article_title_${i + 1}`] =
-          a(link.campaignUrls.title, link.title)
+            a(link.campaignUrls.title, link.title)
 
           contentData.template.sections[`article_description_${i + 1}`] =
-          desc(link.description)
+            desc(link.description)
 
           contentData.template.sections[`image_${i + 1}`] =
-          a(link.campaignUrls.image, img(link.image, link.title, 170))
+            a(link.campaignUrls.image, img(link.image, link.title, 170))
 
           contentData.template.sections[`article_read_button_${i + 1}`] = createReadArticleButton(link.campaignUrls.description)
         })
@@ -92,14 +99,14 @@ export const createCampaignFactory = (httpClient, apiKey) => {
         return httpClient.put(createCampaignContentUrl, contentData)
       })
       .then(() => {
-      // 3. schedule campaign
+        // 3. schedule campaign
         const scheduleCampaignUrl = `${apiEndpoint}/campaigns/${campaignId}/actions/schedule`
         return httpClient.post(scheduleCampaignUrl, {
           schedule_time: campaignSettings.scheduleTime
         })
       })
       .then(() => {
-      // 4. send test email
+        // 4. send test email
         const sendTestEmailUrl = `${apiEndpoint}/campaigns/${campaignId}/actions/test`
         return httpClient.post(sendTestEmailUrl, {
           test_emails: campaignSettings.testEmails,

@@ -45,7 +45,7 @@ export const createIssue = async (event, context) => {
     fromName: process.env.MAILCHIMP_FROM_NAME,
     replyTo: process.env.MAILCHIMP_REPLY_TO_EMAIL,
     campaignName,
-    weekNumber, // TODO: update the template in mailchimp
+    weekNumber,
     year,
     issueNumber,
     scheduleTime: scheduleFor.format(),
