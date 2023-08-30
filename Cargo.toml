@@ -1,0 +1,3 @@
+[workspace]
+
+members = ["functions/fetch-issue-number", "functions/fetch-quote"]

@@ -40,3 +40,7 @@ jspm_packages
 .env
 .cache/
 .aws-sam/
+
+
+# Added by cargo
+/target
