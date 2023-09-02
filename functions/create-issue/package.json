@@ -8,6 +8,7 @@
     "axios": "^0.26.0",
     "moment": "^2.29.4",
     "moment-timezone": "^0.5.43",
+    "nunjucks": "^3.2.4",
     "truncate": "^2.1.0"
   }
 }
