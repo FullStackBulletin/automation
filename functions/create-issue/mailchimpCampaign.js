@@ -1,37 +1,10 @@
-import truncate from 'truncate'
-import { getLinkLabelBasedOnUrl } from './getLinkLabelBasedOnUrl.js'
+import { renderTemplate } from './template.js'
 
-const escapeAttrNodeValue = value =>
-  value.replace(/(&)|(")|(\u00A0)/g, (match, amp, quote) => {
-    if (amp) return '&amp;'
-    if (quote) return '&quot;'
-    return '&nbsp;'
-  })
-
-const createReadArticleButton = url => `
-<a href="${escapeAttrNodeValue(url)}" style="background: #222222; border: 15px solid #222222; font-family: sans-serif; font-size: 13px; line-height: 1.1; text-align: center; text-decoration: none; display: block; border-radius: 3px; font-weight: bold;" class="button-a">
-    <span style="color:#ffffff;" class="button-link">${getLinkLabelBasedOnUrl(url)}</span>
-</a>
-`
-
-const a = (url, content) => {
-  if (url) {
-    return `<a href="${escapeAttrNodeValue(url)}" target="_blank">${content}</a>`
-  }
-
-  return content
-}
-
-const img = (url, title, width = 194, maxWidth = 500) =>
-  `<img alt="${escapeAttrNodeValue(title)}" src="${url}" width="${width}" style="max-width:${maxWidth}px;" class="mcnImage">`
-
-const desc = description => truncate(description, 300)
-
-export const createCampaignFactory = (httpClient, apiKey) => {
+export function createCampaignFactory (httpClient, apiKey) {
   const [, dc] = apiKey.split('-')
   const apiEndpoint = `https://user:${apiKey}@${dc}.api.mailchimp.com/3.0`
 
-  return (quote, book, links, campaignSettings) => {
+  return async function createCampaign (quote, book, links, campaignSettings) {
     console.log('Creating campaign', campaignSettings.campaignName, { links })
 
     // 1. create campaign
@@ -59,60 +32,38 @@ export const createCampaignFactory = (httpClient, apiKey) => {
 
     let campaignId = null
 
-    return httpClient.post(createCampaignUrl, campaignData)
-      .then((response) => {
-        // 2. create content
-        campaignId = response.data.id
-        const createCampaignContentUrl = `${apiEndpoint}/campaigns/${campaignId}/content`
-        const contentData = {
-          template: {
-            id: campaignSettings.templateId,
-            sections: {
-              content_preview: links.length ? links[0].title : '',
-              quote_text: quote.text,
-              quote_author: a(quote.authorUrl, quote.author),
-              quote_author_description: quote.authorDescription,
-              title: '',
-              book_cover: a(book.links.usa, img(book.coverPicture, 'book cover', 176, 406)),
-              book_title: book.title,
-              book_author: book.author,
-              book_description: book.description,
-              book_buy_amazon_com: a(book.links.usa, 'Buy on Amazon.com'),
-              book_buy_amazon_uk: a(book.links.uk, 'Buy on Amazon.co.uk')
-            }
-          }
-        }
+    const response = await httpClient.post(createCampaignUrl, campaignData)
 
-        links.forEach((link, i) => {
-          contentData.template.sections[`article_title_${i + 1}`] =
-            a(link.campaignUrls.title, link.title)
+    // 2. create content
+    campaignId = response.data.id
+    const html = await renderTemplate({
+      issueNumber: campaignSettings.issueNumber,
+      quote,
+      book,
+      links
+    })
+    const createCampaignContentUrl = `${apiEndpoint}/campaigns/${campaignId}/content`
+    const contentData = {
+      template: {
+        id: campaignSettings.templateId
+      },
+      html
+    }
 
-          contentData.template.sections[`article_description_${i + 1}`] =
-            desc(link.description)
+    await httpClient.put(createCampaignContentUrl, contentData)
 
-          contentData.template.sections[`image_${i + 1}`] =
-            a(link.campaignUrls.image, img(link.image, link.title, 170))
+    // 3. schedule campaign
+    const scheduleCampaignUrl = `${apiEndpoint}/campaigns/${campaignId}/actions/schedule`
+    await httpClient.post(scheduleCampaignUrl, {
+      schedule_time: campaignSettings.scheduleTime
+    })
 
-          contentData.template.sections[`article_read_button_${i + 1}`] = createReadArticleButton(link.campaignUrls.description)
-        })
-
-        return httpClient.put(createCampaignContentUrl, contentData)
-      })
-      .then(() => {
-        // 3. schedule campaign
-        const scheduleCampaignUrl = `${apiEndpoint}/campaigns/${campaignId}/actions/schedule`
-        return httpClient.post(scheduleCampaignUrl, {
-          schedule_time: campaignSettings.scheduleTime
-        })
-      })
-      .then(() => {
-        // 4. send test email
-        const sendTestEmailUrl = `${apiEndpoint}/campaigns/${campaignId}/actions/test`
-        return httpClient.post(sendTestEmailUrl, {
-          test_emails: campaignSettings.testEmails,
-          send_type: 'html'
-        })
-      })
+    // 4. send test email
+    const sendTestEmailUrl = `${apiEndpoint}/campaigns/${campaignId}/actions/test`
+    await httpClient.post(sendTestEmailUrl, {
+      test_emails: campaignSettings.testEmails,
+      send_type: 'html'
+    })
   }
 }
 

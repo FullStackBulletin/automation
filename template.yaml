@@ -31,7 +31,7 @@ Parameters:
   MailchimpTemplateId:
     Type: String
     Description: "Mailchimp list id"
-    Default: "33867"
+    Default: "10022744"
   MailchimpFromEmail:
     Type: String
     Description: "Mailchimp from email"

@@ -563,7 +563,7 @@
                                                     <td style="padding-top:48px;padding-bottom:48px;padding-right:48px;padding-left:48px" class="mceBlockContainer" valign="top">
                                                       <div data-block-id="4" class="mceText" id="dataBlockId-4" style="width:100%" mc:edit="intro">
                                                         <p style="text-align: left;">Hello, *|LIST:NAME|*</p>
-                                                        <p style="text-align: left;" class="last-child">Welcome to issue #336</p>
+                                                        <p style="text-align: left;" class="last-child">Welcome to issue #{{ issueNumber | default("000") }}</p>
                                                       </div>
                                                     </td>
                                                   </tr>
@@ -621,22 +621,23 @@
                                                   {% endif %}
                                                   <tr>
                                                     <td style="padding-top:48px;padding-bottom:12px;padding-right:0;padding-left:0" class="mceBlockContainer" align="center" valign="top">
-                                                      <a href="{{ links[0].campaignUrls.image | default('https://example.com') }}" style="display:block" target="_blank" data-block-id="6">
-                                                        <img 
-                                                          width="564" height="auto"
+                                                      <p mc:edit="link_primary_image">
+                                                        <a href="{{ links[0].campaignUrls.image | default('https://example.com') }}" style="display:block" target="_blank" data-block-id="6">
+                                                          <img 
+                                                          width="564"
                                                           style="border:0;width:564px;height:auto;max-width:100%;display:block"
                                                           alt="{{ links[0].title | default('Primary article title') }}"
                                                           src="{{ links[0].image | default('https://mcusercontent.com/b015626aa6028495fe77c75ea/images/f228bde0-87e1-994a-e918-0250cd0ee4c5.png') }}"
                                                           role="presentation"
-                                                          class="imageDropZone"
-                                                          mc:edit="link_primary_image"/>
-                                                      </a>
+                                                          class="imageDropZone"/>
+                                                        </a>
+                                                      </p>
                                                     </td>
                                                   </tr>
                                                   <tr>
                                                     <td style="padding-top:6px;padding-bottom:0;padding-right:48px;padding-left:48px" class="mceBlockContainer" valign="top">
                                                       <div data-block-id="3" class="mceText" id="dataBlockId-3" style="width:100%" mc:edit="link_primary_title">
-                                                        <h1 style="text-align: left;" class="last-child">
+                                                        <h1 style="text-align: left; padding-bottom: 16px" class="last-child">
                                                           <a href="{{ links[0].campaignUrls.title | default('https://example.com') }}" target="_blank" style="text-decoration: none;">
                                                             <strong>{{ links[0].title | default('title') }}</strong>
                                                           </a>
@@ -648,9 +649,9 @@
                                                     <td style="padding-top:0;padding-bottom:6px;padding-right:48px;padding-left:48px" class="mceBlockContainer" valign="top">
                                                       <div data-block-id="43" class="mceText" id="dataBlockId-43" style="width:100%" mc:edit="link_primary_content">
                                                         <p>{{ links[0].description | default('Primary article content... a very long piece of text that tells you some amazing stories about some fundamental piece of knowledge you should have to thrive as a Full Stack developer.') }}</p>
-                                                        <p class="last-child">
+                                                        <p class="last-child" style="padding-top: 16px">
                                                           <a href="{{ links[0].campaignUrls.description | default('https://example.com') }}" target="_blank">
-                                                            <strong>Read Article</strong>
+                                                            <strong>{{ links[0].url | getLinkLabelBasedOnUrl }}</strong>
                                                           </a>
                                                         </p>
                                                       </div>
@@ -664,41 +665,39 @@
                                                     5,
                                                     6
                                                   ] %}
-                                                    <tr mc:repeatable="link_secondary" mc:variant="regular link">
+                                                    <tr mc:repeatable="link_secondary_{{i}}" mc:variant="regular link">
                                                       <td style="padding-top:64px;padding-bottom:48px;padding-right:48px;padding-left:48px" class="mceBlockContainer" valign="top">
-                                                        <div data-block-id="49" class="mceText" id="dataBlockId-49" style="width:100%" mc:edit="link_secondary_title">
-                                                          <h2 style="text-align: left;" class="last-child">
+                                                        <div data-block-id="{{i}}49" class="mceText" id="dataBlockId-{{i}}49" style="width:100%" mc:edit="link_secondary_title">
+                                                          <h2 style="text-align: left; padding-bottom: 16px" class="last-child">
                                                             <a href="{{ links[i].campaignUrls.title | default('https://example.com') }}" target="_blank" style="text-decoration: none;">
                                                               <strong>{{ links[i].title | default('title') }}</strong>
                                                             </a>
                                                           </h2>
                                                         </div>
-                                                        <div data-block-id="45" class="mceText" id="dataBlockId-45" style="width:100%" mc:edit="link_secondary_content">
-                                                          <p>{{ links[0].description | default('Secondary article content... a very long piece of text that tells you some amazing stories about some fundamental piece of knowledge you should have to thrive as a Full Stack developer.') }}</p>
-                                                          <p class="last-child">
+                                                        <div data-block-id="{{i}}45" class="mceText" id="dataBlockId-{{i}}45" style="width:100%" mc:edit="link_secondary_content">
+                                                          <p>{{ links[i].description | default('Secondary article content... a very long piece of text that tells you some amazing stories about some fundamental piece of knowledge you should have to thrive as a Full Stack developer.') }}</p>
+                                                          <p class="last-child" style="padding-top: 16px">
                                                             <a href="{{ links[i].campaignUrls.description | default('https://example.com') }}" target="_blank">
-                                                              <strong>Read Article</strong>
+                                                              <strong>{{ links[i].url | getLinkLabelBasedOnUrl }}</strong>
                                                             </a>
                                                           </p>
                                                         </div>
                                                       </td>
                                                     </tr>
-                                                    <tr mc:repeatable="link_secondary" mc:variant="sponsored link">
+                                                    <tr mc:repeatable="link_secondary_{{i}}" mc:variant="sponsored link">
                                                       <td style="background-color:#f0f0f0;padding-top:48px;padding-bottom:48px;padding-right:48px;padding-left:48px" class="mceBlockContainer" valign="top">
-                                                        <div data-block-id="46" class="mceText" id="dataBlockId-46" style="width:100%" mc:edit="link_secondary_title">
+                                                        <div data-block-id="{{i}}49" class="mceText" id="dataBlockId-{{i}}49" style="width:100%" mc:edit="link_secondary_title">
                                                           <p style="text-align: right;">
                                                             <strong>
                                                               <span style="color:#666;">sponsored</span></strong>
                                                           </p>
-                                                          <h2 style="text-align: left;" class="last-child">
+                                                          <h2 style="text-align: left; padding-bottom: 16px" class="last-child">
                                                             <strong>Sponsored Content</strong>
                                                           </h2>
                                                         </div>
-                                                        <div data-block-id="51" class="mceText" id="dataBlockId-51" style="width:100%" mc:edit="link_secondary_content">
-                                                          <p><br></p>
+                                                        <div data-block-id="{{i}}45" class="mceText" id="dataBlockId-{{i}}45" style="width:100%" mc:edit="link_secondary_content">
                                                           <p>I feel like CSS selectors are one of those fundamental pieces of knowledge that every web developer needs to master to some reasonable degree... This guide does a great job of introducing various selectors while showing a great visual representation of their effects. It even includes pseudo-classes (:nth-child,&nbsp;:hover,...), functional pseudo-classes (:not,&nbsp;:is,...), and pseudo-elements.</p>
-                                                          <p><br></p>
-                                                          <p class="last-child">
+                                                          <p class="last-child" style="padding-top: 16px">
                                                             <a href="https://example.com" target="_blank">
                                                               <strong>Read Article</strong>
                                                             </a>
@@ -722,25 +721,24 @@
                                                     <td style="background-color:#fefdec;padding-top:48px;padding-bottom:12px;padding-right:48px;padding-left:48px" class="mceBlockContainer" valign="top">
                                                       <div data-block-id="57" class="mceText" id="dataBlockId-57" style="width:100%" mc:edit="book_title">
                                                         <h2>
-                                                          <a href="https://example.com"target="_blank" style="text-decoration: none;">
-                                                            <strong>{{ book.title | default('Book title') }}</strong>
-                                                          </a>
+                                                          <strong>{{ book.title | default('Book title') }}</strong>
                                                         </h2>
-                                                        <p class="last-child">by <strong>{{ book.author | default('Book Author') }}</strong>
+                                                        <p class="last-child">by {{ book.author | default('Book Author') }}
                                                         </p>
                                                       </div>
                                                     </td>
                                                   </tr>
                                                   <tr>
                                                     <td style="background-color:#fefdec;padding-top:12px;padding-bottom:12px;padding-right:48px;padding-left:48px" class="mceBlockContainer" align="left" valign="top">
-                                                      <img
+                                                      <p mc:edit="book_image">
+                                                        <img
                                                         data-block-id="13" width="260" height="auto"
                                                         style="width:260px;height:auto;max-width:100%;display:block"
                                                         alt="{{ book.title | default('Book title') }}"
                                                         src="{{ book.coverPicture | default('https://mcusercontent.com/b015626aa6028495fe77c75ea/images/5b2e0813-7bfd-9909-b400-9f3330a1705e.jpg') }}"
                                                         role="presentation"
-                                                        class="imageDropZone"
-                                                        mc:edit="book_image"/>
+                                                        class="imageDropZone"/>
+                                                      </p>
                                                     </td>
                                                   </tr>
                                                   <tr>
