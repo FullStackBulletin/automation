@@ -1,5 +1,5 @@
 import { request } from 'undici'
-import { renderTemplate } from './template.js'
+import { renderBookBuyLink, renderBookContent, renderBookImage, renderBookTitle, renderIntro, renderLinkContent, renderLinkPrimaryImage, renderLinkPrimaryTitle, renderLinkSecondaryTitle, renderQuote } from './template.js'
 
 export async function createCampaign (apiKey, quote, book, links, campaignSettings) {
   const [, dc] = apiKey.split('-')
@@ -46,20 +46,46 @@ export async function createCampaign (apiKey, quote, book, links, campaignSettin
     headers: createCampaignResponse.headers
   })
   const createCampaignData = await createCampaignResponse.body.json()
+  if (createCampaignResponse.statusCode >= 400) {
+    console.error('Error creating campaign', { ...createCampaignData })
+    throw new Error('Error creating campaign')
+  }
   console.log('Created campaign', { ...createCampaignData })
   const campaignId = createCampaignData.id
 
-  // 2a. create content
+  // 2. Set content
   console.log('Setting campaign content')
-  const html = await renderTemplate({
-    issueNumber: campaignSettings.issueNumber,
-    quote,
-    book,
-    links
-  })
   const createCampaignContentUrl = `${apiEndpoint}/campaigns/${campaignId}/content`
   const contentData = {
-    html
+    template: {
+      id: campaignSettings.templateId,
+      sections: {
+        intro: await renderIntro(campaignSettings.issueNumber),
+        // sponsor_banner: '', // Enable this in the future when sponsorship is automated
+        quote: await renderQuote(quote),
+        link_primary_image: await renderLinkPrimaryImage(links[0]),
+        link_primary_title: await renderLinkPrimaryTitle(links[0]),
+        link_primary_content: await renderLinkContent(links[0]),
+        // syntax for repeatable blocks '[mc:repeatable]:[mc:repeatindex]:[mc:edit]'
+        'link_secondary_1:0:link_secondary_title': await renderLinkSecondaryTitle(links[1]),
+        'link_secondary_1:0:link_secondary_content': await renderLinkContent(links[1]),
+        'link_secondary_2:0:link_secondary_title': await renderLinkSecondaryTitle(links[2]),
+        'link_secondary_2:0:link_secondary_content': await renderLinkContent(links[2]),
+        'link_secondary_3:0:link_secondary_title': await renderLinkSecondaryTitle(links[3]),
+        'link_secondary_3:0:link_secondary_content': await renderLinkContent(links[3]),
+        'link_secondary_4:0:link_secondary_title': await renderLinkSecondaryTitle(links[4]),
+        'link_secondary_4:0:link_secondary_content': await renderLinkContent(links[4]),
+        'link_secondary_5:0:link_secondary_title': await renderLinkSecondaryTitle(links[5]),
+        'link_secondary_5:0:link_secondary_content': await renderLinkContent(links[5]),
+        'link_secondary_6:0:link_secondary_title': await renderLinkSecondaryTitle(links[6]),
+        'link_secondary_6:0:link_secondary_content': await renderLinkContent(links[6]),
+        book_title: await renderBookTitle(book),
+        book_image: await renderBookImage(book),
+        book_content: await renderBookContent(book),
+        book_buy_amazoncom: await renderBookBuyLink(book.links.usa, 'Amazon.com'),
+        book_buy_amazoncouk: await renderBookBuyLink(book.links.uk, 'Amazon.co.uk')
+      }
+    }
   }
 
   const createCampaignContentResponse = await request(createCampaignContentUrl, {
@@ -75,29 +101,11 @@ export async function createCampaign (apiKey, quote, book, links, campaignSettin
     headers: createCampaignContentResponse.headers
   })
   const createCampaignContentData = await createCampaignContentResponse.body.json()
-  console.log('Created campaign content', { ...createCampaignContentData })
-
-  // 2b. Apply template (to allow editability)
-  const setContentTemplateData = {
-    template: {
-      id: campaignSettings.templateId
-    },
-    html
+  if (createCampaignContentResponse.statusCode >= 400) {
+    console.error('Error creating campaign content', { ...createCampaignContentData })
+    throw new Error('Error creating campaign content')
   }
-  const setTemplateResponse = await request(createCampaignContentUrl, {
-    method: 'PUT',
-    body: JSON.stringify(setContentTemplateData),
-    headers: {
-      'Content-Type': 'application/json',
-      Authorization: authorization
-    }
-  })
-  console.log('Upated content and forced template.', {
-    statusCode: setTemplateResponse.statusCode,
-    headers: setTemplateResponse.headers
-  })
-  const setContentTemplateResponseData = await setTemplateResponse.body.json()
-  console.log('Created campaign content', { ...setContentTemplateResponseData })
+  console.log('Created campaign content', { ...createCampaignContentData })
 
   // 3. schedule campaign
   const scheduleCampaignUrl = `${apiEndpoint}/campaigns/${campaignId}/actions/schedule`
@@ -116,6 +124,10 @@ export async function createCampaign (apiKey, quote, book, links, campaignSettin
     headers: scheduleCampaignResponse.headers
   })
   const scheduleCampaignResponseText = await scheduleCampaignResponse.body.text()
+  if (scheduleCampaignResponse.statusCode >= 400) {
+    console.error('Error scheduling campaign', scheduleCampaignResponseText)
+    throw new Error('Error scheduling campaign')
+  }
   console.log('Scheduled campaign', scheduleCampaignResponseText)
 
   // 4. send test email
@@ -136,6 +148,10 @@ export async function createCampaign (apiKey, quote, book, links, campaignSettin
     headers: sendTestEmailResponse.headers
   })
   const sendTestEmailResponseText = await sendTestEmailResponse.body.text()
+  if (sendTestEmailResponse.statusCode >= 400) {
+    console.error('Error sending test email', sendTestEmailResponseText)
+    throw new Error('Error sending test email')
+  }
   console.log('Sent test email', sendTestEmailResponseText)
 
   return createCampaignData

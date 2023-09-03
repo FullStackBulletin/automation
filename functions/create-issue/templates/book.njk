@@ -1,0 +1,33 @@
+{% macro title(book) %}
+  <h2>
+    <strong>{{ book.title | default('Book title') }}</strong>
+  </h2>
+  <p class="last-child">
+  by {{ book.author | default('Book Author') }}
+  </p>
+{% endmacro %}
+
+{% macro image(book) %}
+  <img
+  data-block-id="13" width="260" height="auto"
+  style="width:260px;height:auto;max-width:100%;display:block"
+  alt="{{ book.title | default('Book title') }}"
+  src="{{ book.coverPicture | default('https://mcusercontent.com/b015626aa6028495fe77c75ea/images/5b2e0813-7bfd-9909-b400-9f3330a1705e.jpg') }}"
+  role="presentation"
+  class="imageDropZone"/>
+{% endmacro %}
+
+{% macro content(book) %}
+  <p class="last-child">
+    {{ book.description | default('Book description') }}
+  </p>
+{% endmacro %}
+
+{% macro buy(link, label) %}
+  <a
+    href="{{ link | default('https://example.com') }}"
+    target="_blank"
+    style="background-color:#fefdec;border-radius:50px;border:2px solid #000000;color:#000000;display:block;font-family:'Helvetica Neue', Helvetica, Arial, Verdana, sans-serif;font-size:16px;font-weight:bold;font-style:normal;padding:16px 28px;text-decoration:none;min-width:30px;text-align:center;direction:ltr;letter-spacing:0px">
+      Buy on {{ label | default('Amazon') }}
+  </a>
+{% endmacro %}

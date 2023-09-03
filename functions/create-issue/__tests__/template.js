@@ -1,7 +1,7 @@
 import { test, expect } from 'vitest'
 import url from 'url'
 import path from 'path'
-import { renderTemplate } from '../template.js'
+import { renderIntro, renderTemplate } from '../template.js'
 
 const __dirname = url.fileURLToPath(new URL('.', import.meta.url))
 
@@ -123,4 +123,9 @@ test('it should render the template', async () => {
 
   const result = await renderTemplate(data)
   expect(result).toMatchFileSnapshot(path.join(__dirname, '__snapshots__', 'template.html'))
+})
+
+test('it should render the intro', async () => {
+  const result = await renderIntro(1000)
+  expect(result).toMatchFileSnapshot(path.join(__dirname, '__snapshots__', 'intro.html'))
 })

@@ -1,0 +1,12 @@
+<p>
+  <em>
+    <strong>“{{ quote.text }}“</strong>
+  </em>
+</p>
+<p class="last-child">— 
+  {% if quote.authorUrl %}
+    <a href="{{ quote.authorUrl }}" target="_blank">{{ quote.author }}</a>
+  {% else %}
+    {{ quote.author }}
+  {% endif %}, {{ quote.authorDescription }}
+</p>

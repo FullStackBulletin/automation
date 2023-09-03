@@ -14,6 +14,12 @@ const env = new nunjucks.Environment(
 )
 env.addFilter('getLinkLabelBasedOnUrl', getLinkLabelBasedOnUrl)
 
+const minifySettings = {
+  collapseWhitespace: true,
+  keepClosingSlash: true,
+  minifyCSS: false
+}
+
 /**
    * Renders the email template for mailchimp
    * @param {Object} data
@@ -49,10 +55,88 @@ env.addFilter('getLinkLabelBasedOnUrl', getLinkLabelBasedOnUrl)
 export function renderTemplate (data) {
   return minify(
     env.render('newsletter.njk', data),
-    {
-      collapseWhitespace: true,
-      keepClosingSlash: true,
-      minifyCSS: false
-    }
+    minifySettings
+  )
+}
+
+/**
+ * @param {number} issueNumber
+ * @returns string
+ */
+export function renderIntro (issueNumber) {
+  return minify(
+    env.render('intro.njk', { issueNumber }),
+    minifySettings
+  )
+}
+
+/**
+ * @param {Object} quote
+ * @param {number} quote.id
+ * @param {string} quote.text
+ * @param {string} quote.author
+ * @param {string} quote.authorDescription
+ * @param {string} [quote.authorUrl]
+ */
+export function renderQuote (quote) {
+  return minify(
+    env.render('quote.njk', { quote }),
+    minifySettings
+  )
+}
+
+export function renderLinkPrimaryImage (link) {
+  return minify(
+    env.render('link_primary_image.njk', { link }),
+    minifySettings
+  )
+}
+
+export function renderLinkPrimaryTitle (link) {
+  return minify(
+    env.render('link_primary_title.njk', { link }),
+    minifySettings
+  )
+}
+
+export function renderLinkSecondaryTitle (link) {
+  return minify(
+    env.render('link_secondary_title.njk', { link }),
+    minifySettings
+  )
+}
+
+export function renderLinkContent (link) {
+  return minify(
+    env.render('link_content.njk', { link }),
+    minifySettings
+  )
+}
+
+export function renderBookTitle (book) {
+  return minify(
+    env.render('book_title.njk', { book }),
+    minifySettings
+  )
+}
+
+export function renderBookImage (book) {
+  return minify(
+    env.render('book_image.njk', { book }),
+    minifySettings
+  )
+}
+
+export function renderBookContent (book) {
+  return minify(
+    env.render('book_content.njk', { book }),
+    minifySettings
+  )
+}
+
+export function renderBookBuyLink (link, label) {
+  return minify(
+    env.render('book_buy_link.njk', { link, label }),
+    minifySettings
   )
 }
