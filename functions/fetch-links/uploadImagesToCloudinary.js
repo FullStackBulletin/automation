@@ -17,7 +17,7 @@ const uploadImage = (client, imageUrl, publicId, hostname, stopRetry) =>
       return resolve(result)
     }, { public_id: publicId, overwrite: false })
     // ignore errors (managed internally)
-    upload.catch(() => {})
+    upload.catch(() => { })
   })
 
 const uploadImageToCloudinary = (client, folder) => (urlInfo, cb) => {
@@ -27,8 +27,8 @@ const uploadImageToCloudinary = (client, folder) => (urlInfo, cb) => {
     .then((info) => {
       const transformations = {
         crop: 'fit',
-        width: 500,
-        height: 240,
+        width: 564,
+        height: 317,
         gravity: 'center',
         quality: 80,
         format: 'jpg'

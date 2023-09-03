@@ -1,121 +1,158 @@
-import truncate from 'truncate'
-import { getLinkLabelBasedOnUrl } from './getLinkLabelBasedOnUrl.js'
+import { request } from 'undici'
+import { renderBookBuyLink, renderBookContent, renderBookImage, renderBookTitle, renderIntro, renderLinkContent, renderLinkPrimaryImage, renderLinkPrimaryTitle, renderLinkSecondaryTitle, renderQuote } from './template.js'
 
-const escapeAttrNodeValue = value =>
-  value.replace(/(&)|(")|(\u00A0)/g, (match, amp, quote) => {
-    if (amp) return '&amp;'
-    if (quote) return '&quot;'
-    return '&nbsp;'
-  })
-
-const createReadArticleButton = url => `
-<a href="${escapeAttrNodeValue(url)}" style="background: #222222; border: 15px solid #222222; font-family: sans-serif; font-size: 13px; line-height: 1.1; text-align: center; text-decoration: none; display: block; border-radius: 3px; font-weight: bold;" class="button-a">
-    <span style="color:#ffffff;" class="button-link">${getLinkLabelBasedOnUrl(url)}</span>
-</a>
-`
-
-const a = (url, content) => {
-  if (url) {
-    return `<a href="${escapeAttrNodeValue(url)}" target="_blank">${content}</a>`
-  }
-
-  return content
-}
-
-const img = (url, title, width = 194, maxWidth = 500) =>
-  `<img alt="${escapeAttrNodeValue(title)}" src="${url}" width="${width}" style="max-width:${maxWidth}px;" class="mcnImage">`
-
-const desc = description => truncate(description, 300)
-
-export const createCampaignFactory = (httpClient, apiKey) => {
+export async function createCampaign (apiKey, quote, book, links, campaignSettings) {
   const [, dc] = apiKey.split('-')
-  const apiEndpoint = `https://user:${apiKey}@${dc}.api.mailchimp.com/3.0`
+  const apiEndpoint = `https://${dc}.api.mailchimp.com/3.0`
+  const authorization = `Basic ${Buffer.from(`apikey:${apiKey}`).toString('base64')}`
 
-  return (quote, book, links, campaignSettings) => {
-    console.log('Creating campaign', campaignSettings.campaignName, { links })
+  console.log('Creating campaign', campaignSettings.campaignName)
 
-    // 1. create campaign
-    const createCampaignUrl = `${apiEndpoint}/campaigns`
-    const previewText = links.slice(1).map(link => link.title).join(', ')
-    const campaignData = {
-      type: 'regular',
-      recipients: {
-        list_id: campaignSettings.listId
-      },
-      settings: {
-        subject_line: `🤓 #${campaignSettings.issueNumber}: ${links.length ? links[0].title : ''}`,
-        preview_text: previewText,
-        title: campaignSettings.campaignName,
-        from: campaignSettings.from,
-        from_name: campaignSettings.fromName,
-        reply_to: campaignSettings.replyTo
-      },
-      social_card: {
-        image_url: 'https://mcusercontent.com/b015626aa6028495fe77c75ea/images/15c0d740-d78f-1ee1-f6c5-ce45d62e4188.png',
-        title: `Fullstack Bulletin #${campaignSettings.issueNumber}: The best full stack content of the week!`,
-        description: previewText
+  // 1. create campaign
+  const createCampaignUrl = `${apiEndpoint}/campaigns`
+  const previewText = links.slice(1).map(link => link.title).join(', ')
+  const campaignData = {
+    type: 'regular',
+    recipients: {
+      list_id: campaignSettings.listId
+    },
+    settings: {
+      subject_line: `🤓 #${campaignSettings.issueNumber}: ${links.length ? links[0].title : ''}`,
+      preview_text: previewText,
+      title: campaignSettings.campaignName,
+      from: campaignSettings.from,
+      from_name: campaignSettings.fromName,
+      reply_to: campaignSettings.replyTo
+    },
+    social_card: {
+      image_url: 'https://mcusercontent.com/b015626aa6028495fe77c75ea/images/15c0d740-d78f-1ee1-f6c5-ce45d62e4188.png',
+      title: `Fullstack Bulletin #${campaignSettings.issueNumber}: The best full stack content of the week!`,
+      description: previewText
+    }
+  }
+  const createCampaignResponse = await request(
+    createCampaignUrl,
+    {
+      method: 'POST',
+      body: JSON.stringify(campaignData),
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: authorization
       }
     }
-
-    let campaignId = null
-
-    return httpClient.post(createCampaignUrl, campaignData)
-      .then((response) => {
-        // 2. create content
-        campaignId = response.data.id
-        const createCampaignContentUrl = `${apiEndpoint}/campaigns/${campaignId}/content`
-        const contentData = {
-          template: {
-            id: campaignSettings.templateId,
-            sections: {
-              content_preview: links.length ? links[0].title : '',
-              quote_text: quote.text,
-              quote_author: a(quote.authorUrl, quote.author),
-              quote_author_description: quote.authorDescription,
-              title: '',
-              book_cover: a(book.links.usa, img(book.coverPicture, 'book cover', 176, 406)),
-              book_title: book.title,
-              book_author: book.author,
-              book_description: book.description,
-              book_buy_amazon_com: a(book.links.usa, 'Buy on Amazon.com'),
-              book_buy_amazon_uk: a(book.links.uk, 'Buy on Amazon.co.uk')
-            }
-          }
-        }
-
-        links.forEach((link, i) => {
-          contentData.template.sections[`article_title_${i + 1}`] =
-            a(link.campaignUrls.title, link.title)
-
-          contentData.template.sections[`article_description_${i + 1}`] =
-            desc(link.description)
-
-          contentData.template.sections[`image_${i + 1}`] =
-            a(link.campaignUrls.image, img(link.image, link.title, 170))
-
-          contentData.template.sections[`article_read_button_${i + 1}`] = createReadArticleButton(link.campaignUrls.description)
-        })
-
-        return httpClient.put(createCampaignContentUrl, contentData)
-      })
-      .then(() => {
-        // 3. schedule campaign
-        const scheduleCampaignUrl = `${apiEndpoint}/campaigns/${campaignId}/actions/schedule`
-        return httpClient.post(scheduleCampaignUrl, {
-          schedule_time: campaignSettings.scheduleTime
-        })
-      })
-      .then(() => {
-        // 4. send test email
-        const sendTestEmailUrl = `${apiEndpoint}/campaigns/${campaignId}/actions/test`
-        return httpClient.post(sendTestEmailUrl, {
-          test_emails: campaignSettings.testEmails,
-          send_type: 'html'
-        })
-      })
+  )
+  console.log('Create campaign request sent.', {
+    statusCode: createCampaignResponse.statusCode,
+    headers: createCampaignResponse.headers
+  })
+  const createCampaignData = await createCampaignResponse.body.json()
+  if (createCampaignResponse.statusCode >= 400) {
+    console.error('Error creating campaign', { ...createCampaignData })
+    throw new Error('Error creating campaign')
   }
-}
+  console.log('Created campaign', { ...createCampaignData })
+  const campaignId = createCampaignData.id
 
-export default {
-  createCampaignFactory
+  // 2. Set content
+  console.log('Setting campaign content')
+  const createCampaignContentUrl = `${apiEndpoint}/campaigns/${campaignId}/content`
+  const contentData = {
+    template: {
+      id: campaignSettings.templateId,
+      sections: {
+        intro: await renderIntro(campaignSettings.issueNumber),
+        // sponsor_banner: '', // Enable this in the future when sponsorship is automated
+        quote: await renderQuote(quote),
+        link_primary_image: await renderLinkPrimaryImage(links[0]),
+        link_primary_title: await renderLinkPrimaryTitle(links[0]),
+        link_primary_content: await renderLinkContent(links[0]),
+        // syntax for repeatable blocks '[mc:repeatable]:[mc:repeatindex]:[mc:edit]'
+        'link_secondary_1:0:link_secondary_title': await renderLinkSecondaryTitle(links[1]),
+        'link_secondary_1:0:link_secondary_content': await renderLinkContent(links[1]),
+        'link_secondary_2:0:link_secondary_title': await renderLinkSecondaryTitle(links[2]),
+        'link_secondary_2:0:link_secondary_content': await renderLinkContent(links[2]),
+        'link_secondary_3:0:link_secondary_title': await renderLinkSecondaryTitle(links[3]),
+        'link_secondary_3:0:link_secondary_content': await renderLinkContent(links[3]),
+        'link_secondary_4:0:link_secondary_title': await renderLinkSecondaryTitle(links[4]),
+        'link_secondary_4:0:link_secondary_content': await renderLinkContent(links[4]),
+        'link_secondary_5:0:link_secondary_title': await renderLinkSecondaryTitle(links[5]),
+        'link_secondary_5:0:link_secondary_content': await renderLinkContent(links[5]),
+        'link_secondary_6:0:link_secondary_title': await renderLinkSecondaryTitle(links[6]),
+        'link_secondary_6:0:link_secondary_content': await renderLinkContent(links[6]),
+        book_title: await renderBookTitle(book),
+        book_image: await renderBookImage(book),
+        book_content: await renderBookContent(book),
+        book_buy_amazoncom: await renderBookBuyLink(book.links.usa, 'Amazon.com'),
+        book_buy_amazoncouk: await renderBookBuyLink(book.links.uk, 'Amazon.co.uk')
+      }
+    }
+  }
+
+  const createCampaignContentResponse = await request(createCampaignContentUrl, {
+    method: 'PUT',
+    body: JSON.stringify(contentData),
+    headers: {
+      'Content-Type': 'application/json',
+      Authorization: authorization
+    }
+  })
+  console.log('Create campaign content request sent.', {
+    statusCode: createCampaignContentResponse.statusCode,
+    headers: createCampaignContentResponse.headers
+  })
+  const createCampaignContentData = await createCampaignContentResponse.body.json()
+  if (createCampaignContentResponse.statusCode >= 400) {
+    console.error('Error creating campaign content', { ...createCampaignContentData })
+    throw new Error('Error creating campaign content')
+  }
+  console.log('Created campaign content', { ...createCampaignContentData })
+
+  // 3. schedule campaign
+  const scheduleCampaignUrl = `${apiEndpoint}/campaigns/${campaignId}/actions/schedule`
+  const scheduleCampaignResponse = await request(scheduleCampaignUrl, {
+    method: 'POST',
+    body: JSON.stringify({
+      schedule_time: campaignSettings.scheduleTime
+    }),
+    headers: {
+      'Content-Type': 'application/json',
+      Authorization: authorization
+    }
+  })
+  console.log('Schedule campaign request sent.', {
+    statusCode: scheduleCampaignResponse.statusCode,
+    headers: scheduleCampaignResponse.headers
+  })
+  const scheduleCampaignResponseText = await scheduleCampaignResponse.body.text()
+  if (scheduleCampaignResponse.statusCode >= 400) {
+    console.error('Error scheduling campaign', scheduleCampaignResponseText)
+    throw new Error('Error scheduling campaign')
+  }
+  console.log('Scheduled campaign', scheduleCampaignResponseText)
+
+  // 4. send test email
+  const sendTestEmailUrl = `${apiEndpoint}/campaigns/${campaignId}/actions/test`
+  const sendTestEmailResponse = await request(sendTestEmailUrl, {
+    method: 'POST',
+    body: JSON.stringify({
+      test_emails: campaignSettings.testEmails,
+      send_type: 'html'
+    }),
+    headers: {
+      'Content-Type': 'application/json',
+      Authorization: authorization
+    }
+  })
+  console.log('Send test email request sent.', {
+    statusCode: sendTestEmailResponse.statusCode,
+    headers: sendTestEmailResponse.headers
+  })
+  const sendTestEmailResponseText = await sendTestEmailResponse.body.text()
+  if (sendTestEmailResponse.statusCode >= 400) {
+    console.error('Error sending test email', sendTestEmailResponseText)
+    throw new Error('Error sending test email')
+  }
+  console.log('Sent test email', sendTestEmailResponseText)
+
+  return createCampaignData
 }

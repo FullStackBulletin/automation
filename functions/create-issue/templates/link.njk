@@ -1,0 +1,36 @@
+{% macro primary_image(link) %}
+  <a href="{{ link.campaignUrls.image | default('https://example.com') }}" style="display:block" target="_blank" data-block-id="6">
+    <img 
+    width="564"
+    style="border:0;width:564px;height:auto;max-width:100%;display:block"
+    alt="{{ link.title | default('Primary article title') }}"
+    src="{{ link.image | default('https://mcusercontent.com/b015626aa6028495fe77c75ea/images/f228bde0-87e1-994a-e918-0250cd0ee4c5.png') }}"
+    role="presentation"
+    class="imageDropZone"/>
+  </a>
+{% endmacro %}
+
+{% macro primary_title(link) %}
+  <h1 style="text-align: left; padding-bottom: 16px" class="last-child">
+    <a href="{{ link.campaignUrls.title | default('https://example.com') }}" target="_blank" style="text-decoration: none;">
+      <strong>{{ link.title | default('title') }}</strong>
+    </a>
+  </h1>
+{% endmacro %}
+
+{% macro content(link) %}
+  <p>{{ link.description | default('Article content... a very long piece of text that tells you some amazing stories about some fundamental piece of knowledge you should have to thrive as a Full Stack developer.') }}</p>
+  <p class="last-child" style="padding-top: 16px">
+    <a href="{{ link.campaignUrls.description | default('https://example.com') }}" target="_blank">
+      <strong>{{ link.url | getLinkLabelBasedOnUrl }}</strong>
+    </a>
+  </p>
+{% endmacro %}
+
+{% macro secondary_title(link) %}
+  <h2 style="text-align: left; padding-bottom: 16px" class="last-child">
+    <a href="{{ link.campaignUrls.title | default('https://example.com') }}" target="_blank" style="text-decoration: none;">
+      <strong>{{ link.title | default('title') }}</strong>
+    </a>
+  </h2>
+{% endmacro %}
