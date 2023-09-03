@@ -5,11 +5,10 @@
   "main": "handler.js",
   "type": "module",
   "dependencies": {
-    "axios": "^0.26.0",
     "html-minifier-terser": "^7.2.0",
     "moment": "^2.29.4",
     "moment-timezone": "^0.5.43",
     "nunjucks": "^3.2.4",
-    "truncate": "^2.1.0"
+    "undici": "^5.23.0"
   }
 }

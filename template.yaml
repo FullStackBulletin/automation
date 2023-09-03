@@ -146,6 +146,7 @@ Resources:
       CodeUri: functions/create-issue/
       Handler: handler.createIssue
       Runtime: nodejs18.x
+      MemorySize: 512
       Timeout: 60
       Architectures:
         - x86_64

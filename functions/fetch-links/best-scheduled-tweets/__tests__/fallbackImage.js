@@ -302,7 +302,7 @@ const mockResponse = {
 }
 
 export const restHandlers = [
-  rest.get('https://api.unsplash.com/photos/random?query=tech', (req, res, ctx) => {
+  rest.get('https://api.unsplash.com/photos/random', (req, res, ctx) => {
     return res(ctx.status(200), ctx.json(mockResponse))
   })
 ]
