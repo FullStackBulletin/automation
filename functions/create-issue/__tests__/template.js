@@ -118,6 +118,47 @@ test('it should render the template', async () => {
           description: 'https://smashingmagazine.com/2023/08/oklch-color-spaces-gamuts-css?utm_source=fullstackbulletin.com&utm_medium=newsletter&utm_campaign=fullstackBulletin-35-2023&utm_content=description'
         }
       }
+    ],
+    extracontent: [
+      {
+        title: 'CSS Selectors: A Visual Guide & Reference',
+        url: 'https://fffuel.co',
+        description: 'Visual guide to CSS selectors, including pseudo-classes (:nth-child, :hover,...), functional pseudo-classes (:not, :is,...) and pseudo-elements.',
+        image: 'http://res.cloudinary.com/loige/image/upload/c_fit,g_center,h_240,q_80,w_500/v1/fsb/8562eaf1c0470e0ce5a4557cd11af763.jpg',
+        score: 83,
+        originalImage: 'https://fffuel.co/images/covers/css-selectors.png',
+        campaignUrls: {
+          title: 'https://fffuel.co/?utm_source=fullstackbulletin.com&utm_medium=newsletter&utm_campaign=fullstackBulletin-35-2023&utm_content=title',
+          image: 'https://fffuel.co/?utm_source=fullstackbulletin.com&utm_medium=newsletter&utm_campaign=fullstackBulletin-35-2023&utm_content=image',
+          description: 'https://fffuel.co/?utm_source=fullstackbulletin.com&utm_medium=newsletter&utm_campaign=fullstackBulletin-35-2023&utm_content=description'
+        }
+      },
+      {
+        title: '8 Reasons Why WhatsApp Was Able to Support 50 Billion Messages a Day With Only 32 Engineers',
+        url: 'https://newsletter.systemdesign.one/p/whatsapp-engineering',
+        description: '#1: Learn More - Awesome WhatsApp Engineering (6 minutes)',
+        image: 'http://res.cloudinary.com/loige/image/upload/c_fit,g_center,h_240,q_80,w_500/v1/fsb/84f520f397e1c95d792aa2caaa3e9262.jpg',
+        score: 30,
+        originalImage: 'https://substackcdn.com/image/fetch/w_1200,h_600,c_fill,f_jpg,q_auto:good,fl_progressive:steep,g_auto/https%3A%2F%2Fsubstack-post-media.s3.amazonaws.com%2Fpublic%2Fimages%2F94e067cc-6ade-44bf-9818-5dc20a260541_1280x720.png',
+        campaignUrls: {
+          title: 'https://newsletter.systemdesign.one/p/whatsapp-engineering?utm_source=fullstackbulletin.com&utm_medium=newsletter&utm_campaign=fullstackBulletin-35-2023&utm_content=title',
+          image: 'https://newsletter.systemdesign.one/p/whatsapp-engineering?utm_source=fullstackbulletin.com&utm_medium=newsletter&utm_campaign=fullstackBulletin-35-2023&utm_content=image',
+          description: 'https://newsletter.systemdesign.one/p/whatsapp-engineering?utm_source=fullstackbulletin.com&utm_medium=newsletter&utm_campaign=fullstackBulletin-35-2023&utm_content=description'
+        }
+      },
+      {
+        title: "Email Authentication: A Developer's Guide · Resend",
+        url: 'https://resend.com/blog/email-authentication-a-developers-guide',
+        description: 'Learn the importance of SPF, DKIM, DMARC, and BIMI in ensuring email delivery.',
+        image: 'http://res.cloudinary.com/loige/image/upload/c_fit,g_center,h_240,q_80,w_500/v1/fsb/eb37d2b287bdef4e054206cee69f61a1.jpg',
+        score: 1,
+        originalImage: 'https://resend.com/static/posts/email-authentication.jpg',
+        campaignUrls: {
+          title: 'https://resend.com/blog/email-authentication-a-developers-guide?utm_source=fullstackbulletin.com&utm_medium=newsletter&utm_campaign=fullstackBulletin-35-2023&utm_content=title',
+          image: 'https://resend.com/blog/email-authentication-a-developers-guide?utm_source=fullstackbulletin.com&utm_medium=newsletter&utm_campaign=fullstackBulletin-35-2023&utm_content=image',
+          description: 'https://resend.com/blog/email-authentication-a-developers-guide?utm_source=fullstackbulletin.com&utm_medium=newsletter&utm_campaign=fullstackBulletin-35-2023&utm_content=description'
+        }
+      }
     ]
   }
 

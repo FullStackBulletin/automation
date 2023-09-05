@@ -140,3 +140,10 @@ export function renderBookBuyLink (link, label) {
     minifySettings
   )
 }
+
+export function renderExtraContent (extraContentTitle, extraContent) {
+  return minify(
+    env.render('extra_content.njk', { extraContentTitle, extraContent }),
+    minifySettings
+  )
+}

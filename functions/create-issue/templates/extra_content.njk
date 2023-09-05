@@ -1,0 +1,12 @@
+{% if extracontent | default([]) %}
+  <h3>{{ extraContentTitle | default('Are you thirsty for more content? 🚰') }}</h3>
+  <ul>
+    {% for link in extraContent %}
+      <li>
+        <a href="{{ link.campaignUrls.title | default('https://example.com') }}" target="_blank">
+          {{ link.title | default('title') }}
+        </a>
+      </li>
+    {% endfor %}
+  </ul>
+{% endif %}
