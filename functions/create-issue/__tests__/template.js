@@ -119,7 +119,7 @@ test('it should render the template', async () => {
         }
       }
     ],
-    extracontent: [
+    extraContent: [
       {
         title: 'CSS Selectors: A Visual Guide & Reference',
         url: 'https://fffuel.co',
