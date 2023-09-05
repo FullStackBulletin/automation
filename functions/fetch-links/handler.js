@@ -61,8 +61,7 @@ export async function fetchLinks (event) {
     fbApp,
     fallbackImageClient,
     referenceMoment,
-    maxTweetsPerUser: 200,
-    numResults: 7,
+    numResults: 14,
     blacklistedUrls
   })
   console.log('Retrieved issue links', links)

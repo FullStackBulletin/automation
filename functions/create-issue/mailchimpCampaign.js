@@ -1,5 +1,6 @@
 import { request } from 'undici'
-import { renderBookBuyLink, renderBookContent, renderBookImage, renderBookTitle, renderIntro, renderLinkContent, renderLinkPrimaryImage, renderLinkPrimaryTitle, renderLinkSecondaryTitle, renderQuote } from './template.js'
+import { renderBookBuyLink, renderBookContent, renderBookImage, renderBookTitle, renderExtraContent, renderIntro, renderLinkContent, renderLinkPrimaryImage, renderLinkPrimaryTitle, renderLinkSecondaryTitle, renderQuote } from './template.js'
+import { generateExtraContentTitle } from './extraContent.js'
 
 export async function createCampaign (apiKey, quote, book, links, campaignSettings) {
   const [, dc] = apiKey.split('-')
@@ -67,23 +68,27 @@ export async function createCampaign (apiKey, quote, book, links, campaignSettin
         link_primary_title: await renderLinkPrimaryTitle(links[0]),
         link_primary_content: await renderLinkContent(links[0]),
         // syntax for repeatable blocks '[mc:repeatable]:[mc:repeatindex]:[mc:edit]'
-        'link_secondary_1:0:link_secondary_title': await renderLinkSecondaryTitle(links[1]),
-        'link_secondary_1:0:link_secondary_content': await renderLinkContent(links[1]),
-        'link_secondary_2:0:link_secondary_title': await renderLinkSecondaryTitle(links[2]),
-        'link_secondary_2:0:link_secondary_content': await renderLinkContent(links[2]),
-        'link_secondary_3:0:link_secondary_title': await renderLinkSecondaryTitle(links[3]),
-        'link_secondary_3:0:link_secondary_content': await renderLinkContent(links[3]),
-        'link_secondary_4:0:link_secondary_title': await renderLinkSecondaryTitle(links[4]),
-        'link_secondary_4:0:link_secondary_content': await renderLinkContent(links[4]),
-        'link_secondary_5:0:link_secondary_title': await renderLinkSecondaryTitle(links[5]),
-        'link_secondary_5:0:link_secondary_content': await renderLinkContent(links[5]),
-        'link_secondary_6:0:link_secondary_title': await renderLinkSecondaryTitle(links[6]),
-        'link_secondary_6:0:link_secondary_content': await renderLinkContent(links[6]),
+        'repeat_1:0:link_secondary_title': await renderLinkSecondaryTitle(links[1]),
+        'repeat_1:0:link_secondary_content': await renderLinkContent(links[1]),
+        'repeat_2:0:link_secondary_title': await renderLinkSecondaryTitle(links[2]),
+        'repeat_2:0:link_secondary_content': await renderLinkContent(links[2]),
+        'repeat_3:0:link_secondary_title': await renderLinkSecondaryTitle(links[3]),
+        'repeat_3:0:link_secondary_content': await renderLinkContent(links[3]),
+        'repeat_4:0:link_secondary_title': await renderLinkSecondaryTitle(links[4]),
+        'repeat_4:0:link_secondary_content': await renderLinkContent(links[4]),
+        'repeat_5:0:link_secondary_title': await renderLinkSecondaryTitle(links[5]),
+        'repeat_5:0:link_secondary_content': await renderLinkContent(links[5]),
+        'repeat_6:0:link_secondary_title': await renderLinkSecondaryTitle(links[6]),
+        'repeat_6:0:link_secondary_content': await renderLinkContent(links[6]),
         book_title: await renderBookTitle(book),
         book_image: await renderBookImage(book),
         book_content: await renderBookContent(book),
         book_buy_amazoncom: await renderBookBuyLink(book.links.usa, 'Amazon.com'),
-        book_buy_amazoncouk: await renderBookBuyLink(book.links.uk, 'Amazon.co.uk')
+        book_buy_amazoncouk: await renderBookBuyLink(book.links.uk, 'Amazon.co.uk'),
+        extracontent: await renderExtraContent(
+          generateExtraContentTitle(campaignSettings.issueNumber),
+          links.slice(7)
+        )
       }
     }
   }
