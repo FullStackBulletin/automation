@@ -611,37 +611,39 @@
                                                     5,
                                                     6
                                                   ] %}
-                                                    <tr mc:repeatable="link_secondary_{{i}}" mc:variant="regular link">
+                                                    <tr>
                                                       <td style="padding-top:64px;padding-bottom:48px;padding-right:48px;padding-left:48px" class="mceBlockContainer" valign="top">
-                                                        <div data-block-id="{{i}}49" class="mceText" id="dataBlockId-{{i}}49" style="width:100%" mc:edit="link_secondary_title">
+                                                        <div data-block-id="{{i}}49" class="mceText" id="dataBlockId-{{i}}49" style="width:100%" mc:edit="link_secondary_title_{{ i }}">
                                                           {{ linkTpl.secondary_title(links[i]) }}
                                                         </div>
-                                                        <div data-block-id="{{i}}45" class="mceText" id="dataBlockId-{{i}}45" style="width:100%" mc:edit="link_secondary_content">
+                                                        <div data-block-id="{{i}}45" class="mceText" id="dataBlockId-{{i}}45" style="width:100%" mc:edit="link_secondary_content_{{ i }}">
                                                           {{ linkTpl.content(links[i]) }}
                                                         </div>
                                                       </td>
                                                     </tr>
-                                                    <tr mc:repeatable="link_secondary_{{i}}" mc:variant="sponsored link">
-                                                      <td style="background-color:#f0f0f0;padding-top:48px;padding-bottom:48px;padding-right:48px;padding-left:48px" class="mceBlockContainer" valign="top">
-                                                        <div data-block-id="{{i}}49" class="mceText" id="dataBlockId-{{i}}49" style="width:100%" mc:edit="link_secondary_title">
-                                                          <p style="text-align: right;">
-                                                            <strong>
-                                                              <span style="color:#666;">sponsored</span></strong>
-                                                          </p>
-                                                          <h2 style="text-align: left; padding-bottom: 16px" class="last-child">
-                                                            <strong>Sponsored Content</strong>
-                                                          </h2>
-                                                        </div>
-                                                        <div data-block-id="{{i}}45" class="mceText" id="dataBlockId-{{i}}45" style="width:100%" mc:edit="link_secondary_content">
-                                                          <p>Add here the text for your sponsored content</p>
-                                                          <p class="last-child" style="padding-top: 16px">
-                                                            <a href="https://example.com" target="_blank">
-                                                              <strong>Read Article</strong>
-                                                            </a>
-                                                          </p>
-                                                        </div>
-                                                      </td>
-                                                    </tr>
+                                                    {% if i == 3 %}
+                                                      <tr mc:hideable>
+                                                        <td style="background-color:#f0f0f0;padding-top:48px;padding-bottom:48px;padding-right:48px;padding-left:48px" class="mceBlockContainer" valign="top">
+                                                          <div data-block-id="{{i}}49" class="mceText" id="dataBlockId-{{i}}49" style="width:100%" mc:edit="sp_link_secondary_title">
+                                                            <p style="text-align: right;">
+                                                              <strong>
+                                                                <span style="color:#666;">sponsored</span></strong>
+                                                            </p>
+                                                            <h2 style="text-align: left; padding-bottom: 16px" class="last-child">
+                                                              <strong>Sponsored Content</strong>
+                                                            </h2>
+                                                          </div>
+                                                          <div data-block-id="{{i}}45" class="mceText" id="dataBlockId-{{i}}45" style="width:100%" mc:edit="sp_link_secondary_content">
+                                                            <p>Add here the text for your sponsored content</p>
+                                                            <p class="last-child" style="padding-top: 16px">
+                                                              <a href="https://example.com" target="_blank">
+                                                                <strong>Read Article</strong>
+                                                              </a>
+                                                            </p>
+                                                          </div>
+                                                        </td>
+                                                      </tr>
+                                                    {% endif %}
                                                   {% endfor %}
                                                   <tr>
                                                     <td style="background-color:transparent;padding-top:0;padding-bottom:0;padding-right:0;padding-left:0" class="mceBlockContainer" valign="top">
