@@ -11,7 +11,7 @@ const uploadImage = (client, imageUrl, publicId, hostname, stopRetry) =>
           return reject(result.error)
         }
 
-        const fallbackImageUrl = 'https://placeimg.com/500/240/tech'
+        const fallbackImageUrl = 'https://placehold.co/600x400'
         return resolve(uploadImage(client, fallbackImageUrl, publicId, hostname, true))
       }
       return resolve(result)
