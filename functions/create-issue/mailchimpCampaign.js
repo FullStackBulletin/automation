@@ -1,5 +1,5 @@
 import { request } from 'undici'
-import { renderBookBuyLink, renderBookContent, renderBookImage, renderBookTitle, renderExtraContent, renderIntro, renderLinkContent, renderLinkPrimaryImage, renderLinkPrimaryTitle, renderLinkSecondaryTitle, renderQuote } from './template.js'
+import { renderBookBuyLink, renderBookContent, renderBookImage, renderBookTitle, renderExtraContent, renderIntro, renderLinkContent, renderLinkPrimaryImage, renderQuote } from './template.js'
 import { generateExtraContentTitle } from './extraContent.js'
 
 export async function createCampaign (apiKey, quote, book, links, campaignSettings) {
@@ -65,19 +65,12 @@ export async function createCampaign (apiKey, quote, book, links, campaignSettin
         // sponsor_banner: '', // Enable this in the future when sponsorship is automated
         quote: await renderQuote(quote),
         link_primary_image: await renderLinkPrimaryImage(links[0]),
-        link_primary_title: await renderLinkPrimaryTitle(links[0]),
         link_primary_content: await renderLinkContent(links[0]),
-        link_secondary_title_1: await renderLinkSecondaryTitle(links[1]),
         link_secondary_content_1: await renderLinkContent(links[1]),
-        link_secondary_title_2: await renderLinkSecondaryTitle(links[2]),
         link_secondary_content_2: await renderLinkContent(links[2]),
-        link_secondary_title_3: await renderLinkSecondaryTitle(links[3]),
         link_secondary_content_3: await renderLinkContent(links[3]),
-        link_secondary_title_4: await renderLinkSecondaryTitle(links[4]),
         link_secondary_content_4: await renderLinkContent(links[4]),
-        link_secondary_title_5: await renderLinkSecondaryTitle(links[5]),
         link_secondary_content_5: await renderLinkContent(links[5]),
-        link_secondary_title_6: await renderLinkSecondaryTitle(links[6]),
         link_secondary_content_6: await renderLinkContent(links[6]),
         book_title: await renderBookTitle(book),
         book_image: await renderBookImage(book),

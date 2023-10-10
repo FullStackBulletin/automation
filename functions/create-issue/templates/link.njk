@@ -10,27 +10,15 @@
   </a>
 {% endmacro %}
 
-{% macro primary_title(link) %}
-  <h1 style="text-align: left; padding-bottom: 16px" class="last-child">
-    <a href="{{ link.campaignUrls.title | default('https://example.com') }}" target="_blank" style="text-decoration: none;">
-      <strong>{{ link.title | default('title') }}</strong>
-    </a>
-  </h1>
-{% endmacro %}
-
 {% macro content(link) %}
-  <p>{{ link.description | default('Article content... a very long piece of text that tells you some amazing stories about some fundamental piece of knowledge you should have to thrive as a Full Stack developer.') }}</p>
-  <p class="last-child" style="padding-top: 16px">
+  <p>
+    <a style="color:#73310F; font-weight: bold; font-size:20px; font-family:roboto,helvetica neue,helvetica,arial,sans-serif;" href="{{ link.campaignUrls.title | default('https://example.com') }}" target="_blank">
+      {{ link.title | default('title') }}
+    </a>
+    <span style="color:#73310F; font-size:20px; font-family:roboto,helvetica neue,helvetica,arial,sans-serif;">&nbsp;&mdash;&nbsp;</span>
+    {{ link.description | default('Article content... a very long piece of text that tells you some amazing stories about some fundamental piece of knowledge you should have to thrive as a Full Stack developer.') }}
     <a href="{{ link.campaignUrls.description | default('https://example.com') }}" target="_blank">
       <strong>{{ link.url | getLinkLabelBasedOnUrl }}</strong>
     </a>
   </p>
-{% endmacro %}
-
-{% macro secondary_title(link) %}
-  <h2 style="text-align: left; padding-bottom: 16px" class="last-child">
-    <a href="{{ link.campaignUrls.title | default('https://example.com') }}" target="_blank" style="text-decoration: none;">
-      <strong>{{ link.title | default('title') }}</strong>
-    </a>
-  </h2>
 {% endmacro %}
