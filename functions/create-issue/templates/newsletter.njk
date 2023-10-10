@@ -549,7 +549,7 @@
                                               <table border="0" cellpadding="0" cellspacing="0" width="100%" role="presentation">
                                                 <tbody>
                                                   <tr>
-                                                    <td style="padding-top:12px;padding-bottom:12px;padding-right:24px;padding-left:24px" class="mceBlockContainer" valign="top">
+                                                    <td style="padding-top:12px;padding-bottom:12px;padding-right:24px;padding-left:24px" valign="top">
                                                       <div data-block-id="1" class="mceText" id="dataBlockId-1" style="width:100%">
                                                         <p style="text-align: right;" class="last-child">
                                                           <a href="*|ARCHIVE|*">
@@ -559,23 +559,23 @@
                                                     </td>
                                                   </tr>
                                                   <tr>
-                                                    <td style="padding-top:12px;padding-bottom:12px;padding-right:24px;padding-left:24px" class="mceBlockContainer" align="center" valign="top"><img data-block-id="2" width="200" height="auto" style="width:200px;height:auto;max-width:100%;display:block" alt="Logo" src="https://mcusercontent.com/b015626aa6028495fe77c75ea/images/85e10814-487f-ff81-3aae-065cd1e82ce9.png" class=""/></td>
+                                                    <td style="padding-top:12px;padding-bottom:12px;padding-right:24px;padding-left:24px" align="center" valign="top"><img data-block-id="2" width="140" height="auto" style="width:140px;height:auto;max-width:100%;display:block" alt="Logo" src="https://mcusercontent.com/b015626aa6028495fe77c75ea/images/94a48d60-b447-0a04-4b2d-ddb9db860010.png" class=""/></td>
                                                   </tr>
                                                   <tr>
-                                                    <td style="padding-top:48px;padding-bottom:48px;padding-right:48px;padding-left:48px" class="mceBlockContainer" valign="top">
+                                                    <td style="padding-top:16px;padding-bottom:16px;padding-right:48px;padding-left:48px" valign="top">
                                                       <div data-block-id="4" class="mceText" id="dataBlockId-4" style="width:100%" mc:edit="intro">
                                                         {% include "intro.njk" %}
                                                       </div>
                                                     </td>
                                                   </tr>
                                                   <tr>
-                                                    <td style="padding-top:12px;padding-bottom:48px;padding-right:48px;padding-left:48px" class="mceBlockContainer" valign="top" mc:edit="sponsor_banner" mc:hideable>
+                                                    <td style="padding-top:12px;padding-bottom:16px;padding-right:48px;padding-left:48px" valign="top" mc:edit="sponsor_banner" mc:hideable>
                                                       {% include "sponsor_banner.njk" %}
                                                     </td>
                                                   </tr>
                                                   {% if quote %}
                                                     <tr>
-                                                      <td style="background-color:#fefdec;padding-top:24px;padding-bottom:24px;padding-right:48px;padding-left:48px" class="mceBlockContainer" valign="top">
+                                                      <td style="background-color:#fefdec;padding-top:24px;padding-bottom:24px;padding-right:48px;padding-left:48px" valign="top">
                                                         <div data-block-id="42" class="mceText" id="dataBlockId-42" style="width:100%" mc:edit="quote">
                                                           {% include "quote.njk" %}
                                                         </div>
@@ -583,21 +583,14 @@
                                                     </tr>
                                                   {% endif %}
                                                   <tr>
-                                                    <td style="padding-top:48px;padding-bottom:12px;padding-right:0;padding-left:0" class="mceBlockContainer" align="center" valign="top">
+                                                    <td style="padding-top:16px;padding-bottom:12px;padding-right:0;padding-left:0" align="center" valign="top">
                                                       <p mc:edit="link_primary_image">
                                                         {{ linkTpl.primary_image(links[0]) }}
                                                       </p>
                                                     </td>
                                                   </tr>
                                                   <tr>
-                                                    <td style="padding-top:6px;padding-bottom:0;padding-right:48px;padding-left:48px" class="mceBlockContainer" valign="top">
-                                                      <div data-block-id="3" class="mceText" id="dataBlockId-3" style="width:100%" mc:edit="link_primary_title">
-                                                        {{ linkTpl.primary_title(links[0]) }}
-                                                      </div>
-                                                    </td>
-                                                  </tr>
-                                                  <tr>
-                                                    <td style="padding-top:0;padding-bottom:6px;padding-right:48px;padding-left:48px" class="mceBlockContainer" valign="top">
+                                                    <td style="padding-top:0;padding-bottom:6px;padding-right:48px;padding-left:48px" valign="top">
                                                       <div data-block-id="43" class="mceText" id="dataBlockId-43" style="width:100%" mc:edit="link_primary_content">
                                                         {{ linkTpl.content(links[0]) }}
                                                       </div>
@@ -612,10 +605,7 @@
                                                     6
                                                   ] %}
                                                     <tr>
-                                                      <td style="padding-top:64px;padding-bottom:48px;padding-right:48px;padding-left:48px" class="mceBlockContainer" valign="top">
-                                                        <div data-block-id="{{i}}49" class="mceText" id="dataBlockId-{{i}}49" style="width:100%" mc:edit="link_secondary_title_{{ i }}">
-                                                          {{ linkTpl.secondary_title(links[i]) }}
-                                                        </div>
+                                                      <td style="padding-top:16px;padding-bottom:16px;padding-right:48px;padding-left:48px" valign="top">
                                                         <div data-block-id="{{i}}45" class="mceText" id="dataBlockId-{{i}}45" style="width:100%" mc:edit="link_secondary_content_{{ i }}">
                                                           {{ linkTpl.content(links[i]) }}
                                                         </div>
@@ -623,20 +613,19 @@
                                                     </tr>
                                                     {% if i == 3 %}
                                                       <tr mc:hideable>
-                                                        <td style="background-color:#f0f0f0;padding-top:48px;padding-bottom:48px;padding-right:48px;padding-left:48px" class="mceBlockContainer" valign="top">
+                                                        <td style="background-color:#fefdec;padding-top:16px;padding-bottom:32px;padding-right:48px;padding-left:48px" valign="top">
                                                           <div data-block-id="{{i}}49" class="mceText" id="dataBlockId-{{i}}49" style="width:100%" mc:edit="sp_link_secondary_title">
                                                             <p style="text-align: right;">
                                                               <strong>
-                                                                <span style="color:#666;">sponsored</span></strong>
+                                                                <span style="color:#666; font-size: 12px">sponsored</span></strong>
                                                             </p>
-                                                            <h2 style="text-align: left; padding-bottom: 16px" class="last-child">
-                                                              <strong>Sponsored Content</strong>
-                                                            </h2>
-                                                          </div>
-                                                          <div data-block-id="{{i}}45" class="mceText" id="dataBlockId-{{i}}45" style="width:100%" mc:edit="sp_link_secondary_content">
-                                                            <p>Add here the text for your sponsored content</p>
-                                                            <p class="last-child" style="padding-top: 16px">
-                                                              <a href="https://example.com" target="_blank">
+                                                            <p>
+                                                              <a style="color:#73310F; font-weight: bold; font-size:20px; font-family:roboto,helvetica neue,helvetica,arial,sans-serif;" href="https://example.com" target="_blank">
+                                                                Sponsored Content
+                                                              </a>
+                                                              <span style="color:#73310F; font-size:20px; font-family:roboto,helvetica neue,helvetica,arial,sans-serif;">&nbsp;&mdash;&nbsp;</span>
+                                                              Add here the text for your sponsored content.
+                                                              <a style="color: #000" href="https://example.com" target="_blank">
                                                                 <strong>Read Article</strong>
                                                               </a>
                                                             </p>
@@ -646,7 +635,7 @@
                                                     {% endif %}
                                                   {% endfor %}
                                                   <tr>
-                                                    <td style="background-color:transparent;padding-top:0;padding-bottom:0;padding-right:0;padding-left:0" class="mceBlockContainer" valign="top">
+                                                    <td style="background-color:transparent;padding-top:0;padding-bottom:0;padding-right:0;padding-left:0" valign="top">
                                                       <table border="0" cellpadding="0" cellspacing="0" width="100%" style="background-color:transparent" role="presentation" data-block-id="59">
                                                         <tbody>
                                                           <tr>
@@ -657,28 +646,28 @@
                                                     </td>
                                                   </tr>
                                                   <tr>
-                                                    <td style="background-color:#fefdec;padding-top:48px;padding-bottom:12px;padding-right:48px;padding-left:48px" class="mceBlockContainer" valign="top">
+                                                    <td style="background-color:#fefdec;padding-top:16px;padding-bottom:12px;padding-right:48px;padding-left:48px" valign="top">
                                                       <div data-block-id="57" class="mceText" id="dataBlockId-57" style="width:100%" mc:edit="book_title">
                                                         {{ bookTpl.title(book) }}
                                                       </div>
                                                     </td>
                                                   </tr>
                                                   <tr>
-                                                    <td style="background-color:#fefdec;padding-top:12px;padding-bottom:12px;padding-right:48px;padding-left:48px" class="mceBlockContainer" align="left" valign="top">
+                                                    <td style="background-color:#fefdec;padding-top:12px;padding-bottom:12px;padding-right:48px;padding-left:48px" align="left" valign="top">
                                                       <p mc:edit="book_image">
                                                         {{ bookTpl.image(book) }}
                                                       </p>
                                                     </td>
                                                   </tr>
                                                   <tr>
-                                                    <td style="background-color:#fefdec;padding-top:12px;padding-bottom:12px;padding-right:48px;padding-left:48px" class="mceBlockContainer" valign="top">
+                                                    <td style="background-color:#fefdec;padding-top:12px;padding-bottom:12px;padding-right:48px;padding-left:48px" valign="top">
                                                       <div data-block-id="58" class="mceText" id="dataBlockId-58" style="width:100%" mc:edit="book_content">
                                                         {{ bookTpl.content(book) }}
                                                       </div>
                                                     </td>
                                                   </tr>
                                                   <tr>
-                                                    <td style="background-color:#fefdec;padding-top:12px;padding-bottom:48px;padding-right:0;padding-left:0" class="mceLayoutContainer" valign="top">
+                                                    <td style="background-color:#fefdec;padding-top:12px;padding-bottom:16px;padding-right:0;padding-left:0" class="mceLayoutContainer" valign="top">
                                                       <table align="center" border="0" cellpadding="0" cellspacing="0" width="100%" role="presentation" data-block-id="60" id="section_bb5e94f2c4d114eb21c733fd4d6c67b4" class="mceLayout">
                                                         <tbody>
                                                           <tr class="mceRow">
@@ -715,7 +704,7 @@
                                                                                                                       <table border="0" cellpadding="0" cellspacing="0" width="100%" role="presentation">
                                                                                                                         <tbody>
                                                                                                                           <tr>
-                                                                                                                            <td style="padding-top:12px;padding-bottom:12px;padding-right:12px;padding-left:48px" class="mceBlockContainer" align="left" valign="top">
+                                                                                                                            <td style="padding-top:12px;padding-bottom:12px;padding-right:12px;padding-left:48px" align="left" valign="top">
                                                                                                                               <table align="left" border="0" cellpadding="0" cellspacing="0" role="presentation" data-block-id="66">
                                                                                                                                 <tbody>
                                                                                                                                   <tr class="mceStandardButton">
@@ -765,7 +754,7 @@
                                                                                                                       <table border="0" cellpadding="0" cellspacing="0" width="100%" role="presentation">
                                                                                                                         <tbody>
                                                                                                                           <tr>
-                                                                                                                            <td style="padding-top:12px;padding-bottom:12px;padding-right:48px;padding-left:0" class="mceBlockContainer" align="left" valign="top">
+                                                                                                                            <td style="padding-top:12px;padding-bottom:12px;padding-right:48px;padding-left:0" align="left" valign="top">
                                                                                                                               <table align="left" border="0" cellpadding="0" cellspacing="0" role="presentation" data-block-id="67">
                                                                                                                                 <tbody>
                                                                                                                                   <tr class="mceStandardButton">
@@ -846,7 +835,7 @@
                                                   </tr>
 
                                                   <tr>
-                                                    <td style="padding-top:48px;padding-bottom:12px;padding-right:48px;padding-left:48px" class="mceBlockContainer" valign="top">
+                                                    <td style="padding-top:16px;padding-bottom:12px;padding-right:48px;padding-left:48px" valign="top">
                                                       <div data-block-id="184" class="mceText" id="dataBlockId-184" style="width:100%" mc:edit="extracontent" mc:hideable>
                                                         {% include "extra_content.njk" %}
                                                       </div>
@@ -854,7 +843,7 @@
                                                   </tr>
 
                                                   <tr>
-                                                    <td style="padding-top:48px;padding-bottom:48px;padding-right:48px;padding-left:48px" class="mceBlockContainer" valign="top">
+                                                    <td style="padding-top:16px;padding-bottom:16px;padding-right:48px;padding-left:48px" valign="top">
                                                       <div data-block-id="82" class="mceText" id="dataBlockId-82" style="width:100%" mc:edit="goodbye">
                                                         <p style="text-align: center;">
                                                           <span style="font-size: 18px">👋 That’s all for this week. See you next Monday!</span>
@@ -873,7 +862,7 @@
                                                     </td>
                                                   </tr>
                                                   <tr>
-                                                    <td style="background-color:#f0f0f0;padding-top:48px;padding-bottom:48px;padding-right:40px;padding-left:40px" class="mceLayoutContainer" valign="top">
+                                                    <td style="background-color:#f0f0f0;padding-top:16px;padding-bottom:16px;padding-right:40px;padding-left:40px" class="mceLayoutContainer" valign="top">
                                                       <table align="center" border="0" cellpadding="0" cellspacing="0" width="100%" role="presentation" data-block-id="31" id="section_1f0fd79a337841986b95d13f53af07ee" class="mceLayout">
                                                         <tbody>
                                                           <tr class="mceRow">
@@ -898,7 +887,7 @@
                                                                                               <table border="0" cellpadding="0" cellspacing="0" width="100%" role="presentation">
                                                                                                 <tbody>
                                                                                                   <tr>
-                                                                                                    <td style="padding-top:12px;padding-bottom:12px;padding-right:16px;padding-left:16px" class="mceBlockContainer" valign="top">
+                                                                                                    <td style="padding-top:12px;padding-bottom:12px;padding-right:16px;padding-left:16px" valign="top">
                                                                                                       <div data-block-id="27" class="mceText" id="dataBlockId-27" style="width:100%" mc:edit="support_title">
                                                                                                         <h2 style="line-height: 1.5;" class="last-child">🙌 Support us</h2>
                                                                                                       </div>
@@ -911,7 +900,7 @@
                                                                                               <table border="0" cellpadding="0" cellspacing="0" width="100%" role="presentation">
                                                                                                 <tbody>
                                                                                                   <tr>
-                                                                                                    <td style="padding-top:12px;padding-bottom:12px;padding-right:16px;padding-left:16px" class="mceBlockContainer" valign="top">
+                                                                                                    <td style="padding-top:12px;padding-bottom:12px;padding-right:16px;padding-left:16px" valign="top">
                                                                                                       <div data-block-id="29" class="mceText" id="dataBlockId-29" style="width:100%" mc:edit="support_content">
                                                                                                         <p>If you enjoy FullStack Bulletin, consider sharing this newsletter with your friends and colleagues.</p>
                                                                                                         <p><br/></p>
@@ -1004,7 +993,7 @@
                                                                       <table border="0" cellpadding="0" cellspacing="0" width="100%" role="presentation">
                                                                         <tbody>
                                                                           <tr>
-                                                                            <td style="padding-top:12px;padding-bottom:12px;padding-right:16px;padding-left:16px" class="mceBlockContainer" align="center" valign="top">
+                                                                            <td style="padding-top:12px;padding-bottom:12px;padding-right:16px;padding-left:16px" align="center" valign="top">
                                                                               <div data-block-id="36" class="mceText" id="dataBlockId-36" style="display:inline-block;width:100%">
                                                                                 <p>
                                                                                   <em>

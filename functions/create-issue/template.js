@@ -92,20 +92,6 @@ export function renderLinkPrimaryImage (link) {
   )
 }
 
-export function renderLinkPrimaryTitle (link) {
-  return minify(
-    env.render('link_primary_title.njk', { link }),
-    minifySettings
-  )
-}
-
-export function renderLinkSecondaryTitle (link) {
-  return minify(
-    env.render('link_secondary_title.njk', { link }),
-    minifySettings
-  )
-}
-
 export function renderLinkContent (link) {
   return minify(
     env.render('link_content.njk', { link }),
