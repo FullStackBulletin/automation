@@ -104,13 +104,15 @@ Resources:
 
   FetchBookFunction:
     Type: AWS::Serverless::Function
+    Metadata:
+      BuildMethod: rust-cargolambda
     Properties:
       CodeUri: functions/fetch-book/
-      Handler: handler.fetchBook
-      Runtime: nodejs18.x
+      Handler: bootstrap
+      Runtime: provided.al2023
       Timeout: 15
       Architectures:
-        - x86_64
+        - arm64
 
   FetchLinksFunction:
     Type: AWS::Serverless::Function

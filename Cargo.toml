@@ -1,3 +1,7 @@
 [workspace]
 resolver = "2"
-members = ["functions/fetch-issue-number", "functions/fetch-quote"]
+members = [
+  "functions/fetch-issue-number",
+  "functions/fetch-quote",
+  "functions/fetch-book",
+]
