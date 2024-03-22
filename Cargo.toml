@@ -1,0 +1,6 @@
+[workspace]
+members = [
+  "functions/fetch-book",
+  "functions/fetch-issue-number",
+  "functions/fetch-quote",
+]
