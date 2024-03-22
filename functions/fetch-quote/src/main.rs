@@ -1,4 +1,4 @@
-use lambda_runtime::{run, service_fn, Error, LambdaEvent};
+use lambda_runtime::{run, service_fn, tracing, Error, LambdaEvent};
 use std::env;
 
 mod fetcher;
@@ -15,11 +15,6 @@ async fn function_handler(event: LambdaEvent<Request>) -> Result<Quote, Error> {
 
 #[tokio::main]
 async fn main() -> Result<(), Error> {
-    tracing_subscriber::fmt()
-        .with_max_level(tracing::Level::INFO)
-        .with_target(false)
-        .without_time()
-        .init();
-
+    tracing::init_default_subscriber();
     run(service_fn(function_handler)).await
 }

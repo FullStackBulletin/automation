@@ -82,7 +82,7 @@ Resources:
     Properties:
       CodeUri: functions/fetch-issue-number/
       Handler: bootstrap
-      Runtime: provided.al2
+      Runtime: provided.al2023
       Timeout: 15
       Architectures:
         - arm64
@@ -97,20 +97,22 @@ Resources:
     Properties:
       CodeUri: functions/fetch-quote/
       Handler: bootstrap
-      Runtime: provided.al2
+      Runtime: provided.al2023
       Timeout: 15
       Architectures:
         - arm64
 
   FetchBookFunction:
     Type: AWS::Serverless::Function
+    Metadata:
+      BuildMethod: rust-cargolambda
     Properties:
       CodeUri: functions/fetch-book/
-      Handler: handler.fetchBook
-      Runtime: nodejs18.x
+      Handler: bootstrap
+      Runtime: provided.al2023
       Timeout: 15
       Architectures:
-        - x86_64
+        - arm64
 
   FetchLinksFunction:
     Type: AWS::Serverless::Function

@@ -18,16 +18,14 @@
 {% endmacro %}
 
 {% macro content(book) %}
-  <p class="last-child">
-    {{ book.description | default('Book description') }}
-  </p>
+  {{ book.description | default('Book description') | safe }}
 {% endmacro %}
 
 {% macro buy(link, label) %}
   <a
     href="{{ link | default('https://example.com') }}"
     target="_blank"
-    style="background-color:#fefdec;border-radius:50px;border:2px solid #000000;color:#000000;display:block;font-family:'Helvetica Neue', Helvetica, Arial, Verdana, sans-serif;font-size:16px;font-weight:bold;font-style:normal;padding:16px 28px;text-decoration:none;min-width:30px;text-align:center;direction:ltr;letter-spacing:0px">
-      Buy on {{ label | default('Amazon') }}
+    style="background-color:#fefdec;border-radius:50px;border:2px solid #000000;color:#000000;display:block;font-family:'Helvetica Neue', Helvetica, Arial, Verdana, sans-serif;font-size:16px;font-weight:bold;font-style:normal;padding:16px 28px;text-decoration:none;min-width:30px;text-align:center;direction:ltr;letter-spacing:0px; margin-top: 1em">
+    {{ label | default('Get the book') }}
   </a>
 {% endmacro %}
