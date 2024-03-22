@@ -20,9 +20,9 @@ test('it should render the template', async () => {
       title: "Build APIs You Won't Hate: Everyone and their dog wants an API, so you should probably learn how to build them",
       author: 'Phil Sturgeon',
       links: {
-        usa: 'https://www.amazon.com/dp/0692232699/?tag=fullstackbulletin-20',
-        uk: 'https://www.amazon.co.uk/dp/0692232699/?tag=fullstackbulletin-21',
-        free: 'https://www.amazon.co.uk/dp/0692232699/?tag=fullstackbulletin-21'
+        us: 'https://www.amazon.com/dp/0692232699/',
+        uk: 'https://www.amazon.co.uk/dp/0692232699/',
+        free: 'https://www.amazon.co.uk/dp/0692232699/'
       },
       coverPicture: 'https://images-na.ssl-images-amazon.com/images/I/41A-D5UDB%2BL.jpg',
       description: 'API development is becoming increasingly common for server-side developers thanks to the rise of front-end JavaScript frameworks, iPhone applications, and API-centric architectures. It might seem like grabbing stuff from a data source and shoving it out as JSON would be easy, but surviving changes in business logic, database schema updates, new features, or deprecated endpoints can be a nightmare. After finding many of the existing resources for API development to be lacking, Phil learned a lot of things the hard way through years of trial and error. This book aims to condense that experience, taking examples and explanations further than the trivial apples and pears nonsense tutorials often provide. By passing on some best practices and general good advice you can hit the ground running with API development, combined with some horror stories and how they were overcome/avoided/averted.'

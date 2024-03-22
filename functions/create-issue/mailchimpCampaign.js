@@ -75,8 +75,7 @@ export async function createCampaign (apiKey, quote, book, links, campaignSettin
         book_title: await renderBookTitle(book),
         book_image: await renderBookImage(book),
         book_content: await renderBookContent(book),
-        book_buy_amazoncom: await renderBookBuyLink(book.links.usa, 'Amazon.com'),
-        book_buy_amazoncouk: await renderBookBuyLink(book.links.uk, 'Amazon.co.uk'),
+        book_buy_links: await renderBookBuyLink(book.links),
         extracontent: await renderExtraContent(
           generateExtraContentTitle(campaignSettings.issueNumber),
           links.slice(7)

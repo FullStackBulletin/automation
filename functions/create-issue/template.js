@@ -120,9 +120,9 @@ export function renderBookContent (book) {
   )
 }
 
-export function renderBookBuyLink (link, label) {
+export function renderBookBuyLink (links) {
   return minify(
-    env.render('book_buy_link.njk', { link, label }),
+    env.render('book_buy_link.njk', { links }),
     minifySettings
   )
 }

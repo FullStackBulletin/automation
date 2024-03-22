@@ -662,7 +662,7 @@
                                                   <tr>
                                                     <td style="background-color:#fefdec;padding-top:12px;padding-bottom:12px;padding-right:48px;padding-left:48px" valign="top">
                                                       <div data-block-id="58" class="mceText" id="dataBlockId-58" style="width:100%" mc:edit="book_content">
-                                                        {{ bookTpl.content(book) }}
+                                                        {{ bookTpl.content(book) | safe }}
                                                       </div>
                                                     </td>
                                                   </tr>
@@ -708,16 +708,9 @@
                                                                                                                               <table align="left" border="0" cellpadding="0" cellspacing="0" role="presentation" data-block-id="66">
                                                                                                                                 <tbody>
                                                                                                                                   <tr class="mceStandardButton">
-                                                                                                                                    <td class="mceButton" valign="top" mc:edit="book_buy_amazoncom">
-                                                                                                                                      {% if book.links.usa %}
-                                                                                                                                        <p>{{ bookTpl.buy(book.links.usa, "Buy on Amazon.com") }}</p>
-                                                                                                                                      {% endif %}
-                                                                                                                                      {% if book.links.uk %}
-                                                                                                                                        <p>{{ bookTpl.buy(book.links.uk, "Buy on Amazon.co.uk") }}</p>
-                                                                                                                                      {% endif %}
-                                                                                                                                      {% if book.links.free %}
-                                                                                                                                        <p>{{ bookTpl.buy(book.links.free, "Read for FREE!") }}</p>
-                                                                                                                                      {% endif %}
+                                                                                                                                    <td class="mceButton" valign="top" mc:edit="book_buy_links">
+                                                                                                                                      {% set links = book.links %}
+                                                                                                                                      {% include "book_buy_link.njk" %}
                                                                                                                                     </td>
                                                                                                                                   </tr>
                                                                                                                                 </tbody>
