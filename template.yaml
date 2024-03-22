@@ -109,7 +109,7 @@ Resources:
     Properties:
       CodeUri: functions/fetch-book/
       Handler: bootstrap
-      Runtime: provided.al2023
+      Runtime: provided.al2
       Timeout: 15
       Architectures:
         - arm64

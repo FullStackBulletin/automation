@@ -1,4 +1,4 @@
-use lambda_runtime::{run, service_fn, tracing, Error, LambdaEvent};
+use lambda_runtime::{run, service_fn, Error, tracing, LambdaEvent};
 use reqwest::Client;
 use serde::{Deserialize, Serialize};
 use std::{collections::HashMap, time::Duration};
