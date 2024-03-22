@@ -9,4 +9,8 @@ This repository includes:
 - A Serverless step function that automates some of the effort needed in creating a new issue of the [FullStack Bulletin newsletter](https://fullstackbulletin.com/).
 
 
-All these components are deployed to AWS using SAM.
+All these components are deployed to AWS using SAM:
+
+```bash
+sam validate --lint && sam build --beta-features && sam deploy
+```
