@@ -78,6 +78,8 @@ Resources:
         - LambdaInvokePolicy:
             FunctionName: !Ref FetchBookFunction
         - LambdaInvokePolicy:
+            FunctionName: !Ref FetchSponsorFunction
+        - LambdaInvokePolicy:
             FunctionName: !Ref FetchLinksFunction
 
   FetchIssueNumberFunction:

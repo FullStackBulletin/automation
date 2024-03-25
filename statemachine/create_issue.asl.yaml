@@ -32,7 +32,8 @@ States:
         ResultSelector:
             Quote.$: "$[0].Quote"
             Book.$: "$[1].Book"
-            Links.$: "$[2].Links"
+            Sponsor.$: "$[2].Sponsor"
+            Links.$: "$[3].Links"
         ResultPath: "$.data"
         Branches:
             - StartAt: Fetch Quote
