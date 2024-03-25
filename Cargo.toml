@@ -1,7 +1,9 @@
 [workspace]
+resolver = "1"
 members = [
   "functions/fetch-book",
   "functions/fetch-issue-number",
   "functions/fetch-quote",
   "functions/fetch-sponsor",
+  "shared",
 ]

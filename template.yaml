@@ -47,7 +47,7 @@ Parameters:
   AirtableSponsorsTableId:
     Type: String
     Description: "The Airtable table id for the sponsors data"
-    Default: tblVFeoZDF7uASKZt
+    Default: appvAXmhtkJEt9OUH
 
 Resources:
   CreateIssueStateMachine:

@@ -1,18 +1,8 @@
 use lambda_runtime::{run, service_fn, tracing, Error, LambdaEvent};
 use reqwest::Client;
 use serde::{Deserialize, Serialize};
+use shared::Event;
 use std::{collections::HashMap, time::Duration};
-
-#[derive(Deserialize, Debug, Clone)]
-struct Issue {
-    number: u32,
-}
-
-#[derive(Deserialize, Debug, Clone)]
-struct Event {
-    #[serde(rename = "NextIssue")]
-    next_issue: Issue,
-}
 
 #[derive(Deserialize, Debug, Clone)]
 struct BookAuthor {
