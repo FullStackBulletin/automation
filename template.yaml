@@ -44,6 +44,10 @@ Parameters:
     Type: String
     Description: "Mailchimp reply to email"
     Default: "admin@fullstackbulletin.com"
+  AirtableSponsorsTableId:
+    Type: String
+    Description: "The Airtable table id for the sponsors data"
+    Default: tblVFeoZDF7uASKZt
 
 Resources:
   CreateIssueStateMachine:
@@ -55,6 +59,7 @@ Resources:
         CreateIssueFunctionArn: !GetAtt CreateIssueFunction.Arn
         FetchQuoteFunctionArn: !GetAtt FetchQuoteFunction.Arn
         FetchBookFunctionArn: !GetAtt FetchBookFunction.Arn
+        FetchSponsorFunctionArn: !GetAtt FetchSponsorFunction.Arn
         FetchLinksFunctionArn: !GetAtt FetchLinksFunction.Arn
       Events:
         HourlyTradingSchedule:
@@ -113,6 +118,25 @@ Resources:
       Timeout: 15
       Architectures:
         - arm64
+
+  FetchSponsorFunction:
+    Type: AWS::Serverless::Function
+    Metadata:
+      BuildMethod: rust-cargolambda
+    Properties:
+      CodeUri: functions/fetch-sponsor/
+      Handler: bootstrap
+      Runtime: provided.al2023
+      Timeout: 15
+      Architectures:
+        - arm64
+      Policies:
+        - SSMParameterWithSlashPrefixReadPolicy:
+            ParameterName: /FullstackBulletin/prod/*
+      Environment:
+        Variables:
+          AIRTABLE_APIKEY: "{{resolve:ssm:/FullstackBulletin/prod/AirtableApiKey}}"
+          AIRTABLE_TABLE_ID: !Ref AirtableSponsorsTableId
 
   FetchLinksFunction:
     Type: AWS::Serverless::Function
