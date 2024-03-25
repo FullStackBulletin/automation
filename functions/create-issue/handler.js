@@ -33,6 +33,9 @@ export const createIssue = async (event, _context) => {
     const links = event.data.Links
     console.log('Retrieved issue links', links)
 
+    const sponsor = event.data.Sponsor
+    console.log('Retrieved sponsor', sponsor)
+
     const campaignSettings = {
       listId: process.env.MAILCHIMP_LIST_ID,
       templateId: parseInt(process.env.MAILCHIMP_TEMPLATE_ID, 10),
@@ -53,7 +56,7 @@ export const createIssue = async (event, _context) => {
       return { quote, book, links, campaignSettings, dryRun: true }
     }
 
-    await createCampaign(process.env.MAILCHIMP_API_KEY, quote, book, links, campaignSettings)
+    await createCampaign(process.env.MAILCHIMP_API_KEY, quote, book, links, sponsor, campaignSettings)
     console.log('Mailchimp campaign created')
 
     return { quote, book, links, campaignSettings }

@@ -669,6 +669,7 @@ dependencies = [
  "reqwest 0.12.0",
  "serde",
  "serde_json",
+ "shared",
  "tokio",
 ]
 
@@ -698,10 +699,23 @@ dependencies = [
  "reqwest 0.11.27",
  "serde",
  "serde_json",
+ "shared",
  "thiserror",
  "tokio",
  "tracing",
  "tracing-subscriber",
+]
+
+[[package]]
+name = "fetch-sponsor"
+version = "0.1.0"
+dependencies = [
+ "lambda_runtime",
+ "reqwest 0.12.0",
+ "serde",
+ "serde_json",
+ "shared",
+ "tokio",
 ]
 
 [[package]]
@@ -2244,6 +2258,13 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "f40ca3c46823713e0d4209592e8d6e826aa57e928f09752619fc696c499637f6"
 dependencies = [
  "lazy_static",
+]
+
+[[package]]
+name = "shared"
+version = "0.1.0"
+dependencies = [
+ "serde",
 ]
 
 [[package]]

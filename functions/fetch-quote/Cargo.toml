@@ -29,6 +29,7 @@ tracing = { version = "0.1", features = ["log"] }
 tracing-subscriber = { version = "0.3", default-features = false, features = [
   "fmt",
 ] }
+shared = { path = "../../shared" }
 
 [dev-dependencies]
 httpmock = "0.6.8"

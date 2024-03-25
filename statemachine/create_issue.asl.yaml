@@ -32,7 +32,8 @@ States:
         ResultSelector:
             Quote.$: "$[0].Quote"
             Book.$: "$[1].Book"
-            Links.$: "$[2].Links"
+            Sponsor.$: "$[2].Sponsor"
+            Links.$: "$[3].Links"
         ResultPath: "$.data"
         Branches:
             - StartAt: Fetch Quote
@@ -59,6 +60,23 @@ States:
                       Resource: "${FetchBookFunctionArn}"
                       OutputPath: $
                       ResultPath: $.Book
+                      Retry:
+                          - ErrorEquals:
+                                - Lambda.ServiceException
+                                - Lambda.AWSLambdaException
+                                - Lambda.SdkClientException
+                                - Lambda.TooManyRequestsException
+                            IntervalSeconds: 2
+                            MaxAttempts: 6
+                            BackoffRate: 2
+                      End: true
+            - StartAt: Fetch Sponsor
+              States:
+                  Fetch Sponsor:
+                      Type: Task
+                      Resource: "${FetchSponsorFunctionArn}"
+                      OutputPath: $
+                      ResultPath: $.Sponsor
                       Retry:
                           - ErrorEquals:
                                 - Lambda.ServiceException

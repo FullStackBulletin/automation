@@ -27,17 +27,6 @@ pub struct InputQuote {
     pub url: String,
 }
 
-#[derive(Deserialize)]
-pub struct NextIssue {
-    pub number: u32,
-}
-
-#[derive(Deserialize)]
-pub struct Request {
-    #[serde(rename = "NextIssue")]
-    pub next_issue: NextIssue,
-}
-
 #[derive(Deserialize, Serialize)]
 pub struct Quote {
     pub id: u32,

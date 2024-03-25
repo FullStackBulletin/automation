@@ -2,7 +2,7 @@ import { request } from 'undici'
 import { renderBookBuyLink, renderBookContent, renderBookImage, renderBookTitle, renderExtraContent, renderIntro, renderLinkContent, renderLinkPrimaryImage, renderQuote } from './template.js'
 import { generateExtraContentTitle } from './extraContent.js'
 
-export async function createCampaign (apiKey, quote, book, links, campaignSettings) {
+export async function createCampaign (apiKey, quote, book, links, sponsor, campaignSettings) {
   const [, dc] = apiKey.split('-')
   const apiEndpoint = `https://${dc}.api.mailchimp.com/3.0`
   const authorization = `Basic ${Buffer.from(`apikey:${apiKey}`).toString('base64')}`
@@ -62,7 +62,8 @@ export async function createCampaign (apiKey, quote, book, links, campaignSettin
       id: campaignSettings.templateId,
       sections: {
         intro: await renderIntro(campaignSettings.issueNumber),
-        // sponsor_banner: '', // Enable this in the future when sponsorship is automated
+        sponsor_banner: sponsor.banner_html,
+        sp_link_secondary_title: sponsor.sponsored_article_html,
         quote: await renderQuote(quote),
         link_primary_image: await renderLinkPrimaryImage(links[0]),
         link_primary_content: await renderLinkContent(links[0]),
