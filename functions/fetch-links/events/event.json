@@ -1,0 +1,19 @@
+{
+  "config": {
+    "dryRun": false,
+    "detail-type": "Scheduled Event",
+    "resources": [
+      "arn:aws:events:eu-west-1:795006566846:rule/fstack-bulletin-create-is-CreateIssueStateMachineH-1ETEM0FGGP1LD"
+    ],
+    "id": "fa105473-49c9-0942-ea7d-f276aa652d7e",
+    "source": "aws.events",
+    "time": "2024-08-11T17:00:00Z",
+    "detail": {},
+    "region": "eu-west-1",
+    "version": "0",
+    "account": "795006566846"
+  },
+  "NextIssue": {
+    "number": 385
+  }
+}

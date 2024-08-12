@@ -5,7 +5,6 @@ import moment from 'moment-timezone'
 import cloudinary from 'cloudinary'
 import { bestScheduledTweets } from './best-scheduled-tweets/index.js'
 import { autoRetrieveAccessToken } from './best-scheduled-tweets/utils/fb.js'
-import { persistedMemoize } from './persistedMemoize.js'
 import { uploadImagesToCloudinary } from './uploadImagesToCloudinary.js'
 import { addCampaignUrls } from './addCampaignUrls.js'
 import { createBlacklistManager, addLinksToBlacklist } from './blacklistManager.js'
@@ -56,8 +55,7 @@ export async function fetchLinks (event) {
     const blacklistedUrls = blacklist.map(link => link.url)
     console.log('Generated blacklisted urls', blacklistedUrls)
 
-    const getLinks = persistedMemoize(process.env.CACHE_DIR, 'bst_')(bestScheduledTweets)
-    const links = await getLinks({
+    const links = await bestScheduledTweets({
       mastodonClient,
       fbApp,
       fallbackImageClient,
