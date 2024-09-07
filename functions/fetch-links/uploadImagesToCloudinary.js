@@ -7,11 +7,12 @@ const uploadImage = (client, imageUrl, publicId, hostname, stopRetry) =>
     const upload = client.uploader.upload(imageUrl, (result) => {
       if (result.error) {
         if (stopRetry) {
-          console.error(`Failed to upload image "${imageUrl}" to cloudinary`, result)
+          console.error(`Failed to upload image "${imageUrl}" to cloudinary:`, result.error)
+          console.error(result)
           return reject(result.error)
         }
 
-        const fallbackImageUrl = 'https://placehold.co/600x400'
+        const fallbackImageUrl = 'https://spaceholder.cc/i/600x400'
         return resolve(uploadImage(client, fallbackImageUrl, publicId, hostname, true))
       }
       return resolve(result)
@@ -37,7 +38,10 @@ const uploadImageToCloudinary = (client, folder) => (urlInfo, cb) => {
 
       return cb(null, { ...urlInfo, image, originalImage: urlInfo.image })
     })
-    .catch(err => cb(err))
+    .catch(err => {
+      console.error('Error uploading image to cloudinary', err)
+      cb(err)
+    })
 }
 
 export const uploadImagesToCloudinary = (client, folder) => urlsInfo =>
