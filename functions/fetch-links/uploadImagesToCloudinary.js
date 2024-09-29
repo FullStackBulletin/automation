@@ -12,8 +12,7 @@ const uploadImage = (client, imageUrl, publicId, hostname, stopRetry) =>
           return reject(result.error)
         }
 
-        const fallbackImageUrl = 'https://spaceholder.cc/i/600x400'
-        return resolve(uploadImage(client, fallbackImageUrl, publicId, hostname, true))
+        return resolve(`https://spaceholder.cc/i/600x400?r=${Math.random()}`)
       }
       return resolve(result)
     }, { public_id: publicId, overwrite: false })
