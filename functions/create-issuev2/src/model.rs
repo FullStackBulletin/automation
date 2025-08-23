@@ -1,7 +1,7 @@
-use serde::Deserialize;
+use serde::{Deserialize, Serialize};
 use std::collections::HashMap;
 
-#[derive(Deserialize, Debug)]
+#[derive(Deserialize, Serialize, Debug, Clone)]
 pub struct Event {
     pub config: Config,
     #[serde(rename = "NextIssue")]
@@ -9,7 +9,7 @@ pub struct Event {
     pub data: Data,
 }
 
-#[derive(Deserialize, Debug)]
+#[derive(Deserialize, Serialize, Debug, Clone)]
 pub struct Config {
     #[serde(rename = "dryRun")]
     pub dry_run: bool,
@@ -25,12 +25,12 @@ pub struct Config {
     pub account: String,
 }
 
-#[derive(Deserialize, Debug)]
+#[derive(Deserialize, Serialize, Debug, Clone)]
 pub struct NextIssue {
     pub number: u32,
 }
 
-#[derive(Deserialize, Debug)]
+#[derive(Deserialize, Serialize, Debug, Clone)]
 pub struct Data {
     #[serde(rename = "Quote")]
     pub quote: Quote,
@@ -42,7 +42,7 @@ pub struct Data {
     pub links: Vec<Link>,
 }
 
-#[derive(Deserialize, Debug)]
+#[derive(Deserialize, Serialize, Debug, Clone)]
 pub struct Quote {
     pub id: u32,
     pub text: String,
@@ -53,7 +53,7 @@ pub struct Quote {
     pub author_url: String,
 }
 
-#[derive(Deserialize, Debug)]
+#[derive(Deserialize, Serialize, Debug, Clone)]
 pub struct Book {
     pub id: String,
     pub title: String,
@@ -64,20 +64,20 @@ pub struct Book {
     pub description: String,
 }
 
-#[derive(Deserialize, Debug)]
+#[derive(Deserialize, Serialize, Debug, Clone)]
 pub struct BookLinks {
     pub us: String,
     pub uk: String,
 }
 
-#[derive(Deserialize, Debug)]
+#[derive(Deserialize, Serialize, Debug, Clone)]
 pub struct Sponsor {
     pub banner_html: String,
     pub sponsored_article_html: String,
     pub customer: String,
 }
 
-#[derive(Deserialize, Debug)]
+#[derive(Deserialize, Serialize, Debug, Clone)]
 pub struct Link {
     pub title: String,
     pub url: String,
@@ -90,7 +90,7 @@ pub struct Link {
     pub campaign_urls: CampaignUrls,
 }
 
-#[derive(Deserialize, Debug)]
+#[derive(Deserialize, Serialize, Debug, Clone)]
 pub struct CampaignUrls {
     pub title: String,
     pub image: String,

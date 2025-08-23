@@ -1,0 +1,228 @@
+{
+  "config": {
+    "dryRun": false,
+    "detail-type": "Scheduled Event",
+    "resources": [
+      "arn:aws:events:eu-west-1:795006566846:rule/fstack-bulletin-create-is-CreateIssueStateMachineH-1ETEM0FGGP1LD"
+    ],
+    "id": "0ec83f4b-0c67-5636-7eb5-cdf8e34c3528",
+    "source": "aws.events",
+    "time": "2025-08-22T17:00:00Z",
+    "detail": {},
+    "region": "eu-west-1",
+    "version": "0",
+    "account": "795006566846"
+  },
+  "NextIssue": {
+    "number": 435
+  },
+  "data": {
+    "Quote": {
+      "id": 47,
+      "text": "Computers are useless.  They can only give you answers",
+      "author": "Pablo Picasso",
+      "authorDescription": "Artist",
+      "authorUrl": "https://en.wikipedia.org/wiki/Pablo_Picasso"
+    },
+    "Book": {
+      "id": "building-microservices-2-sam-newman",
+      "title": "Building Microservices: Designing Fine-Grained Systems",
+      "author": "Sam Newman",
+      "links": {
+        "us": "https://www.amazon.com/dp/1492034029",
+        "uk": "https://www.amazon.co.uk/dp/1492034029"
+      },
+      "coverPicture": "https://fullStackbulletin.github.io/fullstack-books/covers/building-microservices-2-sam-newman.jpg",
+      "description": "<p>As organizations shift from monolithic applications to smaller, self-contained microservices, distributed systems have become more fine-grained. But developing these new systems brings its own host of problems. This expanded second edition takes a holistic view of topics that you need to consider when building, managing, and scaling microservices architectures.\nThrough clear examples and practical advice, author Sam Newman gives everyone from architects and developers to testers and IT operators a firm grounding in the concepts. You&#39;ll dive into the latest solutions for modeling, integrating, testing, deploying, and monitoring your own autonomous services. Real-world cases reveal how organizations today manage to get the most out of these architectures.\nMicroservices technologies continue to move quickly. This book brings you up to speed.</p>\n<ul>\n<li>Get new information on user interfaces, container orchestration, and serverless</li>\n<li>Align system design with your organization&#39;s goals</li>\n<li>Explore options for integrating a service with your system</li>\n<li>Understand how to independently deploy microservices</li>\n<li>Examine the complexities of testing and monitoring distributed services</li>\n<li>Manage security with expanded content around user-to-service and service-to-service models</li>\n</ul>\n"
+    },
+    "Sponsor": {
+      "banner_html": "",
+      "sponsored_article_html": "",
+      "customer": ""
+    },
+    "Links": [
+      {
+        "title": "Glass3D generator",
+        "url": "https://glass3d.dev",
+        "description": "A modern 3d glassmorphism generator",
+        "image": "http://res.cloudinary.com/loige/image/upload/c_fit,g_center,h_317,q_80,w_564/v1/fsb/90fb4c0c3edd6ce3e037f998e661ecc1.jpg",
+        "score": 33,
+        "originalImage": "https://images.unsplash.com/photo-1539683255143-73a6b838b106?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w0NjYzNjZ8MHwxfHJhbmRvbXx8fHx8fHx8fDE3NTU4ODIwODB8&ixlib=rb-4.1.0&q=80&w=400",
+        "campaignUrls": {
+          "title": "https://glass3d.dev/?utm_source=fullstackbulletin.com&utm_medium=newsletter&utm_campaign=fullstackBulletin-34-2025&utm_content=title",
+          "image": "https://glass3d.dev/?utm_source=fullstackbulletin.com&utm_medium=newsletter&utm_campaign=fullstackBulletin-34-2025&utm_content=image",
+          "description": "https://glass3d.dev/?utm_source=fullstackbulletin.com&utm_medium=newsletter&utm_campaign=fullstackBulletin-34-2025&utm_content=description"
+        }
+      },
+      {
+        "title": "Closer to the Metal: Leaving Playwright for CDP",
+        "url": "https://browser-use.com/posts/playwright-to-cdp",
+        "description": "Our journey migrating off Playwright in persuit of finer-grained control of the browser.",
+        "image": "http://res.cloudinary.com/loige/image/upload/c_fit,g_center,h_317,q_80,w_564/v1/fsb/47801e80a7a1d4ff28aac369e649ffd1.jpg",
+        "score": 1,
+        "originalImage": "https://images.unsplash.com/photo-1446776653964-20c1d3a81b06?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w0NjYzNjZ8MHwxfHJhbmRvbXx8fHx8fHx8fDE3NTU4ODIwODB8&ixlib=rb-4.1.0&q=80&w=400",
+        "campaignUrls": {
+          "title": "https://browser-use.com/posts/playwright-to-cdp?utm_source=fullstackbulletin.com&utm_medium=newsletter&utm_campaign=fullstackBulletin-34-2025&utm_content=title",
+          "image": "https://browser-use.com/posts/playwright-to-cdp?utm_source=fullstackbulletin.com&utm_medium=newsletter&utm_campaign=fullstackBulletin-34-2025&utm_content=image",
+          "description": "https://browser-use.com/posts/playwright-to-cdp?utm_source=fullstackbulletin.com&utm_medium=newsletter&utm_campaign=fullstackBulletin-34-2025&utm_content=description"
+        }
+      },
+      {
+        "title": "An Interactive Guide to SVG Paths • Josh W. Comeau",
+        "url": "https://joshwcomeau.com/svg/interactive-guide-to-paths",
+        "description": "SVG gives us many different primitives to work with, but by far the most powerful is the <path> element. Unfortunately, it’s also the most inscrutable, with its compact Regex-style syntax. In this tutorial, we’ll demystify this infamous element and see some of the cool things we can do with it!",
+        "image": "http://res.cloudinary.com/loige/image/upload/c_fit,g_center,h_317,q_80,w_564/v1/fsb/dc4176c32a30d0579037fccbf2f0887e.jpg",
+        "score": 1,
+        "originalImage": "https://www.joshwcomeau.com/images/og-interactive-guide-to-paths.jpg",
+        "campaignUrls": {
+          "title": "https://joshwcomeau.com/svg/interactive-guide-to-paths?utm_source=fullstackbulletin.com&utm_medium=newsletter&utm_campaign=fullstackBulletin-34-2025&utm_content=title",
+          "image": "https://joshwcomeau.com/svg/interactive-guide-to-paths?utm_source=fullstackbulletin.com&utm_medium=newsletter&utm_campaign=fullstackBulletin-34-2025&utm_content=image",
+          "description": "https://joshwcomeau.com/svg/interactive-guide-to-paths?utm_source=fullstackbulletin.com&utm_medium=newsletter&utm_campaign=fullstackBulletin-34-2025&utm_content=description"
+        }
+      },
+      {
+        "title": "Can We Use Local Storage Instead of Context-Redux-Zustand?",
+        "url": "https://developerway.com/posts/local-storage-instead-of-context",
+        "description": "Why do we need Context/Redux/Zustand in React, what is the purpose of Local Storage, its limitations, and when to use it.",
+        "image": "http://res.cloudinary.com/loige/image/upload/c_fit,g_center,h_317,q_80,w_564/v1/fsb/f33aaf0e10618fb16a9b876b042e11de.jpg",
+        "score": 1,
+        "originalImage": "https://www.developerway.com//assets/local-storage-instead-of-context/welcome.png",
+        "campaignUrls": {
+          "title": "https://developerway.com/posts/local-storage-instead-of-context?utm_source=fullstackbulletin.com&utm_medium=newsletter&utm_campaign=fullstackBulletin-34-2025&utm_content=title",
+          "image": "https://developerway.com/posts/local-storage-instead-of-context?utm_source=fullstackbulletin.com&utm_medium=newsletter&utm_campaign=fullstackBulletin-34-2025&utm_content=image",
+          "description": "https://developerway.com/posts/local-storage-instead-of-context?utm_source=fullstackbulletin.com&utm_medium=newsletter&utm_campaign=fullstackBulletin-34-2025&utm_content=description"
+        }
+      },
+      {
+        "title": "Next.js 15.5",
+        "url": "https://nextjs.org/blog/next-15-5",
+        "description": "Next.js 15.5 includes Turbopack builds in beta, stable Node.js middleware, TypeScript improvements, `next lint` deprecation, and deprecation warnings for Next.js 16.",
+        "image": "http://res.cloudinary.com/loige/image/upload/c_fit,g_center,h_317,q_80,w_564/v1/fsb/a7a698c4986a6222da43f69bc573ee4c.jpg",
+        "score": 1,
+        "originalImage": "https://h8dxkfmaphn8o0p3.public.blob.vercel-storage.com/static/blog/next-15-5/twitter-card.png",
+        "campaignUrls": {
+          "title": "https://nextjs.org/blog/next-15-5?utm_source=fullstackbulletin.com&utm_medium=newsletter&utm_campaign=fullstackBulletin-34-2025&utm_content=title",
+          "image": "https://nextjs.org/blog/next-15-5?utm_source=fullstackbulletin.com&utm_medium=newsletter&utm_campaign=fullstackBulletin-34-2025&utm_content=image",
+          "description": "https://nextjs.org/blog/next-15-5?utm_source=fullstackbulletin.com&utm_medium=newsletter&utm_campaign=fullstackBulletin-34-2025&utm_content=description"
+        }
+      },
+      {
+        "title": "QuickJS Sandbox - Execute JavaScript and TypeScript code safe and secure",
+        "url": "https://sebastianwessel.github.io/quickjs/index.html",
+        "description": "QuickJS sandbox in JavaScript/Typescript",
+        "image": "http://res.cloudinary.com/loige/image/upload/c_fit,g_center,h_317,q_80,w_564/v1/fsb/ea7cf3c24bbcf0c38e8e43f584afc373.jpg",
+        "score": 0,
+        "originalImage": "https://sebastianwessel.github.io/quickjs/og.jpg",
+        "campaignUrls": {
+          "title": "https://sebastianwessel.github.io/quickjs/index.html?utm_source=fullstackbulletin.com&utm_medium=newsletter&utm_campaign=fullstackBulletin-34-2025&utm_content=title",
+          "image": "https://sebastianwessel.github.io/quickjs/index.html?utm_source=fullstackbulletin.com&utm_medium=newsletter&utm_campaign=fullstackBulletin-34-2025&utm_content=image",
+          "description": "https://sebastianwessel.github.io/quickjs/index.html?utm_source=fullstackbulletin.com&utm_medium=newsletter&utm_campaign=fullstackBulletin-34-2025&utm_content=description"
+        }
+      },
+      {
+        "title": "npm Adopts OIDC for Trusted Publishing in CI/CD Workflows - ...",
+        "url": "https://socket.dev/blog/npm-trusted-publishing",
+        "description": "npm now supports Trusted Publishing with OIDC, enabling secure package publishing directly from CI/CD workflows without relying on long-lived tokens.",
+        "image": "http://res.cloudinary.com/loige/image/upload/c_fit,g_center,h_317,q_80,w_564/v1/fsb/3949d3ddc5c50718a3d87bc4458cfefe.jpg",
+        "score": 0,
+        "originalImage": "https://cdn.sanity.io/images/cgdhsj6q/production/f501df2cab4f1ebe48efc8d5024198869ca914f7-1024x1024.png?w=1000&q=95&fit=max&auto=format",
+        "campaignUrls": {
+          "title": "https://socket.dev/blog/npm-trusted-publishing?utm_source=fullstackbulletin.com&utm_medium=newsletter&utm_campaign=fullstackBulletin-34-2025&utm_content=title",
+          "image": "https://socket.dev/blog/npm-trusted-publishing?utm_source=fullstackbulletin.com&utm_medium=newsletter&utm_campaign=fullstackBulletin-34-2025&utm_content=image",
+          "description": "https://socket.dev/blog/npm-trusted-publishing?utm_source=fullstackbulletin.com&utm_medium=newsletter&utm_campaign=fullstackBulletin-34-2025&utm_content=description"
+        }
+      },
+      {
+        "title": "React calendar components: 6 best libraries for 2025",
+        "url": "https://builder.io/blog/best-react-calendar-component-ai",
+        "description": "Find the best React calendar component for your project with our detailed comparison of react-datepicker, Shadcn/UI, and morec.",
+        "image": "http://res.cloudinary.com/loige/image/upload/c_fit,g_center,h_317,q_80,w_564/v1/fsb/ce8dd5d8537ce56064330c222cb59f68.jpg",
+        "score": 0,
+        "originalImage": "https://cdn.builder.io/api/v1/image/assets%2FYJIGb4i01jvw0SRdL5Bt%2Ffa467fead10541ccb197bfda987ab64f?width=1200",
+        "campaignUrls": {
+          "title": "https://builder.io/blog/best-react-calendar-component-ai?utm_source=fullstackbulletin.com&utm_medium=newsletter&utm_campaign=fullstackBulletin-34-2025&utm_content=title",
+          "image": "https://builder.io/blog/best-react-calendar-component-ai?utm_source=fullstackbulletin.com&utm_medium=newsletter&utm_campaign=fullstackBulletin-34-2025&utm_content=image",
+          "description": "https://builder.io/blog/best-react-calendar-component-ai?utm_source=fullstackbulletin.com&utm_medium=newsletter&utm_campaign=fullstackBulletin-34-2025&utm_content=description"
+        }
+      },
+      {
+        "title": "Resize any DOM element using two lines of CSS",
+        "url": "https://amitmerchant.com/resize-any-dom-element-using-two-lines-css",
+        "description": "I recently came across this video by Kamran Ahmed, where he demonstrates how to resize any DOM element using just two lines of CSS. And I was like, “What the heck, how did I not know about this all this time?”",
+        "image": "http://res.cloudinary.com/loige/image/upload/c_fit,g_center,h_317,q_80,w_564/v1/fsb/940f8bd86b50f2eb620708906a59bc1c.jpg",
+        "score": 0,
+        "originalImage": "https://www.amitmerchant.com/cdn/resize-any-dom-element-using-two-lines-css.png",
+        "campaignUrls": {
+          "title": "https://amitmerchant.com/resize-any-dom-element-using-two-lines-css?utm_source=fullstackbulletin.com&utm_medium=newsletter&utm_campaign=fullstackBulletin-34-2025&utm_content=title",
+          "image": "https://amitmerchant.com/resize-any-dom-element-using-two-lines-css?utm_source=fullstackbulletin.com&utm_medium=newsletter&utm_campaign=fullstackBulletin-34-2025&utm_content=image",
+          "description": "https://amitmerchant.com/resize-any-dom-element-using-two-lines-css?utm_source=fullstackbulletin.com&utm_medium=newsletter&utm_campaign=fullstackBulletin-34-2025&utm_content=description"
+        }
+      },
+      {
+        "title": "There’s no such thing as a CSS reset | Adam Stoddard",
+        "url": "https://aaadaaam.com/notes/useful-defaults",
+        "description": "There's only directly useful defaults, or not.",
+        "image": "http://res.cloudinary.com/loige/image/upload/c_fit,g_center,h_317,q_80,w_564/v1/fsb/1cf8a255eabf09ac835cbbd44423bd20.jpg",
+        "score": 0,
+        "originalImage": "https://aaadaaam.com/assets/og-1200x630.jpg",
+        "campaignUrls": {
+          "title": "https://aaadaaam.com/notes/useful-defaults?utm_source=fullstackbulletin.com&utm_medium=newsletter&utm_campaign=fullstackBulletin-34-2025&utm_content=title",
+          "image": "https://aaadaaam.com/notes/useful-defaults?utm_source=fullstackbulletin.com&utm_medium=newsletter&utm_campaign=fullstackBulletin-34-2025&utm_content=image",
+          "description": "https://aaadaaam.com/notes/useful-defaults?utm_source=fullstackbulletin.com&utm_medium=newsletter&utm_campaign=fullstackBulletin-34-2025&utm_content=description"
+        }
+      },
+      {
+        "title": "A gentle introduction to anchor positioning",
+        "url": "https://webkit.org/blog/17240/a-gentle-introduction-to-anchor-positioning",
+        "description": "Anchor positioning allows you to place an element on the page based on where another element is.",
+        "image": "http://res.cloudinary.com/loige/image/upload/c_fit,g_center,h_317,q_80,w_564/v1/fsb/c9b23a4d842aee96af71f7f5abb75f35.jpg",
+        "score": 0,
+        "originalImage": "https://webkit.org/wp-content/uploads/Screenshot-2025-08-14-at-10.14.43-AM-1024x936.png",
+        "campaignUrls": {
+          "title": "https://webkit.org/blog/17240/a-gentle-introduction-to-anchor-positioning?utm_source=fullstackbulletin.com&utm_medium=newsletter&utm_campaign=fullstackBulletin-34-2025&utm_content=title",
+          "image": "https://webkit.org/blog/17240/a-gentle-introduction-to-anchor-positioning?utm_source=fullstackbulletin.com&utm_medium=newsletter&utm_campaign=fullstackBulletin-34-2025&utm_content=image",
+          "description": "https://webkit.org/blog/17240/a-gentle-introduction-to-anchor-positioning?utm_source=fullstackbulletin.com&utm_medium=newsletter&utm_campaign=fullstackBulletin-34-2025&utm_content=description"
+        }
+      },
+      {
+        "title": "Tailwind Box Shadow Generator | Free Live CSS Builder | Tailkits",
+        "url": "https://tailkits.com/tools/tailwind-box-shadow-generator",
+        "description": "Need a Box Shadow Generator for Tailwind? Tweak offsets, blur, spread & color, preview instantly, and export clean classes or CSS. Free & fast.",
+        "image": "http://res.cloudinary.com/loige/image/upload/c_fit,g_center,h_317,q_80,w_564/v1/fsb/0b53751007f532844bbf6dc33ba2367b.jpg",
+        "score": 0,
+        "originalImage": "https://tailkits.com/__og-image__/static/tools/tailwind-box-shadow-generator/og.png",
+        "campaignUrls": {
+          "title": "https://tailkits.com/tools/tailwind-box-shadow-generator?utm_source=fullstackbulletin.com&utm_medium=newsletter&utm_campaign=fullstackBulletin-34-2025&utm_content=title",
+          "image": "https://tailkits.com/tools/tailwind-box-shadow-generator?utm_source=fullstackbulletin.com&utm_medium=newsletter&utm_campaign=fullstackBulletin-34-2025&utm_content=image",
+          "description": "https://tailkits.com/tools/tailwind-box-shadow-generator?utm_source=fullstackbulletin.com&utm_medium=newsletter&utm_campaign=fullstackBulletin-34-2025&utm_content=description"
+        }
+      },
+      {
+        "title": "GitHub - TimSamshuijzen/HTML3D: HTML3D is a lightweight JavaScript library for creating interactive 3D scenes using CSS 3D transforms.",
+        "url": "https://github.com/TimSamshuijzen/HTML3D",
+        "description": "HTML3D is a lightweight JavaScript library for creating interactive 3D scenes using CSS 3D transforms. - TimSamshuijzen/HTML3D",
+        "image": "http://res.cloudinary.com/loige/image/upload/c_fit,g_center,h_317,q_80,w_564/v1/fsb/14640abcd2791ff8ae4749a22bea1a08.jpg",
+        "score": 0,
+        "originalImage": "https://opengraph.githubassets.com/649ccca22b2120dcf778d0e9f071abdc3ffb5dd2344df3fb0158263dce6cf490/TimSamshuijzen/HTML3D",
+        "campaignUrls": {
+          "title": "https://github.com/TimSamshuijzen/HTML3D?utm_source=fullstackbulletin.com&utm_medium=newsletter&utm_campaign=fullstackBulletin-34-2025&utm_content=title",
+          "image": "https://github.com/TimSamshuijzen/HTML3D?utm_source=fullstackbulletin.com&utm_medium=newsletter&utm_campaign=fullstackBulletin-34-2025&utm_content=image",
+          "description": "https://github.com/TimSamshuijzen/HTML3D?utm_source=fullstackbulletin.com&utm_medium=newsletter&utm_campaign=fullstackBulletin-34-2025&utm_content=description"
+        }
+      },
+      {
+        "title": "What Learning React Won't Teach You: Image Formats",
+        "url": "https://idiallo.com/blog/react-and-image-format",
+        "description": "At the end of every month, I used to religiously check the total internet bandwidth we'd consumed at home. A decade ago, my ISP would throttle our connection if we crossed some loosely defined thresho",
+        "image": "http://res.cloudinary.com/loige/image/upload/c_fit,g_center,h_317,q_80,w_564/v1/fsb/53f636e5d3df2b715210c3113e198fa0.jpg",
+        "score": 0,
+        "originalImage": "https://cdn.idiallo.com/images/assets/527/thumb.jpg",
+        "campaignUrls": {
+          "title": "https://idiallo.com/blog/react-and-image-format?utm_source=fullstackbulletin.com&utm_medium=newsletter&utm_campaign=fullstackBulletin-34-2025&utm_content=title",
+          "image": "https://idiallo.com/blog/react-and-image-format?utm_source=fullstackbulletin.com&utm_medium=newsletter&utm_campaign=fullstackBulletin-34-2025&utm_content=image",
+          "description": "https://idiallo.com/blog/react-and-image-format?utm_source=fullstackbulletin.com&utm_medium=newsletter&utm_campaign=fullstackBulletin-34-2025&utm_content=description"
+        }
+      }
+    ]
+  }
+}
