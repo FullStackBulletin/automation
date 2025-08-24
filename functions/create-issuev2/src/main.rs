@@ -20,11 +20,14 @@ async fn main() -> Result<(), Error> {
         .expect("DRAFT_RECIPIENT_EMAIL environment variable not set");
     let buttondown_api_key = std::env::var("BUTTONDOWN_API_KEY")
         .expect("BUTTONDOWN_API_KEY environment variable not set");
+    let buttondown_base_url = std::env::var("BUTTONDOWN_BASE_URL")
+        .unwrap_or_else(|_| "https://api.buttondown.com/v1".to_string());
     let reqwest_client = reqwest::Client::builder()
         .build()
         .map_err(|e| format!("Failed to create HTTP client: {}", e))?;
 
-    let buttondown_client = ButtonDownClient::new(buttondown_api_key, reqwest_client);
+    let buttondown_client =
+        ButtonDownClient::new(buttondown_api_key, reqwest_client, buttondown_base_url);
     let template_renderer = TemplateRenderer::new().expect("Failed to create template renderer");
 
     let handler_config = HandlerConfig {

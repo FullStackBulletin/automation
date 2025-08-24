@@ -1,4 +1,4 @@
-Hello, {% raw %}{{ subscriber.metadata.first_name }}{% endraw %}
+{{ greeting }}, {% raw %}{{ subscriber.metadata.first_name }}{% endraw %}
 
 TODO: WRITE INTRO
 
@@ -61,9 +61,8 @@ Happy reading and coding!{% raw %}  {% endraw %}
 
 {% endif -%}
 
-## That's all folks!  
+## {{ closing_title }}
 
-Thank you for getting to the end of this issue!  
-If you enjoyed it or simply want to suggest something, hit reply and let us know! We'd love to hear from you! ❤️
+{{ closing_message }}
 
 {% raw %}{{ subscribe_form }}{% endraw %}

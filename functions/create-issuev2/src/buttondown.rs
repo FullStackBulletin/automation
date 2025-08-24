@@ -34,11 +34,11 @@ pub struct ButtonDownClient {
 
 impl ButtonDownClient {
     /// Create a new ButtonDown client with custom reqwest client (useful for Lambda with rustls)
-    pub fn new(api_key: String, client: Client) -> Self {
+    pub fn new(api_key: String, client: Client, base_url: String) -> Self {
         Self {
             client,
             api_key,
-            base_url: "https://api.buttondown.com/v1".to_string(),
+            base_url,
         }
     }
 

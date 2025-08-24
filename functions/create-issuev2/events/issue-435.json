@@ -1,6 +1,6 @@
 {
   "config": {
-    "dryRun": true,
+    "dryRun": false,
     "detail-type": "Scheduled Event",
     "resources": [
       "arn:aws:events:eu-west-1:795006566846:rule/fstack-bulletin-create-is-CreateIssueStateMachineH-1ETEM0FGGP1LD"
