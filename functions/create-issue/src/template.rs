@@ -297,7 +297,7 @@ mod tests {
         assert_ne!(greeting1, greeting2);
         assert_eq!(greeting1, greeting11); // Both 1 and 11 have same modulo
         assert_eq!(greeting1, "Hey there"); // Issue 1
-        assert_eq!(greeting2, "Greetings"); // Issue 2
+        assert_eq!(greeting2, "Heyo"); // Issue 2
         assert_eq!(greeting10, "Hello"); // Issue 10 (0 modulo)
     }
 
