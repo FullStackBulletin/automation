@@ -1,23 +1,28 @@
-Hello, {{"{{"}} subscriber.metadata.first_name {{"}}"}}  
+Hello, {% raw %}{{ subscriber.metadata.first_name }}{% endraw %}
 
 TODO: WRITE INTRO
 
-Happy reading and coding!    
+Happy reading and coding!{% raw %}  {% endraw %}
 — [Luciano](https://loige.co)
 
 ---
 
-> "{{ quote.text }}"  
-> — [{{ quote.author }}]({{ quote.author_url }}), {{ quote.author_description }}
+> "{{ quote.text }}"{% raw %}  {% endraw %}
+> — [{{ quote.author }}]({{ quote.authorUrl }}), {{ quote.authorDescription }}
 
 ---
 
-<a href="{{ primary_link.campaign_urls.image }}" target="_blank" rel="noopener noreferrer"><img src="{{ primary_link.image }}" draggable="false" alt="A screenshot from the article {{ primary_link.title }}"></a>
+{%- if sponsor.banner_html %}
+{{ sponsor.banner_html | safe }}
+{%- endif %}
 
-[**{{ primary_link.title }}**]({{ primary_link.campaign_urls.title }}) — {{ primary_link.description }} [**Read article**]({{ primary_link.campaign_urls.description }})
+
+<a href="{{ primary_link.campaignUrls.image }}" target="_blank" rel="noopener noreferrer"><img src="{{ primary_link.image }}" draggable="false" alt="A screenshot from the article {{ primary_link.title }}"></a>
+
+[**{{ primary_link.title }}**]({{ primary_link.campaignUrls.title }}) — {{ primary_link.description }} [**{{ primary_link.action_text }}**]({{ primary_link.campaignUrls.description }})
 
 {% for link in secondary_links -%}
-[**{{ link.title }}**]({{ link.campaign_urls.title }}) — {{ link.description }} [**Read article**]({{ link.campaign_urls.description }})
+[**{{ link.title }}**]({{ link.campaignUrls.title }}) — {{ link.description }} [**{{ link.action_text }}**]({{ link.campaignUrls.description }})
 
 {% endfor -%}
 
@@ -27,7 +32,7 @@ Happy reading and coding!
 
 [**{{ book.title }}**, by {{ book.author }}]({{ book.links.us }})
 
-[![{{ book.title }}]({{ book.cover_picture }})]({{ book.links.us }})
+[![{{ book.title }}]({{ book.coverPicture }})]({{ book.links.us }})
 
 {{ book.description }}
 
@@ -39,15 +44,16 @@ Happy reading and coding!
 ### {{ extra_content_title }}
 
 {% for link in extra_links -%}
-- [{{ link.title }}]({{ link.campaign_urls.title }})
+- [{{ link.title }}]({{ link.campaignUrls.title }})
 {% endfor -%}
 
 ---
 
 {% endif -%}
 
-{% if sponsor -%}
-{{ sponsor.banner_html | safe }}
+{% if sponsor.sponsored_article_html -%}
+
+---
 
 {{ sponsor.sponsored_article_html | safe }}
 
@@ -60,4 +66,4 @@ Happy reading and coding!
 Thank you for getting to the end of this issue!  
 If you enjoyed it or simply want to suggest something, hit reply and let us know! We'd love to hear from you! ❤️
 
-{{"{{"}} subscribe_form {{"}}"}}
+{% raw %}{{ subscribe_form }}{% endraw %}

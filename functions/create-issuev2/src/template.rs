@@ -1,7 +1,27 @@
 use anyhow::Result;
+use serde::Serialize;
 use tera::{Context, Tera};
 
 use crate::model::{Book, Link, Quote, Sponsor};
+
+/// Enhanced link with action text for template rendering
+#[derive(Serialize, Debug)]
+pub struct EnhancedLink<'a> {
+    #[serde(flatten)]
+    pub link: &'a Link,
+    pub action_text: &'static str,
+}
+
+/// Generate appropriate action text based on the URL
+pub fn get_link_action_text(url: &str) -> &'static str {
+    if url.contains("github.com") {
+        "Check Repo"
+    } else if url.contains("youtube.com") || url.contains("youtu.be") {
+        "Watch Video"
+    } else {
+        "Read Article"
+    }
+}
 
 pub fn generate_extra_content_title(issue_number: u32) -> String {
     match issue_number % 10 {
@@ -45,8 +65,23 @@ impl TemplateRenderer {
         context.insert("issue_number", &issue_number);
         context.insert("quote", quote);
         context.insert("book", book);
-        context.insert("primary_link", primary_link);
-        context.insert("secondary_links", secondary_links);
+
+        // Create enhanced primary link with action text
+        let enhanced_primary_link = EnhancedLink {
+            link: primary_link,
+            action_text: get_link_action_text(&primary_link.url),
+        };
+        context.insert("primary_link", &enhanced_primary_link);
+
+        // Create enhanced secondary links with action text
+        let enhanced_secondary_links: Vec<EnhancedLink> = secondary_links
+            .iter()
+            .map(|link| EnhancedLink {
+                link,
+                action_text: get_link_action_text(&link.url),
+            })
+            .collect();
+        context.insert("secondary_links", &enhanced_secondary_links);
 
         if !extra_links.is_empty() {
             context.insert("extra_links", extra_links);
@@ -150,6 +185,23 @@ mod tests {
             extra_links,
             sponsor,
         )
+    }
+
+    #[test]
+    fn test_get_link_action_text() {
+        // Test GitHub URLs
+        assert_eq!(get_link_action_text("https://github.com/user/repo"), "Check Repo");
+        assert_eq!(get_link_action_text("http://github.com/org/project"), "Check Repo");
+        
+        // Test YouTube URLs
+        assert_eq!(get_link_action_text("https://www.youtube.com/watch?v=dQw4w9WgXcQ"), "Watch Video");
+        assert_eq!(get_link_action_text("https://youtube.com/watch?v=abc123"), "Watch Video");
+        assert_eq!(get_link_action_text("https://youtu.be/dQw4w9WgXcQ"), "Watch Video");
+        
+        // Test other URLs
+        assert_eq!(get_link_action_text("https://example.com/article"), "Read Article");
+        assert_eq!(get_link_action_text("https://blog.example.com/post"), "Read Article");
+        assert_eq!(get_link_action_text("https://docs.microsoft.com/guide"), "Read Article");
     }
 
     #[test]
