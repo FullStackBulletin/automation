@@ -95,7 +95,7 @@ Resources:
         - arm64
       Environment:
         Variables:
-          URL: "https://us15.campaign-archive.com/home/?u=b015626aa6028495fe77c75ea&id=55ace33899"
+          URL: "https://buttondown.com/fullstackbulletin/archive/"
 
   FetchQuoteFunction:
     Type: AWS::Serverless::Function
