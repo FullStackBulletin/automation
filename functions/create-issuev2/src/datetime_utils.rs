@@ -1,115 +1,111 @@
-use chrono::{DateTime, Datelike, Duration, Utc, Weekday};
-use serde::{Deserialize, Serialize};
+use chrono::{DateTime, Datelike, Duration, Timelike, Utc, Weekday};
 
-#[derive(Debug, Serialize, Deserialize)]
-pub struct CampaignTiming {
-    pub schedule_for: DateTime<Utc>,
-    pub reference_moment: DateTime<Utc>,
-}
+/// Calculate next Monday at 17:00 UTC from a given reference time string
+///
+/// Logic:
+/// - If reference time is Monday before 17:00 (5 PM), return the same day at 17:00
+/// - Otherwise, calculate the following Monday and return that day at 17:00
+///
+/// # Arguments
+/// * `reference_time` - ISO 8601 formatted time string (e.g., "2025-01-15T10:30:00Z")
+///
+/// # Returns
+/// * `DateTime<Utc>` representing the next available Monday at 17:00:00 UTC
+pub fn get_next_monday_from(reference_time: &str) -> Result<DateTime<Utc>, chrono::ParseError> {
+    let parsed_time = reference_time.parse::<DateTime<Utc>>()?;
 
-impl CampaignTiming {
-    /// Creates campaign timing based on current UTC time
-    /// - schedule_for: Next Monday at 17:00 UTC
-    /// - reference_moment: Start of day one week ago
-    /// - week_number: ISO week number of current time
-    /// - year: Current year
-    pub fn new() -> Self {
-        let now = Utc::now();
-
-        // Calculate next Monday at 17:00:00 UTC
-        let schedule_for = Self::next_monday_at_hour(&now, 17);
-
-        // Reference moment: start of day one week ago
-        let reference_moment = (now - Duration::weeks(1))
+    // Check if reference time is Monday before 5 PM
+    if parsed_time.weekday() == Weekday::Mon && parsed_time.hour() < 17 {
+        // Return the same day at 17:00
+        let same_monday = parsed_time
             .date_naive()
-            .and_hms_opt(0, 0, 0)
+            .and_hms_opt(17, 0, 0)
             .unwrap()
             .and_utc();
-
-        Self {
-            schedule_for,
-            reference_moment,
-        }
+        return Ok(same_monday);
     }
 
-    /// Calculate next Monday at specified hour (UTC)
-    fn next_monday_at_hour(from: &DateTime<Utc>, hour: u32) -> DateTime<Utc> {
-        let mut target = *from + Duration::weeks(1);
-
-        // Find the next Monday
-        while target.weekday() != Weekday::Mon {
-            target = target + Duration::days(1);
-        }
-
-        // Set to specified hour, 0 minutes, 0 seconds, 0 milliseconds
-        target
-            .date_naive()
-            .and_hms_opt(hour, 0, 0)
-            .unwrap()
-            .and_utc()
+    // Otherwise, find the next Monday
+    let mut target = parsed_time + Duration::days(1);
+    while target.weekday() != Weekday::Mon {
+        target = target + Duration::days(1);
     }
 
-    /// Get schedule time formatted for ButtonDown API (ISO 8601)
-    pub fn schedule_time_formatted(&self) -> String {
-        self.schedule_for.to_rfc3339()
-    }
+    // Set to 17:00:00 UTC
+    let next_monday = target.date_naive().and_hms_opt(17, 0, 0).unwrap().and_utc();
 
-    /// Get reference moment formatted for debugging
-    pub fn reference_moment_formatted(&self) -> String {
-        self.reference_moment.to_rfc3339()
-    }
+    Ok(next_monday)
 }
-
 
 #[cfg(test)]
 mod tests {
     use super::*;
-    use chrono::{TimeZone, Timelike};
+    use chrono::{Datelike, Timelike};
 
     #[test]
-    fn test_campaign_timing_creation() {
-        let timing = CampaignTiming::new();
+    fn test_get_next_monday_from_thursday() {
+        // Test with a Thursday (Jan 2, 2025 at 10:30:00 UTC)
+        let reference_time = "2025-01-02T10:30:00Z";
+        let next_monday = get_next_monday_from(reference_time).unwrap();
 
-        // Verify that schedule_for is in the future
-        assert!(timing.schedule_for > Utc::now());
-
-        // Verify that schedule_for is on a Monday
-        assert_eq!(timing.schedule_for.weekday(), Weekday::Mon);
-
-        // Verify that schedule_for is at 17:00 UTC
-        assert_eq!(timing.schedule_for.hour(), 17);
-        assert_eq!(timing.schedule_for.minute(), 0);
-        assert_eq!(timing.schedule_for.second(), 0);
-
-        // Verify that reference_moment is in the past
-        assert!(timing.reference_moment < Utc::now());
+        // Next Monday should be Jan 6, 2025 at 17:00:00 UTC
+        assert_eq!(next_monday.weekday(), Weekday::Mon);
+        assert_eq!(next_monday.day(), 6);
+        assert_eq!(next_monday.month(), 1);
+        assert_eq!(next_monday.year(), 2025);
+        assert_eq!(next_monday.hour(), 17);
+        assert_eq!(next_monday.minute(), 0);
+        assert_eq!(next_monday.second(), 0);
     }
 
     #[test]
-    fn test_next_monday_calculation() {
-        // Test with a known date (Thursday, Jan 2, 2025)
-        let test_date = Utc.with_ymd_and_hms(2025, 1, 2, 10, 30, 0).unwrap();
-        let next_monday = CampaignTiming::next_monday_at_hour(&test_date, 17);
+    fn test_get_next_monday_from_monday_before_5pm() {
+        // Test with a Monday before 5 PM (Jan 6, 2025 at 10:00:00 UTC)
+        let reference_time = "2025-01-06T10:00:00Z";
+        let next_monday = get_next_monday_from(reference_time).unwrap();
 
-        // Next Monday should be Jan 13, 2025 at 17:00
+        // Should return the same day at 17:00:00 UTC
+        assert_eq!(next_monday.weekday(), Weekday::Mon);
+        assert_eq!(next_monday.day(), 6);
+        assert_eq!(next_monday.month(), 1);
+        assert_eq!(next_monday.year(), 2025);
+        assert_eq!(next_monday.hour(), 17);
+        assert_eq!(next_monday.minute(), 0);
+        assert_eq!(next_monday.second(), 0);
+    }
+
+    #[test]
+    fn test_get_next_monday_from_monday_after_5pm() {
+        // Test with a Monday after 5 PM (Jan 6, 2025 at 18:30:00 UTC)
+        let reference_time = "2025-01-06T18:30:00Z";
+        let next_monday = get_next_monday_from(reference_time).unwrap();
+
+        // Should return next Monday (Jan 13, 2025 at 17:00:00 UTC)
         assert_eq!(next_monday.weekday(), Weekday::Mon);
         assert_eq!(next_monday.day(), 13);
         assert_eq!(next_monday.month(), 1);
+        assert_eq!(next_monday.year(), 2025);
         assert_eq!(next_monday.hour(), 17);
     }
 
+    #[test]
+    fn test_get_next_monday_from_monday_exactly_5pm() {
+        // Test with a Monday exactly at 5 PM (Jan 6, 2025 at 17:00:00 UTC)
+        let reference_time = "2025-01-06T17:00:00Z";
+        let next_monday = get_next_monday_from(reference_time).unwrap();
+
+        // Should return next Monday (Jan 13, 2025 at 17:00:00 UTC) because it's not before 5 PM
+        assert_eq!(next_monday.weekday(), Weekday::Mon);
+        assert_eq!(next_monday.day(), 13);
+        assert_eq!(next_monday.month(), 1);
+        assert_eq!(next_monday.year(), 2025);
+        assert_eq!(next_monday.hour(), 17);
+    }
 
     #[test]
-    fn test_formatting_methods() {
-        let timing = CampaignTiming::new();
-
-        let schedule_formatted = timing.schedule_time_formatted();
-        let reference_formatted = timing.reference_moment_formatted();
-
-        // Should be valid ISO 8601 format
-        assert!(schedule_formatted.contains("T"));
-        assert!(schedule_formatted.ends_with("Z") || schedule_formatted.contains("+"));
-        assert!(reference_formatted.contains("T"));
-        assert!(reference_formatted.ends_with("Z") || reference_formatted.contains("+"));
+    fn test_get_next_monday_from_invalid_time() {
+        let invalid_time = "not-a-valid-time";
+        let result = get_next_monday_from(invalid_time);
+        assert!(result.is_err());
     }
 }

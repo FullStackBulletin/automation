@@ -1,25 +1,15 @@
 use anyhow::{Context, Result};
 use reqwest::Client;
 use serde::{Deserialize, Serialize};
-use std::collections::HashMap;
 
 #[derive(Debug, Serialize)]
 pub struct CreateEmailRequest {
     pub subject: String,
-    #[serde(skip_serializing_if = "Option::is_none")]
-    pub body: Option<String>,
-    #[serde(skip_serializing_if = "Option::is_none")]
-    pub publish_date: Option<String>,
-    #[serde(skip_serializing_if = "Option::is_none")]
-    pub slug: Option<String>,
-    #[serde(skip_serializing_if = "Option::is_none")]
-    pub email_type: Option<String>,
-    #[serde(skip_serializing_if = "Option::is_none")]
-    pub status: Option<String>,
-    #[serde(skip_serializing_if = "Option::is_none")]
-    pub metadata: Option<HashMap<String, String>>,
-    #[serde(skip_serializing_if = "Option::is_none")]
-    pub commenting_mode: Option<String>,
+    pub body: String,
+    pub publish_date: String,
+    pub status: String,
+    pub slug: String,
+    pub commenting_mode: String,
 }
 
 #[derive(Debug, Serialize)]
@@ -33,14 +23,7 @@ pub struct SendDraftRequest {
 #[derive(Debug, Deserialize)]
 pub struct EmailResponse {
     pub id: String,
-    pub subject: String,
-    pub body: Option<String>,
     pub status: String,
-    pub slug: Option<String>,
-    pub creation_date: String,
-    pub publish_date: Option<String>,
-    pub email_type: Option<String>,
-    pub metadata: Option<HashMap<String, serde_json::Value>>,
 }
 
 pub struct ButtonDownClient {
@@ -59,38 +42,38 @@ impl ButtonDownClient {
         }
     }
 
-    /// Create a draft email with the given subject and markdown body
-    pub async fn create_draft_email(&self, subject: String, body: String) -> Result<EmailResponse> {
-        let request = CreateEmailRequest {
-            subject,
-            body: Some(body),
-            status: Some("draft".to_string()),
-            email_type: Some("regular".to_string()),
-            publish_date: None,
-            slug: None,
-            metadata: None,
-            commenting_mode: None,
-        };
-
-        self.create_email(request).await
+    /// Generate a slug from a title by converting to lowercase and replacing spaces/special chars with hyphens
+    fn generate_slug(title: &str) -> String {
+        title
+            .to_lowercase()
+            .chars()
+            .map(|c| if c.is_alphanumeric() { c } else { '-' })
+            .collect::<String>()
+            .split('-')
+            .filter(|s| !s.is_empty())
+            .collect::<Vec<_>>()
+            .join("-")
     }
 
-    /// Create a scheduled email with the given subject, markdown body, and publish date
+    /// Create a scheduled email with the given subject, markdown body, publish date, issue number, and first link title
     pub async fn create_scheduled_email(
         &self,
         subject: String,
         body: String,
         publish_date: String,
+        issue_number: u32,
+        first_link_title: &str,
     ) -> Result<EmailResponse> {
+        let first_link_slug = Self::generate_slug(first_link_title);
+        let slug = format!("{}-{}", issue_number, first_link_slug);
+
         let request = CreateEmailRequest {
             subject,
-            body: Some(body),
-            status: Some("scheduled".to_string()),
-            email_type: Some("regular".to_string()),
-            publish_date: Some(publish_date),
-            slug: None,
-            metadata: None,
-            commenting_mode: None,
+            body,
+            publish_date,
+            status: "scheduled".to_string(),
+            slug,
+            commenting_mode: "enabled".to_string(),
         };
 
         self.create_email(request).await
@@ -170,23 +153,40 @@ mod tests {
     fn test_create_email_request_serialization() {
         let request = CreateEmailRequest {
             subject: "Test Subject".to_string(),
-            body: Some("Test body content".to_string()),
-            status: Some("draft".to_string()),
-            email_type: Some("regular".to_string()),
-            publish_date: None,
-            slug: None,
-            metadata: None,
-            commenting_mode: None,
+            body: "Test body content".to_string(),
+            publish_date: "2025-01-06T17:00:00Z".to_string(),
+            status: "scheduled".to_string(),
+            slug: "435-interactive-guide-svg-paths".to_string(),
+            commenting_mode: "enabled".to_string(),
         };
 
         let json = serde_json::to_string(&request).unwrap();
         assert!(json.contains("Test Subject"));
         assert!(json.contains("Test body content"));
-        assert!(json.contains("draft"));
-        assert!(json.contains("regular"));
-        // Should not contain null fields due to skip_serializing_if
-        assert!(!json.contains("publish_date"));
-        assert!(!json.contains("slug"));
+        assert!(json.contains("scheduled"));
+        assert!(json.contains("2025-01-06T17:00:00Z"));
+        assert!(json.contains("435-interactive-guide-svg-paths"));
+        assert!(json.contains("enabled"));
+    }
+
+    #[test]
+    fn test_generate_slug() {
+        assert_eq!(
+            ButtonDownClient::generate_slug("An Interactive Guide to SVG Paths"),
+            "an-interactive-guide-to-svg-paths"
+        );
+        assert_eq!(
+            ButtonDownClient::generate_slug("React & TypeScript: Best Practices"),
+            "react-typescript-best-practices"
+        );
+        assert_eq!(
+            ButtonDownClient::generate_slug("Hello, World!"),
+            "hello-world"
+        );
+        assert_eq!(
+            ButtonDownClient::generate_slug("Multiple---dashes & spaces!!!"),
+            "multiple-dashes-spaces"
+        );
     }
 
     #[test]

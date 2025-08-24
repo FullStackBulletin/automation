@@ -1,9 +1,8 @@
 use lambda_runtime::{tracing, Error, LambdaEvent};
 use serde_json::{json, Value};
-use std::env;
 
-use crate::buttondown::{ButtonDownClient, SendDraftRequest};
-use crate::datetime_utils::CampaignTiming;
+use crate::buttondown::{self, ButtonDownClient};
+use crate::datetime_utils::get_next_monday_from;
 use crate::model::{Event, Link};
 use crate::template::{generate_extra_content_title, TemplateRenderer};
 
@@ -29,13 +28,14 @@ pub(crate) async fn function_handler(
     tracing::info!("Processing issue #{}", event.payload.next_issue.number);
 
     // Step 1: Calculate timing information
-    let timing = CampaignTiming::new();
+    let schedule_for = get_next_monday_from(&event.payload.config.time)
+        .map_err(|e| format!("Failed to parse reference time: {}", e))?;
     let campaign_name = format!("fullstackBulletin-{}", event.payload.next_issue.number);
     let extra_content_title = generate_extra_content_title(event.payload.next_issue.number);
 
     tracing::info!(
         "Campaign timing calculated: schedule for {}",
-        timing.schedule_time_formatted()
+        schedule_for.to_rfc3339()
     );
     tracing::info!("Campaign name: {}", campaign_name);
 
@@ -76,20 +76,6 @@ pub(crate) async fn function_handler(
 
     tracing::info!("Newsletter template rendered successfully");
 
-    // Step 5: Prepare campaign settings
-    let list_id = env::var("BUTTONDOWN_LIST_ID").unwrap_or_else(|_| "TODO_LIST_ID".to_string());
-    let from_email =
-        env::var("BUTTONDOWN_FROM_EMAIL").unwrap_or_else(|_| "TODO_FROM_EMAIL".to_string());
-    let from_name =
-        env::var("BUTTONDOWN_FROM_NAME").unwrap_or_else(|_| "TODO_FROM_NAME".to_string());
-    let reply_to =
-        env::var("BUTTONDOWN_REPLY_TO_EMAIL").unwrap_or_else(|_| "TODO_REPLY_TO".to_string());
-    let test_emails = env::var("BUTTONDOWN_TEST_EMAILS")
-        .unwrap_or_else(|_| "TODO_TEST_EMAILS".to_string())
-        .split(',')
-        .map(|s| s.trim().to_string())
-        .collect::<Vec<_>>();
-
     // Generate subject line with rotating emoji
     let emoji_index = (event.payload.next_issue.number as usize) % EMOJIS.len();
     let selected_emoji = EMOJIS[emoji_index];
@@ -103,85 +89,46 @@ pub(crate) async fn function_handler(
             .unwrap_or(&"Weekly Newsletter".to_string()),
         event.payload.next_issue.number
     );
-    let preview_text = links
-        .iter()
-        .skip(1)
-        .map(|link| link.title.as_str())
-        .collect::<Vec<_>>()
-        .join(", ");
 
-    let campaign_settings = json!({
-        "listId": list_id,
-        "from": from_email,
-        "fromName": from_name,
-        "replyTo": reply_to,
-        "campaignName": campaign_name,
-        "subjectLine": subject_line,
-        "previewText": preview_text,
-        "scheduleTime": timing.schedule_time_formatted(),
-        "testEmails": test_emails
-    });
-
-    // Step 6: Handle dry run mode
+    // Step 5: Handle dry run mode
     if event.payload.config.dry_run {
         tracing::info!("Dry run mode enabled - no campaign will be created");
         return Ok(json!({
             "quote": quote,
             "book": book,
             "links": links,
-            "campaignSettings": campaign_settings,
+            "sponsor": sponsor,
+            "subjectLine": subject_line,
             "renderedContent": rendered_content,
             "dryRun": true
         }));
     }
 
-    // Step 7: Create ButtonDown campaign
+    // Step 6: Create ButtonDown campaign
     tracing::info!("Creating ButtonDown campaign");
     tracing::info!(
         "Content rendered as markdown: {} characters",
         rendered_content.len()
     );
+    tracing::info!("Will schedule campaign for: {}", schedule_for.to_rfc3339());
+    tracing::info!("Creating ButtonDown email with subject: {}", subject_line);
+
+    // Create scheduled email
     tracing::info!(
-        "Will schedule campaign for: {}",
-        timing.schedule_time_formatted()
+        "Creating scheduled email for: {}",
+        schedule_for.to_rfc3339()
     );
-
-    // Extract campaign settings for ButtonDown API
-    let subject = campaign_settings
-        .get("subjectLine")
-        .and_then(|v| v.as_str())
-        .unwrap_or("Newsletter Issue")
-        .to_string();
-
-    let schedule_time = campaign_settings
-        .get("scheduleTime")
-        .and_then(|v| v.as_str());
-
-    tracing::info!("Creating ButtonDown email with subject: {}", subject);
-
-    // Create email (draft or scheduled based on schedule_time)
-    let email_response = match schedule_time {
-        Some(schedule_time) => {
-            tracing::info!("Creating scheduled email for: {}", schedule_time);
-            config
-                .buttondown_client
-                .create_scheduled_email(
-                    subject,
-                    rendered_content.to_string(),
-                    schedule_time.to_string(),
-                )
-                .await
-                .map_err(|e| format!("Failed to create scheduled email: {}", e))?
-        }
-        None => {
-            tracing::info!("Creating draft email");
-            config
-                .buttondown_client
-                .create_draft_email(subject, rendered_content.to_string())
-                .await
-                .map_err(|e| format!("Failed to create draft email: {}", e))?
-        }
-    };
+    let email_response = config
+        .buttondown_client
+        .create_scheduled_email(
+            subject_line.clone(),
+            rendered_content.to_string(),
+            schedule_for.to_rfc3339(),
+            event.payload.next_issue.number,
+            &primary_link.title,
+        )
+        .await
+        .map_err(|e| format!("Failed to create scheduled email: {}", e))?;
 
     let campaign_id = email_response.id.clone();
 
@@ -189,67 +136,33 @@ pub(crate) async fn function_handler(
     tracing::info!("Email status: {}", email_response.status);
 
     // Send test emails if configured
-    if let Some(test_emails) = campaign_settings
-        .get("testEmails")
-        .and_then(|v| v.as_array())
-    {
-        if !test_emails.is_empty() {
-            let test_email_addresses: Vec<String> = test_emails
-                .iter()
-                .filter_map(|v| v.as_str())
-                .map(|s| s.to_string())
-                .collect();
-
-            if !test_email_addresses.is_empty() {
-                tracing::info!(
-                    "Sending test email to {} addresses",
-                    test_email_addresses.len()
-                );
-
-                // For scheduled emails, we create a separate draft to send as test
-                // For draft emails, we can send the draft directly to test recipients
-                match email_response.status.as_str() {
-                    "draft" => {
-                        let send_request = SendDraftRequest {
-                            subscribers: None,
-                            recipients: Some(test_email_addresses),
-                        };
-                        config
-                            .buttondown_client
-                            .send_draft(&email_response.id, send_request)
-                            .await
-                            .map_err(|e| format!("Failed to send test email: {}", e))?;
-                        tracing::info!("Test email sent successfully");
-                    }
-                    "scheduled" => {
-                        // For scheduled emails, we'd need to create a separate draft for testing
-                        // This is a design decision - for now, we'll log that we can't send test emails for scheduled emails
-                        tracing::warn!("Test emails not supported for scheduled emails - email is already scheduled to send at the specified time");
-                    }
-                    _ => {
-                        tracing::warn!(
-                            "Unknown email status '{}' - cannot send test email",
-                            email_response.status
-                        );
-                    }
-                }
-            }
-        }
-    }
+    config
+        .buttondown_client
+        .send_draft(
+            &email_response.id,
+            buttondown::SendDraftRequest {
+                subscribers: Some(vec![config.draft_subscriber_id.clone()]),
+                recipients: Some(vec![config.draft_recipient_email.clone()]),
+            },
+        )
+        .await
+        .map_err(|e| format!("Failed to send draft email: {}", e))?;
 
     tracing::info!(
         "ButtonDown campaign created successfully with ID: {}",
         campaign_id
     );
 
-    // Step 8: Return success response
+    // Step 7: Return success response
     Ok(json!({
         "quote": quote,
         "book": book,
         "links": links,
-        "campaignSettings": campaign_settings,
+        "sponsor": sponsor,
+        "subjectLine": subject_line,
         "campaignId": campaign_id,
-        "renderedContent": rendered_content
+        "renderedContent": rendered_content,
+        "emailId": email_response.id
     }))
 }
 

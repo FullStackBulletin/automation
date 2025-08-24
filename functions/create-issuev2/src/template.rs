@@ -7,7 +7,7 @@ pub fn generate_extra_content_title(issue_number: u32) -> String {
     match issue_number % 10 {
         1 => "You have to BELIEVE in the power of more content! 🙏",
         2 => "More awesome content for your reading pleasure! 📚",
-        3 => "Extra picks to feed your curiosity! 🧠", 
+        3 => "Extra picks to feed your curiosity! 🧠",
         4 => "Bonus content because we love you! ❤️",
         5 => "Additional gems we couldn't leave out! 💎",
         6 => "More quality content coming your way! ⭐",
