@@ -526,7 +526,7 @@ dependencies = [
 ]
 
 [[package]]
-name = "create-issuev2"
+name = "create-issue"
 version = "0.1.0"
 dependencies = [
  "anyhow",

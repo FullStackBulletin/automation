@@ -5,6 +5,6 @@ members = [
   "functions/fetch-issue-number",
   "functions/fetch-quote",
   "functions/fetch-sponsor",
-  "functions/create-issuev2",
+  "functions/create-issue",
   "shared",
 ]
