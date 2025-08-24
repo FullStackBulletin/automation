@@ -3,6 +3,22 @@ use tera::{Context, Tera};
 
 use crate::model::{Book, Link, Quote, Sponsor};
 
+pub fn generate_extra_content_title(issue_number: u32) -> String {
+    match issue_number % 10 {
+        1 => "You have to BELIEVE in the power of more content! 🙏",
+        2 => "More awesome content for your reading pleasure! 📚",
+        3 => "Extra picks to feed your curiosity! 🧠", 
+        4 => "Bonus content because we love you! ❤️",
+        5 => "Additional gems we couldn't leave out! 💎",
+        6 => "More quality content coming your way! ⭐",
+        7 => "Extra goodies for the curious minds! 🔍",
+        8 => "Supplementary reads worth your time! ⏰",
+        9 => "More content to expand your horizons! 🌅",
+        _ => "Hand-picked extras to keep your brain buzzing! ⚡",
+    }
+    .to_string()
+}
+
 // Embed the newsletter template at compile time
 const NEWSLETTER_TEMPLATE: &str = include_str!("../templates/newsletter.md");
 
@@ -16,8 +32,6 @@ impl TemplateRenderer {
     pub fn render_newsletter(
         &self,
         issue_number: u32,
-        week_number: u32,
-        year: u32,
         quote: &Quote,
         book: &Book,
         primary_link: &Link,
@@ -29,8 +43,6 @@ impl TemplateRenderer {
         let mut context = Context::new();
 
         context.insert("issue_number", &issue_number);
-        context.insert("week_number", &week_number);
-        context.insert("year", &year);
         context.insert("quote", quote);
         context.insert("book", book);
         context.insert("primary_link", primary_link);
@@ -141,14 +153,32 @@ mod tests {
     }
 
     #[test]
+    fn test_extra_content_title_generation() {
+        let title1 = generate_extra_content_title(1);
+        let title2 = generate_extra_content_title(2);
+        let title10 = generate_extra_content_title(10);
+        let title11 = generate_extra_content_title(11);
+
+        // Different issue numbers should generate different titles (except for same modulo)
+        assert_ne!(title1, title2);
+        assert_eq!(title1, title11); // Both 1 and 11 have same modulo
+        assert_eq!(
+            title1,
+            "You have to BELIEVE in the power of more content! 🙏"
+        ); // Issue 1
+        assert_eq!(title10, "Hand-picked extras to keep your brain buzzing! ⚡");
+        // Issue 10 (0 modulo)
+    }
+
+    #[test]
     fn test_simple_template_rendering() {
         // Test with a very simple template first
         let mut context = Context::new();
         context.insert("name", "test");
-        
+
         let simple_template = "Hello {{ name }}!";
         let result = Tera::one_off(simple_template, &context, false);
-        
+
         match result {
             Ok(rendered) => {
                 assert_eq!(rendered, "Hello test!");
@@ -172,7 +202,7 @@ mod tests {
         // First test: try a minimal context to see what fails
         let mut minimal_context = Context::new();
         minimal_context.insert("quote", &quote);
-        
+
         let minimal_result = Tera::one_off("{{ quote.text }}", &minimal_context, false);
         match minimal_result {
             Ok(rendered) => println!("Minimal template works: {}", rendered),
@@ -200,8 +230,6 @@ Book: {{ book.title }}
         // Test with our full context but a simpler template
         let mut full_context = Context::new();
         full_context.insert("issue_number", &435u32);
-        full_context.insert("week_number", &4u32);
-        full_context.insert("year", &2025u32);
         full_context.insert("quote", &quote);
         full_context.insert("book", &book);
         full_context.insert("primary_link", &primary_link);
@@ -209,14 +237,14 @@ Book: {{ book.title }}
         full_context.insert("extra_links", &extra_link_refs);
         full_context.insert("extra_content_title", "Test Title");
         full_context.insert("sponsor", &sponsor);
-        
+
         let simple_full_template = "Issue {{ issue_number }} - {{ quote.author }}";
         let full_test_result = Tera::one_off(simple_full_template, &full_context, false);
         match full_test_result {
             Ok(rendered) => println!("Full context simple template works: {}", rendered),
             Err(e) => println!("Full context simple template failed: {}", e),
         }
-        
+
         // Test each line individually to find the issue
         let test1 = r#"Hello, {{"{{"}} subscriber.metadata.first_name {{"}}"}}"#;
         let result1 = Tera::one_off(test1, &full_context, false);
@@ -224,21 +252,21 @@ Book: {{ book.title }}
             Ok(rendered) => println!("Test 1 works: {}", rendered),
             Err(e) => println!("Test 1 failed: {}", e),
         }
-        
+
         let test2a = r#"{{ quote.text }}"#;
         let result2a = Tera::one_off(test2a, &full_context, false);
         match result2a {
             Ok(rendered) => println!("Test 2a works:\n{}", rendered),
             Err(e) => println!("Test 2a failed: {}", e),
         }
-        
+
         let test_author = r#"{{ quote.author }}"#;
         let result_author = Tera::one_off(test_author, &full_context, false);
         match result_author {
             Ok(rendered) => println!("Author works: {}", rendered),
             Err(e) => println!("Author failed: {}", e),
         }
-        
+
         // Test both naming conventions to understand which one Tera uses
         let test_desc_rust = r#"{{ quote.author_description }}"#;
         let result_desc_rust = Tera::one_off(test_desc_rust, &full_context, false);
@@ -246,33 +274,33 @@ Book: {{ book.title }}
             Ok(rendered) => println!("Rust field name works: {}", rendered),
             Err(e) => println!("Rust field name failed: {}", e),
         }
-        
+
         let test_desc_json = r#"{{ quote.author_description }}"#;
         let result_desc = Tera::one_off(test_desc_json, &full_context, false);
         match result_desc {
             Ok(rendered) => println!("Description works: {}", rendered),
             Err(e) => println!("Description failed: {}", e),
         }
-        
+
         let test2b = r#"{{ quote.author_url }}"#;
         let result2b = Tera::one_off(test2b, &full_context, false);
         match result2b {
             Ok(rendered) => println!("Test 2b works: {}", rendered),
             Err(e) => println!("Test 2b failed: {}", e),
         }
-        
+
         let test2 = r#"> — [{{ quote.author }}]({{ quote.author_url }})"#;
         let result2 = Tera::one_off(test2, &full_context, false);
         match result2 {
             Ok(rendered) => println!("Test 2 works:\n{}", rendered),
             Err(e) => println!("Test 2 failed: {}", e),
         }
-        
+
         // Test just the beginning of our actual template
         let partial_template = r#"Hello World
 > "{{ quote.text }}"  
 > — {{ quote.author }}, {{ quote.author_description }}"#;
-        
+
         let partial_result = Tera::one_off(partial_template, &full_context, false);
         match partial_result {
             Ok(rendered) => println!("Partial template works:\n{}", rendered),
@@ -281,8 +309,6 @@ Book: {{ book.title }}
 
         let result = renderer.render_newsletter(
             435,
-            4,
-            2025,
             &quote,
             &book,
             &primary_link,
