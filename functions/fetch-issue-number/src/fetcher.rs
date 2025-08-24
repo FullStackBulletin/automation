@@ -36,18 +36,20 @@ pub async fn fetch_last_issue_number(url: &str) -> Result<u32, ScrapeError> {
     let body = resp.text().await?;
     let document = scraper::Html::parse_document(&body);
     // safe to unwrap because we are hardcoding the selector
-    let selector = selector::Selector::parse(".campaign a[title]").unwrap();
+    let selector = selector::Selector::parse(".email").unwrap();
 
     // Title looks like: "🤓 #331: Putting the "You" in CPU"
-    let last_link_title = document
-        .select(&selector)
-        .next()
-        .ok_or(ScrapeError::CannotFindCampaignTitle)?
-        .value()
-        .attr("title")
-        .unwrap(); // safe to unwrap because we are hardcoding the selector to have a title!
+    let last_link_el = document.select(&selector);
+    if last_link_el.into_iter().count() == 0 {
+        return Err(ScrapeError::CannotFindCampaignTitle);
+    }
 
-    let (_, issue_number) = parse_number_from_title(last_link_title)
+    let last_link_title: String = document
+        .select(&selector)
+        .flat_map(|el| el.text())
+        .collect();
+
+    let (_, issue_number) = parse_number_from_title(&last_link_title)
         .map_err(|_| ScrapeError::CannotParseIssueNumber(last_link_title.to_string()))?;
 
     Ok(issue_number)
@@ -70,6 +72,28 @@ mod tests {
         let title = "🤓 #: Putting the \"You\" in CPU";
         let result = parse_number_from_title(title);
         assert!(result.is_err());
+    }
+
+    #[tokio::test]
+    async fn test_with_real_archive_page() {
+        // Start a lightweight mock server.
+        let server = MockServer::start();
+
+        let content = include_str!("fixtures/archive.html");
+
+        // Create a mock on the server.
+        let hello_mock = server.mock(|when, then| {
+            when.method(GET).path("/test");
+            then.status(200)
+                .header("content-type", "text/html")
+                .body(content);
+        });
+
+        let server_url = server.url("/test");
+        let response = fetch_last_issue_number(&server_url).await.unwrap();
+
+        assert_eq!(response, 434);
+        hello_mock.assert();
     }
 
     #[tokio::test]

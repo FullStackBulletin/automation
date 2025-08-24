@@ -95,7 +95,7 @@ Resources:
         - arm64
       Environment:
         Variables:
-          URL: "https://us15.campaign-archive.com/home/?u=b015626aa6028495fe77c75ea&id=55ace33899"
+          URL: "https://buttondown.com/fullstackbulletin/archive/"
 
   FetchQuoteFunction:
     Type: AWS::Serverless::Function
@@ -170,26 +170,23 @@ Resources:
 
   CreateIssueFunction:
     Type: AWS::Serverless::Function
+    Metadata:
+      BuildMethod: rust-cargolambda
     Properties:
       CodeUri: functions/create-issue/
-      Handler: handler.createIssue
-      Runtime: nodejs20.x
-      MemorySize: 512
-      Timeout: 60
+      Handler: bootstrap
+      Runtime: provided.al2023
+      Timeout: 15
       Architectures:
-        - x86_64
+        - arm64
       Policies:
         - SSMParameterWithSlashPrefixReadPolicy:
             ParameterName: /FullstackBulletin/prod/*
       Environment:
         Variables:
-          MAILCHIMP_API_KEY: "{{resolve:ssm:/FullstackBulletin/prod/MailchimpApiKey}}"
-          MAILCHIMP_LIST_ID: !Ref MailchimpListId
-          MAILCHIMP_TEMPLATE_ID: !Ref MailchimpTemplateId
-          MAILCHIMP_FROM_EMAIL: !Ref MailchimpFromEmail
-          MAILCHIMP_FROM_NAME: !Ref MailchimpFromName
-          MAILCHIMP_REPLY_TO_EMAIL: !Ref MailchimpReplyToEmail
-          MAILCHIMP_TEST_EMAILS: "{{resolve:ssm:/FullstackBulletin/prod/MailchimpTestEmails}}"
+          BUTTONDOWN_API_KEY: "{{resolve:ssm:/FullstackBulletin/prod/ButtondownApiKey}}"
+          DRAFT_SUBSCRIBER_ID: "d7c3b447-f046-4755-a26a-b8b90b73d002"
+          DRAFT_RECIPIENT_EMAIL: "lucianomammino+fsb@gmail.com"
 
 Outputs:
   CreateIssueFunctionArn:
