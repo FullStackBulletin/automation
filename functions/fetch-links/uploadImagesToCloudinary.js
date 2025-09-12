@@ -22,7 +22,14 @@ const uploadImage = (client, imageUrl, publicId, hostname, stopRetry) =>
 
 const uploadImageToCloudinary = (client, folder) => (urlInfo, cb) => {
   const publicId = `${folder}/${createHash('md5').update(urlInfo.image).digest('hex')}`
-  const { hostname } = new URL(urlInfo.url)
+  let hostname
+  try {
+    const url = new URL(urlInfo.url)
+    hostname = url.hostname
+  } catch (e) {
+    const fallbackImage = `https://spaceholder.cc/i/600x400?r=${Math.random()}`
+    return cb(null, { ...urlInfo, image: fallbackImage, originalImage: fallbackImage })
+  }
   uploadImage(client, urlInfo.image, publicId, hostname)
     .then((info) => {
       const transformations = {

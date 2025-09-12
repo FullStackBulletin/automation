@@ -1,120 +1,117 @@
 Comment: Create a new issue of FullStack bulletin
 StartAt: Define Defaults
 States:
-    Define Defaults:
-        Type: Pass
-        Next: Apply Defaults
-        ResultPath: "$.defaults"
-        Parameters:
-            dryRun: false
-    Apply Defaults:
-        Type: Pass
-        Next: Fetch Issue Number
-        Parameters:
-            config.$: "States.JsonMerge($.defaults, $$.Execution.Input, false)"
-    Fetch Issue Number:
-        Type: Task
-        Resource: "${FetchIssueNumberFunctionArn}"
-        Next: Fetch Data
-        ResultPath: "$.NextIssue"
-        Retry:
-            - ErrorEquals:
+  Define Defaults:
+    Type: Pass
+    Next: Apply Defaults
+    ResultPath: $.defaults
+    Parameters:
+      dryRun: false
+  Apply Defaults:
+    Type: Pass
+    Next: Fetch Issue Number
+    Parameters:
+      config.$: States.JsonMerge($.defaults, $$.Execution.Input, false)
+  Fetch Issue Number:
+    Type: Task
+    Resource: ${FetchIssueNumberFunctionArn}
+    Next: Fetch Data
+    ResultPath: $.NextIssue
+    Retry:
+      - ErrorEquals:
+          - Lambda.ServiceException
+          - Lambda.AWSLambdaException
+          - Lambda.SdkClientException
+          - Lambda.TooManyRequestsException
+        IntervalSeconds: 2
+        MaxAttempts: 6
+        BackoffRate: 2
+  Fetch Data:
+    Type: Parallel
+    Next: Create Issue
+    ResultSelector:
+      Quote.$: $[0].Quote
+      Book.$: $[1].Book
+      Sponsor.$: $[2].Sponsor
+      Links.$: $[3].Links
+    ResultPath: $.data
+    Branches:
+      - StartAt: Fetch Quote
+        States:
+          Fetch Quote:
+            Type: Task
+            Resource: ${FetchQuoteFunctionArn}
+            OutputPath: $
+            ResultPath: $.Quote
+            Retry:
+              - ErrorEquals:
                   - Lambda.ServiceException
                   - Lambda.AWSLambdaException
                   - Lambda.SdkClientException
                   - Lambda.TooManyRequestsException
-              IntervalSeconds: 2
-              MaxAttempts: 6
-              BackoffRate: 2
-    Fetch Data:
-        Type: Parallel
-        Next: Create Issue
-        ResultSelector:
-            Quote.$: "$[0].Quote"
-            Book.$: "$[1].Book"
-            Sponsor.$: "$[2].Sponsor"
-            Links.$: "$[3].Links"
-        ResultPath: "$.data"
-        Branches:
-            - StartAt: Fetch Quote
-              States:
-                  Fetch Quote:
-                      Type: Task
-                      Resource: "${FetchQuoteFunctionArn}"
-                      OutputPath: $
-                      ResultPath: $.Quote
-                      Retry:
-                          - ErrorEquals:
-                                - Lambda.ServiceException
-                                - Lambda.AWSLambdaException
-                                - Lambda.SdkClientException
-                                - Lambda.TooManyRequestsException
-                            IntervalSeconds: 2
-                            MaxAttempts: 6
-                            BackoffRate: 2
-                      End: true
-            - StartAt: Fetch Book
-              States:
-                  Fetch Book:
-                      Type: Task
-                      Resource: "${FetchBookFunctionArn}"
-                      OutputPath: $
-                      ResultPath: $.Book
-                      Retry:
-                          - ErrorEquals:
-                                - Lambda.ServiceException
-                                - Lambda.AWSLambdaException
-                                - Lambda.SdkClientException
-                                - Lambda.TooManyRequestsException
-                            IntervalSeconds: 2
-                            MaxAttempts: 6
-                            BackoffRate: 2
-                      End: true
-            - StartAt: Fetch Sponsor
-              States:
-                  Fetch Sponsor:
-                      Type: Task
-                      Resource: "${FetchSponsorFunctionArn}"
-                      OutputPath: $
-                      ResultPath: $.Sponsor
-                      Retry:
-                          - ErrorEquals:
-                                - Lambda.ServiceException
-                                - Lambda.AWSLambdaException
-                                - Lambda.SdkClientException
-                                - Lambda.TooManyRequestsException
-                            IntervalSeconds: 2
-                            MaxAttempts: 6
-                            BackoffRate: 2
-                      End: true
-            - StartAt: Fetch Links
-              States:
-                  Fetch Links:
-                      Type: Task
-                      Resource: "${FetchLinksFunctionArn}"
-                      OutputPath: $
-                      ResultPath: $.Links
-                      Retry:
-                          - ErrorEquals:
-                                - Lambda.ServiceException
-                                - Lambda.AWSLambdaException
-                                - Lambda.SdkClientException
-                                - Lambda.TooManyRequestsException
-                            IntervalSeconds: 2
-                            MaxAttempts: 6
-                            BackoffRate: 2
-                      End: true
-    Create Issue:
-        Type: Task
-        Resource: "${CreateIssueFunctionArn}"
-        OutputPath: $
-        Retry:
-            - ErrorEquals:
+                IntervalSeconds: 2
+                MaxAttempts: 6
+                BackoffRate: 2
+            End: true
+      - StartAt: Fetch Book
+        States:
+          Fetch Book:
+            Type: Task
+            Resource: ${FetchBookFunctionArn}
+            OutputPath: $
+            ResultPath: $.Book
+            Retry:
+              - ErrorEquals:
                   - Lambda.ServiceException
                   - Lambda.AWSLambdaException
                   - Lambda.SdkClientException
                   - Lambda.TooManyRequestsException
-              IntervalSeconds: 2
-              MaxAttempts: 6
-              BackoffRate: 2
-        End: true
+                IntervalSeconds: 2
+                MaxAttempts: 6
+                BackoffRate: 2
+            End: true
+      - StartAt: Fetch Sponsor
+        States:
+          Fetch Sponsor:
+            Type: Task
+            Resource: ${FetchSponsorFunctionArn}
+            Retry:
+              - ErrorEquals:
+                  - States.ALL
+                IntervalSeconds: 3
+                MaxAttempts: 3
+                BackoffRate: 2
+            OutputPath: $
+            ResultPath: $.Sponsor
+            End: true
+      - StartAt: Fetch Links
+        States:
+          Fetch Links:
+            Type: Task
+            Resource: ${FetchLinksFunctionArn}
+            OutputPath: $
+            ResultPath: $.Links
+            Retry:
+              - ErrorEquals:
+                  - Lambda.ServiceException
+                  - Lambda.AWSLambdaException
+                  - Lambda.SdkClientException
+                  - Lambda.TooManyRequestsException
+                IntervalSeconds: 2
+                MaxAttempts: 6
+                BackoffRate: 2
+            End: true
+  Create Issue:
+    Type: Task
+    Resource: ${CreateIssueFunctionArn}
+    OutputPath: $
+    Retry:
+      - ErrorEquals:
+          - Lambda.ServiceException
+          - Lambda.AWSLambdaException
+          - Lambda.SdkClientException
+          - Lambda.TooManyRequestsException
+        IntervalSeconds: 2
+        MaxAttempts: 6
+        BackoffRate: 2
+    End: true

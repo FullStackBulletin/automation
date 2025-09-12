@@ -43,9 +43,8 @@ export async function fetchLinks (event) {
       .subtract('1', 'week')
       .startOf('day')
 
-    const weekNumber = now.format('W')
-    const year = now.format('YYYY')
-    const campaignName = `fullstackBulletin-${weekNumber}-${year}`
+    const nextIssue = event.NextIssue.number
+    const campaignName = `fullstackBulletin-${nextIssue}`
 
     console.log('Creating campaign', campaignName)
 
