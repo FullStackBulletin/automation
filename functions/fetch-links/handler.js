@@ -60,7 +60,7 @@ export async function fetchLinks (event) {
       fbApp,
       fallbackImageClient,
       referenceMoment,
-      numResults: 14,
+      numResults: 30,
       blacklistedUrls
     })
     console.log('Retrieved issue links', links)
