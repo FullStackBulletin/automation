@@ -146,7 +146,7 @@ Resources:
       CodeUri: functions/fetch-links/
       Handler: handler.fetchLinks
       Runtime: nodejs20.x
-      Timeout: 60
+      Timeout: 120
       Architectures:
         - x86_64
       Policies:

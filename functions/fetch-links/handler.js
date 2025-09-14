@@ -37,11 +37,11 @@ export async function fetchLinks (event) {
 
     const fallbackImageClient = createFallbackImageClient(process.env.UNSPLASH_ACCESS_KEY)
 
-    const now = moment.tz('Etc/UTC')
-    const referenceMoment = now
+    const referenceMoment = moment(new Date(event.config.time))
       .clone()
       .subtract('1', 'week')
       .startOf('day')
+    console.log(JSON.stringify({ message: 'Reference moment', referenceMoment: referenceMoment.format() }))
 
     const nextIssue = event.NextIssue.number
     const campaignName = `fullstackBulletin-${nextIssue}`
