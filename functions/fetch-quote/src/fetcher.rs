@@ -34,12 +34,13 @@ mod tests {
         let server = MockServer::start();
 
         // Create a mock on the server that can be called multiple times
-        server.mock_async(|when, then| {
-            when.method(GET).path("/quotes/stats.json");
-            then.status(200)
-                .header("content-type", "application/json")
-                .body(
-                    r#"
+        server
+            .mock_async(|when, then| {
+                when.method(GET).path("/quotes/stats.json");
+                then.status(200)
+                    .header("content-type", "application/json")
+                    .body(
+                        r#"
             {
                 "total": 3,
                 "all": "https://fullStackbulletin.github.io/tech-quotes/quotes/all.json",
@@ -48,15 +49,18 @@ mod tests {
                 "urlPrefix": "https://fullStackbulletin.github.io/tech-quotes/quotes"
             }
             "#,
-                );
-        }).await;
+                    );
+            })
+            .await;
 
         // Mock all possible quote IDs (0, 1, 2) since we're using a small total
-        server.mock_async(|when, then| {
-            when.method(GET).path("/quotes/0.json");
-            then.status(200)
-                .header("content-type", "application/json")
-                .body(r#"
+        server
+            .mock_async(|when, then| {
+                when.method(GET).path("/quotes/0.json");
+                then.status(200)
+                    .header("content-type", "application/json")
+                    .body(
+                        r#"
             {
                 "id": 0,
                 "text": "Test quote 0",
@@ -69,14 +73,18 @@ mod tests {
                 },
                 "url": "https://fullStackbulletin.github.io/tech-quotes/quotes/0.json"
             }
-            "#);
-        }).await;
+            "#,
+                    );
+            })
+            .await;
 
-        server.mock_async(|when, then| {
-            when.method(GET).path("/quotes/1.json");
-            then.status(200)
-                .header("content-type", "application/json")
-                .body(r#"
+        server
+            .mock_async(|when, then| {
+                when.method(GET).path("/quotes/1.json");
+                then.status(200)
+                    .header("content-type", "application/json")
+                    .body(
+                        r#"
             {
                 "id": 1,
                 "text": "Test quote 1",
@@ -88,14 +96,18 @@ mod tests {
                 },
                 "url": "https://fullStackbulletin.github.io/tech-quotes/quotes/1.json"
             }
-            "#);
-        }).await;
+            "#,
+                    );
+            })
+            .await;
 
-        server.mock_async(|when, then| {
-            when.method(GET).path("/quotes/2.json");
-            then.status(200)
-                .header("content-type", "application/json")
-                .body(r#"
+        server
+            .mock_async(|when, then| {
+                when.method(GET).path("/quotes/2.json");
+                then.status(200)
+                    .header("content-type", "application/json")
+                    .body(
+                        r#"
             {
                 "id": 2,
                 "text": "Test quote 2",
@@ -108,13 +120,19 @@ mod tests {
                 },
                 "url": "https://fullStackbulletin.github.io/tech-quotes/quotes/2.json"
             }
-            "#);
-        }).await;
+            "#,
+                    );
+            })
+            .await;
 
         // Test that the function successfully fetches a random quote
         let response = fetch_quote(&server.base_url(), 0).await;
 
-        assert!(response.is_ok(), "Failed to fetch quote: {:?}", response.err());
+        assert!(
+            response.is_ok(),
+            "Failed to fetch quote: {:?}",
+            response.err()
+        );
 
         let quote = response.unwrap();
         // Verify the quote ID is in the valid range

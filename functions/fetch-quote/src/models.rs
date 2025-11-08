@@ -127,7 +127,8 @@ mod tests {
         }
         "#;
 
-        let input_quote: InputQuote = serde_json::from_str(input_json).expect("Failed to deserialize InputQuote");
+        let input_quote: InputQuote =
+            serde_json::from_str(input_json).expect("Failed to deserialize InputQuote");
         let quote: Quote = input_quote.into();
 
         // Serialize to JSON
@@ -135,10 +136,15 @@ mod tests {
         println!("Serialized Quote: {}", serialized);
 
         // Verify that authorUrl field is omitted (not null) when None
-        assert!(!serialized.contains("authorUrl"), "authorUrl field should be omitted when None, but found in: {}", serialized);
+        assert!(
+            !serialized.contains("authorUrl"),
+            "authorUrl field should be omitted when None, but found in: {}",
+            serialized
+        );
 
         // Deserialize back
-        let deserialized: Quote = serde_json::from_str(&serialized).expect("Failed to deserialize Quote");
+        let deserialized: Quote =
+            serde_json::from_str(&serialized).expect("Failed to deserialize Quote");
 
         assert_eq!(deserialized.id, 22);
         assert_eq!(deserialized.author, "Francis Glassborow");
@@ -160,7 +166,14 @@ mod tests {
         println!("Serialized Quote with URL: {}", serialized);
 
         // Verify that authorUrl field IS included when Some
-        assert!(serialized.contains("authorUrl"), "authorUrl field should be included when Some, but not found in: {}", serialized);
-        assert!(serialized.contains("https://example.com"), "authorUrl value should be in serialized output");
+        assert!(
+            serialized.contains("authorUrl"),
+            "authorUrl field should be included when Some, but not found in: {}",
+            serialized
+        );
+        assert!(
+            serialized.contains("https://example.com"),
+            "authorUrl value should be in serialized output"
+        );
     }
 }
