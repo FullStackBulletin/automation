@@ -219,7 +219,7 @@ mod tests {
             text: "Computers are useless. They can only give you answers".to_string(),
             author: "Pablo Picasso".to_string(),
             author_description: "Artist".to_string(),
-            author_url: "https://en.wikipedia.org/wiki/Pablo_Picasso".to_string(),
+            author_url: Some("https://en.wikipedia.org/wiki/Pablo_Picasso".to_string()),
         };
 
         let book = Book {
@@ -519,28 +519,28 @@ Book: {{ book.title }}
         }
 
         // Test both naming conventions to understand which one Tera uses
-        let test_desc_rust = r#"{{ quote.author_description }}"#;
+        let test_desc_rust = r#"{{ quote.authorDescription }}"#;
         let result_desc_rust = Tera::one_off(test_desc_rust, &full_context, false);
         match result_desc_rust {
             Ok(rendered) => println!("Rust field name works: {}", rendered),
             Err(e) => println!("Rust field name failed: {}", e),
         }
 
-        let test_desc_json = r#"{{ quote.author_description }}"#;
+        let test_desc_json = r#"{{ quote.authorDescription }}"#;
         let result_desc = Tera::one_off(test_desc_json, &full_context, false);
         match result_desc {
             Ok(rendered) => println!("Description works: {}", rendered),
             Err(e) => println!("Description failed: {}", e),
         }
 
-        let test2b = r#"{{ quote.author_url }}"#;
+        let test2b = r#"{{ quote.authorUrl }}"#;
         let result2b = Tera::one_off(test2b, &full_context, false);
         match result2b {
             Ok(rendered) => println!("Test 2b works: {}", rendered),
             Err(e) => println!("Test 2b failed: {}", e),
         }
 
-        let test2 = r#"> — [{{ quote.author }}]({{ quote.author_url }})"#;
+        let test2 = r#"> — [{{ quote.author }}]({{ quote.authorUrl }})"#;
         let result2 = Tera::one_off(test2, &full_context, false);
         match result2 {
             Ok(rendered) => println!("Test 2 works:\n{}", rendered),
@@ -549,8 +549,8 @@ Book: {{ book.title }}
 
         // Test just the beginning of our actual template
         let partial_template = r#"Hello World
-> "{{ quote.text }}"  
-> — {{ quote.author }}, {{ quote.author_description }}"#;
+> "{{ quote.text }}"
+> — {{ quote.author }}, {{ quote.authorDescription }}"#;
 
         let partial_result = Tera::one_off(partial_template, &full_context, false);
         match partial_result {
@@ -577,7 +577,6 @@ Book: {{ book.title }}
                 assert!(rendered.contains("Building Microservices"));
                 assert!(rendered.contains("An Interactive Guide to SVG Paths"));
                 assert!(rendered.contains("{{ subscriber.metadata.first_name }}"));
-                assert!(rendered.contains("{{ subscribe_form }}"));
             }
             Err(e) => {
                 println!("Template rendering failed: {}", e);

@@ -49,8 +49,8 @@ pub struct Quote {
     pub author: String,
     #[serde(rename = "authorDescription")]
     pub author_description: String,
-    #[serde(rename = "authorUrl")]
-    pub author_url: String,
+    #[serde(rename = "authorUrl", skip_serializing_if = "Option::is_none")]
+    pub author_url: Option<String>,
 }
 
 #[derive(Deserialize, Serialize, Debug, Clone)]
