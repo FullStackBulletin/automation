@@ -2,13 +2,13 @@
 
 TODO: WRITE INTRO
 
-Happy reading and coding!{% raw %}  {% endraw %}
+{{ intro_closing }}{% raw %}  {% endraw %}
 — [Luciano](https://loige.co)
 
 ---
 
 > "{{ quote.text }}"{% raw %}  {% endraw %}
-> — [{{ quote.author }}]({{ quote.authorUrl }}), {{ quote.authorDescription }}
+> — {%- if quote.authorUrl %}[{{ quote.author }}]({{ quote.authorUrl }}){%- else -%}{{ quote.author }}{%- endif -%}, {{ quote.authorDescription }}
 
 ---
 
@@ -64,5 +64,3 @@ Happy reading and coding!{% raw %}  {% endraw %}
 ## {{ closing_title }}
 
 {{ closing_message }}
-
-{% raw %}{{ subscribe_form }}{% endraw %}

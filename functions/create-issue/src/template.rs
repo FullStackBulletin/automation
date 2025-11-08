@@ -87,6 +87,53 @@ pub fn generate_closing_message(issue_number: u32) -> String {
     .to_string()
 }
 
+pub fn generate_intro_closing(issue_number: u32) -> String {
+    match issue_number % 41 {
+        1 => "Enjoy the journey ahead!",
+        2 => "Let's dive in and learn together!",
+        3 => "Time to explore and experiment!",
+        4 => "May your code compile on the first try!",
+        5 => "Happy learning and building!",
+        6 => "Let's get coding!",
+        7 => "Enjoy this issue and keep shipping!",
+        8 => "Hope you find something inspiring!",
+        9 => "Ready to level up your skills?",
+        10 => "Make something you are proud of!",
+        11 => "One small step today counts!",
+        12 => "Build, break, learn, repeat!",
+        13 => "Stay curious and keep tinkering!",
+        14 => "Push an idea a little further!",
+        15 => "Create value, have fun!",
+        16 => "Sharpen your tools and ship!",
+        17 => "Try it, test it, teach it!",
+        18 => "Progress beats perfection!",
+        19 => "Learn a little, apply a lot!",
+        20 => "Trust the process and iterate!",
+        21 => "Let curiosity lead the way!",
+        22 => "Make it work, then make it better!",
+        23 => "Small wins add up fast!",
+        24 => "Build something delightful!",
+        25 => "Keep going, you are close!",
+        26 => "Sketch, code, refine!",
+        27 => "Turn ideas into experiments!",
+        28 => "Read, try, reflect, repeat!",
+        29 => "Ship the smallest useful thing!",
+        30 => "Improve 1% today!",
+        31 => "Stretch your skills a notch!",
+        32 => "Refactor with kindness to your future self!",
+        33 => "Document now, thank yourself later!",
+        34 => "Chase clarity, not cleverness!",
+        35 => "Learn by doing and sharing!",
+        36 => "Ask good questions, find better answers!",
+        37 => "Make it simple and solid!",
+        38 => "Quality is a habit. Practice!",
+        39 => "Explore the edges of your comfort zone!",
+        40 => "Keep building. The future is compounding!",
+        _ => "Happy reading and coding!",
+    }
+    .to_string()
+}
+
 // Embed the newsletter template at compile time
 const NEWSLETTER_TEMPLATE: &str = include_str!("../templates/newsletter.md");
 
@@ -144,6 +191,10 @@ impl TemplateRenderer {
         let greeting = generate_greeting(issue_number);
         context.insert("greeting", &greeting);
 
+        // Add intro closing variable
+        let intro_closing = generate_intro_closing(issue_number);
+        context.insert("intro_closing", &intro_closing);
+
         // Add closing variables
         let closing_title = generate_closing_title(issue_number);
         let closing_message = generate_closing_message(issue_number);
@@ -187,7 +238,7 @@ mod tests {
             title: "An Interactive Guide to SVG Paths".to_string(),
             url: "https://joshwcomeau.com/svg/interactive-guide-to-paths".to_string(),
             description: "I've always had a bit of a thing for vector graphics...".to_string(),
-            image: "https://assets.buttondown.email/images/23f6bfbf-fa80-44b0-b4e3-692947f7363a.png?w=960&fit=max".to_string(),
+            image: Some("https://assets.buttondown.email/images/23f6bfbf-fa80-44b0-b4e3-692947f7363a.png?w=960&fit=max".to_string()),
             score: 100,
             original_image: "".to_string(),
             campaign_urls: CampaignUrls {
@@ -202,7 +253,7 @@ mod tests {
                 title: "Closer to the Metal: Leaving Playwright for CDP".to_string(),
                 url: "https://browser-use.com/posts/playwright-to-cdp".to_string(),
                 description: "Let's switch gears... but not completely...".to_string(),
-                image: "".to_string(),
+                image: Some("".to_string()),
                 score: 90,
                 original_image: "".to_string(),
                 campaign_urls: CampaignUrls {
@@ -218,7 +269,7 @@ mod tests {
                 title: "React calendar components: 6 best libraries for 2025".to_string(),
                 url: "https://builder.io/blog/best-react-calendar-component-ai".to_string(),
                 description: "".to_string(),
-                image: "".to_string(),
+                image: Some("".to_string()),
                 score: 70,
                 original_image: "".to_string(),
                 campaign_urls: CampaignUrls {
@@ -299,6 +350,24 @@ mod tests {
         assert_eq!(greeting1, "Hey there"); // Issue 1
         assert_eq!(greeting2, "Heyo"); // Issue 2
         assert_eq!(greeting10, "Hello"); // Issue 10 (0 modulo)
+    }
+
+    #[test]
+    fn test_intro_closing_generation() {
+        let intro1 = generate_intro_closing(1);
+        let intro2 = generate_intro_closing(2);
+        let intro10 = generate_intro_closing(10);
+        let intro41 = generate_intro_closing(41);
+        let intro42 = generate_intro_closing(42);
+
+        // Different issue numbers should generate different intro closings (except for same modulo 41)
+        assert_ne!(intro1, intro2);
+        assert_ne!(intro1, intro10);
+        assert_eq!(intro1, intro42); // Both 1 and 42 have same modulo (42 % 41 = 1)
+        assert_eq!(intro1, "Enjoy the journey ahead!"); // Issue 1
+        assert_eq!(intro2, "Let's dive in and learn together!"); // Issue 2
+        assert_eq!(intro10, "Make something you are proud of!"); // Issue 10
+        assert_eq!(intro41, "Happy reading and coding!"); // Issue 41 (0 modulo - default)
     }
 
     #[test]

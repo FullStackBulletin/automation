@@ -82,7 +82,7 @@ pub struct Link {
     pub title: String,
     pub url: String,
     pub description: String,
-    pub image: String,
+    pub image: Option<String>,
     pub score: u32,
     #[serde(rename = "originalImage")]
     pub original_image: String,
