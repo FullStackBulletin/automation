@@ -533,6 +533,7 @@ dependencies = [
  "chrono",
  "chrono-tz 0.10.4",
  "lambda_runtime 0.13.0",
+ "regex",
  "reqwest 0.12.5",
  "serde",
  "serde_json",

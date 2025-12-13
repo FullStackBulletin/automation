@@ -1,8 +1,28 @@
-use anyhow::Result;
-use serde::Serialize;
-use tera::{Context, Tera};
-
 use crate::model::{Book, Link, Quote, Sponsor};
+use anyhow::Result;
+use regex::Regex;
+use serde::Serialize;
+use std::collections::HashMap;
+use std::sync::LazyLock;
+use tera::{Context, Tera, Value};
+
+static JAVASCRIPT_PROTOCOL_RE: LazyLock<Regex> =
+    LazyLock::new(|| Regex::new(r"(?i)javascript:").unwrap());
+
+/// Tera filter that sanitizes text by replacing "javascript:" (case insensitive) with "JavaScript - ".
+///
+/// This filter is needed because Buttondown's API rejects content containing "javascript:"
+/// even in Markdown body text, returning the error:
+/// `{"body": ["JavaScript in attributes is not allowed. (You added one with the `javascript:` attribute.)"]}`
+fn sanitize_js_filter(value: &Value, _args: &HashMap<String, Value>) -> tera::Result<Value> {
+    match value.as_str() {
+        Some(s) => {
+            let result = JAVASCRIPT_PROTOCOL_RE.replace_all(s, "JavaScript - ");
+            Ok(Value::String(result.into_owned()))
+        }
+        None => Ok(value.clone()),
+    }
+}
 
 /// Enhanced link with action text for template rendering
 #[derive(Serialize, Debug)]
@@ -201,9 +221,13 @@ impl TemplateRenderer {
         context.insert("closing_title", &closing_title);
         context.insert("closing_message", &closing_message);
 
-        // Use Tera's one-off rendering function with embedded template
-        // autoescape=false since we're rendering Markdown, not HTML
-        let rendered = Tera::one_off(NEWSLETTER_TEMPLATE, &context, false)?;
+        // Create Tera instance with custom filter for sanitizing javascript: protocol
+        let mut tera = Tera::default();
+        tera.add_raw_template("newsletter", NEWSLETTER_TEMPLATE)?;
+        tera.register_filter("sanitize_js", sanitize_js_filter);
+        tera.autoescape_on(vec![]); // Disable autoescape since we're rendering Markdown
+
+        let rendered = tera.render("newsletter", &context)?;
         Ok(rendered)
     }
 }
@@ -294,6 +318,70 @@ mod tests {
             extra_links,
             sponsor,
         )
+    }
+
+    #[test]
+    fn test_sanitize_js_filter_lowercase() {
+        let args = HashMap::new();
+        // Note: "javascript:" is replaced with "JavaScript - ", so original space after colon remains
+        let input = Value::String("Check out javascript: protocol".to_string());
+        let result = sanitize_js_filter(&input, &args).unwrap();
+        assert_eq!(result.as_str().unwrap(), "Check out JavaScript -  protocol");
+    }
+
+    #[test]
+    fn test_sanitize_js_filter_uppercase() {
+        let args = HashMap::new();
+        let input = Value::String("Check out JAVASCRIPT: protocol".to_string());
+        let result = sanitize_js_filter(&input, &args).unwrap();
+        assert_eq!(result.as_str().unwrap(), "Check out JavaScript -  protocol");
+    }
+
+    #[test]
+    fn test_sanitize_js_filter_mixed_case() {
+        let args = HashMap::new();
+        let input = Value::String("Check out JaVaScRiPt: protocol".to_string());
+        let result = sanitize_js_filter(&input, &args).unwrap();
+        assert_eq!(result.as_str().unwrap(), "Check out JavaScript -  protocol");
+    }
+
+    #[test]
+    fn test_sanitize_js_filter_multiple_occurrences() {
+        let args = HashMap::new();
+        let input = Value::String("javascript: and JavaScript: both".to_string());
+        let result = sanitize_js_filter(&input, &args).unwrap();
+        assert_eq!(
+            result.as_str().unwrap(),
+            "JavaScript -  and JavaScript -  both"
+        );
+    }
+
+    #[test]
+    fn test_sanitize_js_filter_no_trailing_space() {
+        let args = HashMap::new();
+        // When there's no space after the colon in the original, the replacement is clean
+        let input = Value::String("javascript:void(0)".to_string());
+        let result = sanitize_js_filter(&input, &args).unwrap();
+        assert_eq!(result.as_str().unwrap(), "JavaScript - void(0)");
+    }
+
+    #[test]
+    fn test_sanitize_js_filter_no_match() {
+        let args = HashMap::new();
+        let input = Value::String("Just regular text without the pattern".to_string());
+        let result = sanitize_js_filter(&input, &args).unwrap();
+        assert_eq!(
+            result.as_str().unwrap(),
+            "Just regular text without the pattern"
+        );
+    }
+
+    #[test]
+    fn test_sanitize_js_filter_non_string() {
+        let args = HashMap::new();
+        let input = Value::Number(42.into());
+        let result = sanitize_js_filter(&input, &args).unwrap();
+        assert_eq!(result, Value::Number(42.into()));
     }
 
     #[test]

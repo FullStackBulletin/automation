@@ -17,12 +17,12 @@ TODO: WRITE INTRO
 {%- endif %}
 
 
-<a href="{{ primary_link.campaignUrls.image }}" target="_blank" rel="noopener noreferrer"><img src="{{ primary_link.image }}" draggable="false" alt="A screenshot from the article {{ primary_link.title }}"></a>
+<a href="{{ primary_link.campaignUrls.image }}" target="_blank" rel="noopener noreferrer"><img src="{{ primary_link.image }}" draggable="false" alt="A screenshot from the article {{ primary_link.title | sanitize_js }}"></a>
 
-[**{{ primary_link.title }}**]({{ primary_link.campaignUrls.title }}) — {{ primary_link.description }} [**{{ primary_link.action_text }}**]({{ primary_link.campaignUrls.description }})
+[**{{ primary_link.title | sanitize_js }}**]({{ primary_link.campaignUrls.title }}) — {{ primary_link.description | sanitize_js }} [**{{ primary_link.action_text }}**]({{ primary_link.campaignUrls.description }})
 
 {% for link in secondary_links -%}
-[**{{ link.title }}**]({{ link.campaignUrls.title }}) — {{ link.description }} [**{{ link.action_text }}**]({{ link.campaignUrls.description }})
+[**{{ link.title | sanitize_js }}**]({{ link.campaignUrls.title }}) — {{ link.description | sanitize_js }} [**{{ link.action_text }}**]({{ link.campaignUrls.description }})
 
 {% endfor -%}
 
@@ -30,11 +30,11 @@ TODO: WRITE INTRO
 
 # 📕 Book of the week!
 
-[**{{ book.title }}**, by {{ book.author }}]({{ book.links.us }})
+[**{{ book.title | sanitize_js }}**, by {{ book.author }}]({{ book.links.us }})
 
-[![{{ book.title }}]({{ book.coverPicture }})]({{ book.links.us }})
+[![{{ book.title | sanitize_js }}]({{ book.coverPicture }})]({{ book.links.us }})
 
-{{ book.description }}
+{{ book.description | sanitize_js }}
 
 [**Buy on Amazon.com**]({{ book.links.us }}) - [**Buy on Amazon.co.uk**]({{ book.links.uk }})
 
@@ -44,7 +44,7 @@ TODO: WRITE INTRO
 ### {{ extra_content_title }}
 
 {% for link in extra_links -%}
-- [{{ link.title }}]({{ link.campaignUrls.title }})
+- [{{ link.title | sanitize_js }}]({{ link.campaignUrls.title }})
 {% endfor -%}
 
 ---
