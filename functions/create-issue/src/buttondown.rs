@@ -65,7 +65,10 @@ impl ButtonDownClient {
         first_link_title: &str,
     ) -> Result<EmailResponse> {
         let first_link_slug = Self::generate_slug(first_link_title);
-        let slug = format!("{}-{}", issue_number, first_link_slug);
+        let slug = format!("{}-{}", issue_number, first_link_slug)
+            .chars()
+            .take(100)
+            .collect::<String>();
 
         let request = CreateEmailRequest {
             subject,
