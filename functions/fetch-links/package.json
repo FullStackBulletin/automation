@@ -16,7 +16,7 @@
     "cloudinary": "^1.37.1",
     "debug": "^4.1.1",
     "fb": "^1.1.1",
-    "megalodon": "^6.1.0",
+    "megalodon": "^10.0.2",
     "meta-extractor": "^1.5.1",
     "moment": "^2.29.4",
     "moment-timezone": "^0.5.43",
